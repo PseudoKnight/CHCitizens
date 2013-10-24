@@ -1,5 +1,7 @@
 package com.hekta.chcitizens.abstraction;
 
+import com.laytonsmith.abstraction.MCPlugin;
+
 /**
  *
  * @author Hekta

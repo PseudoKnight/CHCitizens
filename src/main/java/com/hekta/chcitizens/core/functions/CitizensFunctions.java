@@ -1,5 +1,8 @@
 package com.hekta.chcitizens.core.functions;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import com.laytonsmith.annotations.api;
 import com.laytonsmith.abstraction.MCLivingEntity;
 import com.laytonsmith.abstraction.MCLocation;
@@ -24,9 +27,13 @@ import com.laytonsmith.PureUtilities.Common.StringUtils;
 import com.hekta.chcitizens.abstraction.MCCitizensEntityTarget;
 import com.hekta.chcitizens.abstraction.MCCitizensNPC;
 import com.hekta.chcitizens.abstraction.MCCitizensNavigator;
+import com.hekta.chcitizens.abstraction.MCCitizensSpeechFactory;
+import com.hekta.chcitizens.abstraction.MCCitizensTalkable;
 import com.hekta.chcitizens.abstraction.enums.MCCitizensDespawnReason;
 import com.hekta.chcitizens.abstraction.enums.MCCitizensTargetType;
 import com.hekta.chcitizens.core.CHCitizensStatic;
+import com.laytonsmith.abstraction.MCPlayer;
+import com.laytonsmith.core.constructs.CDouble;
 
 /**
  *
@@ -158,6 +165,23 @@ public class CitizensFunctions {
 			} else {
 				return new CNull();
 			}
+		}
+	}
+
+	@api
+	public static class ctz_remove_npc extends CitizensNPCGetterFunction {
+
+		public String getName() {
+			return "ctz_remove_npc";
+		}
+
+		public String docs() {
+			return "void {npcID} Removes a NPC.";
+		}
+
+		public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
+			CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t).destroy();
+			return new CVoid(t);
 		}
 	}
 
@@ -594,7 +618,7 @@ public class CitizensFunctions {
 	public static class ctz_npc_avoid_water extends CitizensNPCGetterFunction {
 
 		public String getName() {
-			return "ctz_npc_is_navigating";
+			return "ctz_npc_avoid_water";
 		}
 
 		public String docs() {
@@ -622,6 +646,253 @@ public class CitizensFunctions {
 			boolean avoidWater = Static.getBoolean(args[1]);
 			navigator.getDefaultParameters().setAvoidWater(avoidWater);
 			navigator.getLocalParameters().setAvoidWater(avoidWater);
+			return new CVoid(t);
+		}
+	}
+
+	@api
+	public static class ctz_npc_speed extends CitizensNPCGetterFunction {
+
+		public String getName() {
+			return "ctz_npc_speed";
+		}
+
+		public String docs() {
+			return "double {npcID} Returns the speed of the given NPC.";
+		}
+
+		public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
+			return new CDouble(CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t).getNavigator().getLocalParameters().getSpeed(), t);
+		}
+	}
+
+	@api
+	public static class ctz_npc_base_speed extends CitizensNPCGetterFunction {
+
+		public String getName() {
+			return "ctz_npc_base_speed";
+		}
+
+		public String docs() {
+			return "double {npcID} Returns the base speed of the given NPC.";
+		}
+
+		public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
+			return new CDouble(CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t).getNavigator().getLocalParameters().getBaseSpeed(), t);
+		}
+	}
+
+	@api
+	public static class ctz_set_npc_base_speed extends CitizensNPCGetterFunction {
+
+		public String getName() {
+			return "ctz_set_npc_base_speed";
+		}
+
+		public String docs() {
+			return "void {npcID, double} Sets the base speed of the given NPC.";
+		}
+
+		public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
+			MCCitizensNavigator navigator = CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t).getNavigator();
+			float baseSpeed = Static.getDouble32(args[1], t);
+			navigator.getDefaultParameters().setBaseSpeed(baseSpeed);
+			navigator.getLocalParameters().setBaseSpeed(baseSpeed);
+			return new CVoid(t);
+		}
+	}
+
+	@api
+	public static class ctz_npc_speed_modifier extends CitizensNPCGetterFunction {
+
+		public String getName() {
+			return "ctz_npc_speed_modifier";
+		}
+
+		public String docs() {
+			return "double {npcID} Returns the speed modifier of the given NPC.";
+		}
+
+		public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
+			return new CDouble(CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t).getNavigator().getLocalParameters().getSpeedModifier(), t);
+		}
+	}
+
+	@api
+	public static class ctz_set_npc_speed_modifier extends CitizensNPCGetterFunction {
+
+		public String getName() {
+			return "ctz_set_npc_speed_modifier";
+		}
+
+		public String docs() {
+			return "void {npcID, double} Sets the speed modifier of the given NPC.";
+		}
+
+		public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
+			MCCitizensNavigator navigator = CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t).getNavigator();
+			float speedModifier = Static.getDouble32(args[1], t);
+			navigator.getDefaultParameters().setSpeedModifier(speedModifier);
+			navigator.getLocalParameters().setSpeedModifier(speedModifier);
+			return new CVoid(t);
+		}
+	}
+
+	@api
+	public static class ctz_npc_distance_margin extends CitizensNPCGetterFunction {
+
+		public String getName() {
+			return "ctz_npc_distance_margin";
+		}
+
+		public String docs() {
+			return "double {npcID} Returns the distance margin of the given NPC.";
+		}
+
+		public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
+			return new CDouble(CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t).getNavigator().getLocalParameters().getDistanceMargin(), t);
+		}
+	}
+
+	@api
+	public static class ctz_set_npc_distance_margin extends CitizensNPCGetterFunction {
+
+		public String getName() {
+			return "ctz_set_npc_distance_margin";
+		}
+
+		public String docs() {
+			return "void {npcID, double} Sets the distance margin of the given NPC.";
+		}
+
+		public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
+			MCCitizensNavigator navigator = CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t).getNavigator();
+			double distanceMargin = Static.getDouble(args[1], t);
+			navigator.getDefaultParameters().setDistanceMargin(distanceMargin);
+			navigator.getLocalParameters().setDistanceMargin(distanceMargin);
+			return new CVoid(t);
+		}
+	}
+
+	@api
+	public static class ctz_npc_range extends CitizensNPCGetterFunction {
+
+		public String getName() {
+			return "ctz_npc_range";
+		}
+
+		public String docs() {
+			return "double {npcID} Returns the range of the given NPC.";
+		}
+
+		public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
+			return new CDouble(CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t).getNavigator().getLocalParameters().getRange(), t);
+		}
+	}
+
+	@api
+	public static class ctz_set_npc_range extends CitizensNPCGetterFunction {
+
+		public String getName() {
+			return "ctz_set_npc_range";
+		}
+
+		public String docs() {
+			return "void {npcID, double} Sets the range of the given NPC.";
+		}
+
+		public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
+			MCCitizensNavigator navigator = CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t).getNavigator();
+			float range = Static.getDouble32(args[1], t);
+			navigator.getDefaultParameters().setRange(range);
+			navigator.getLocalParameters().setRange(range);
+			return new CVoid(t);
+		}
+	}
+
+	@api
+	public static class ctz_npc_stationary_ticks extends CitizensNPCGetterFunction {
+
+		public String getName() {
+			return "ctz_npc_stationary_ticks";
+		}
+
+		public String docs() {
+			return "int {npcID} Returns the stationary ticks of the given NPC.";
+		}
+
+		public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
+			return new CDouble(CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t).getNavigator().getLocalParameters().getStationaryTicks(), t);
+		}
+	}
+
+	@api
+	public static class ctz_set_npc_stationary_ticks extends CitizensNPCGetterFunction {
+
+		public String getName() {
+			return "ctz_set_npc_stationary_ticks";
+		}
+
+		public String docs() {
+			return "void {npcID, int} Sets the stationary ticks of the given NPC.";
+		}
+
+		public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
+			MCCitizensNavigator navigator = CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t).getNavigator();
+			int ticks = Static.getInt32(args[1], t);
+			navigator.getDefaultParameters().setStationaryTicks(ticks);
+			navigator.getLocalParameters().setStationaryTicks(ticks);
+			return new CVoid(t);
+		}
+	}
+
+	@api
+	public static class ctz_npc_speak extends CitizensNPCFunction {
+
+		public String getName() {
+			return "ctz_npc_speak";
+		}
+
+		public Integer[] numArgs() {
+			return new Integer[]{2, 3};
+		}
+
+		public ExceptionType[] thrown() {
+			return new ExceptionType[]{ExceptionType.InvalidPluginException, ExceptionType.CastException, ExceptionType.PlayerOfflineException, ExceptionType.BadEntityException};
+		}
+
+		public String docs() {
+			return "void {npcID, message, [recipients]} Returns an array containing the ids of all registered NPCs.";
+		}
+
+		public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
+			MCCitizensNPC npc = CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t);
+			MCCitizensSpeechFactory speechFactory = CHCitizensStatic.getCitizensPlugin(t).getSpeechFactory();
+			if (args.length == 2) {
+				Set<MCCitizensTalkable> recipients = new HashSet<MCCitizensTalkable>();
+				for (MCPlayer player : Static.getServer().getOnlinePlayers()) {
+					recipients.add(speechFactory.newTalkableEntity(player));
+				}
+				npc.getDefaultSpeechController().speak(speechFactory.newSpeechContext(npc, args[1].val(), recipients));
+			} else if (args[2] instanceof CArray) {
+				CArray array = Static.getArray(args[2], t);
+				if (array.inAssociativeMode()) {
+					throw new ConfigRuntimeException("The array of recipients must not be associative.", ExceptionType.CastException, t);
+				}
+				Set<MCCitizensTalkable> recipients = new HashSet<MCCitizensTalkable>();
+				for (Construct recipient : array.asList()) {
+					if (recipient instanceof CInt) {
+						recipients.add(speechFactory.newTalkableEntity(Static.getLivingEntity(Static.getInt32(args[2], t), t)));
+					} else {
+						recipients.add(speechFactory.newTalkableEntity(Static.GetPlayer(recipient.val(), t)));
+					}
+				}
+				npc.getDefaultSpeechController().speak(speechFactory.newSpeechContext(npc, args[1].val(), recipients));
+			} else if (args[2] instanceof CInt) {
+				npc.getDefaultSpeechController().speak(speechFactory.newSpeechContext(npc, args[1].val(), speechFactory.newTalkableEntity(Static.getLivingEntity(Static.getInt32(args[2], t), t))));
+			} else {
+				npc.getDefaultSpeechController().speak(speechFactory.newSpeechContext(npc, args[1].val(), speechFactory.newTalkableEntity(Static.GetPlayer(args[2].val(), t))));
+			}
 			return new CVoid(t);
 		}
 	}
