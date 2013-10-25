@@ -6,11 +6,6 @@ package com.hekta.chcitizens.abstraction;
  */
 public interface MCCitizensNavigatorParameters {
 
-	public MCCitizensAttackStrategy getAttackStrategy();
-	public void setAttackStrategy(MCCitizensAttackStrategy strategy);
-	public MCCitizensAttackStrategy getDefaultAttackStrategy();
-	public void setDefaultAttackStrategy(MCCitizensAttackStrategy strategy);
-
 	public boolean getAvoidWater();
 	public void setAvoidWater(boolean avoidWater);
 

@@ -13,39 +13,28 @@ import com.hekta.chcitizens.abstraction.MCCitizensTraitFactory;
  *
  * @author Hekta
  */
-public class BukkitMCCitizensPlugin implements MCCitizensPlugin {
+public class BukkitMCCitizensPlugin extends BukkitMCPlugin implements MCCitizensPlugin {
 
-	CitizensPlugin p;
+	CitizensPlugin cp;
 
-	public BukkitMCCitizensPlugin() {
-		try {
-			p = (CitizensPlugin) ((BukkitMCPlugin) com.laytonsmith.commandhelper.CommandHelperPlugin.myServer.getPluginManager().getPlugin("Citizens")).getPlugin();
-		} catch (Exception exception) {
-			p = null;
-		}
+	public BukkitMCCitizensPlugin(CitizensPlugin plugin) {
+		super(plugin);
+		this.cp = plugin;
 	}
 
 	public CitizensPlugin getConcrete() {
-		return p;
-	}
-
-	public MCCitizensPlugin get() {
-		if (p != null) {
-			return this;
-		} else {
-			return null;
-		}
+		return cp;
 	}
 
 	public MCCitizensNPCRegistry getNPCRegistry() {
-		return new BukkitMCCitizensNPCRegistry(p.getNPCRegistry());
+		return new BukkitMCCitizensNPCRegistry(cp.getNPCRegistry());
 	}
 
 	public MCCitizensSpeechFactory getSpeechFactory() {
-		return new BukkitMCCitizensSpeechFactory(p.getSpeechFactory());
+		return new BukkitMCCitizensSpeechFactory(cp.getSpeechFactory());
 	}
 
 	public MCCitizensTraitFactory getTraitFactory() {
-		return new BukkitMCCitizensTraitFactory(p.getTraitFactory());
+		return new BukkitMCCitizensTraitFactory(cp.getTraitFactory());
 	}
 }

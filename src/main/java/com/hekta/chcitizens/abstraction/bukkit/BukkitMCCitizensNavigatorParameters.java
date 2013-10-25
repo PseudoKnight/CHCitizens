@@ -3,7 +3,6 @@ package com.hekta.chcitizens.abstraction.bukkit;
 import net.citizensnpcs.api.ai.AttackStrategy;
 import net.citizensnpcs.api.ai.NavigatorParameters;
 
-import com.hekta.chcitizens.abstraction.MCCitizensAttackStrategy;
 import com.hekta.chcitizens.abstraction.MCCitizensNavigatorParameters;
 
 /**
@@ -20,27 +19,6 @@ public class BukkitMCCitizensNavigatorParameters implements MCCitizensNavigatorP
 
 	public NavigatorParameters getConcrete() {
 		return np;
-	}
-
-	public MCCitizensAttackStrategy getAttackStrategy() {
-		AttackStrategy strategy = np.attackStrategy();
-		if (strategy != null) {
-			return new BukkitMCCitizensAttackStrategy(strategy);
-		} else {
-			return null;
-		}
-	}
-
-	public void setAttackStrategy(MCCitizensAttackStrategy strategy) {
-		np.attackStrategy(((BukkitMCCitizensAttackStrategy) strategy).getConcrete());
-	}
-
-	public MCCitizensAttackStrategy getDefaultAttackStrategy() {
-		return new BukkitMCCitizensAttackStrategy(np.defaultAttackStrategy());
-	}
-
-	public void setDefaultAttackStrategy(MCCitizensAttackStrategy strategy) {
-		np.defaultAttackStrategy(((BukkitMCCitizensAttackStrategy) strategy).getConcrete());
 	}
 
 	public boolean getAvoidWater() {

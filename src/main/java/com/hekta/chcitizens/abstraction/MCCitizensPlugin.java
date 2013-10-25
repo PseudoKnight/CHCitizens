@@ -6,7 +6,7 @@ import com.laytonsmith.abstraction.MCPlugin;
  *
  * @author Hekta
  */
-public interface MCCitizensPlugin {
+public interface MCCitizensPlugin extends MCPlugin {
 
 	public MCCitizensNPCRegistry getNPCRegistry();
 
