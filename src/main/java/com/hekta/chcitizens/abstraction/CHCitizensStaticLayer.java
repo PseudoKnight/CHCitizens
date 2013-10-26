@@ -7,7 +7,7 @@ import com.hekta.chcitizens.annotations.CHCitizensConvert;
 
 /**
  *
- * @author Hekta
+ * @author Hekta, from layton's code template
  */
 public final class CHCitizensStaticLayer {
 
