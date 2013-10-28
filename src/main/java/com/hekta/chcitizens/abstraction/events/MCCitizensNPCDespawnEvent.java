@@ -8,5 +8,5 @@ import com.hekta.chcitizens.abstraction.enums.MCCitizensDespawnReason;
  */
 public interface MCCitizensNPCDespawnEvent extends MCCitizensNPCEvent {
 
-	MCCitizensDespawnReason getReason();
+	public MCCitizensDespawnReason getReason();
 }

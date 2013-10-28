@@ -3,8 +3,11 @@ package com.hekta.chcitizens.abstraction.bukkit.events;
 import net.citizensnpcs.api.event.CitizensEvent;
 import net.citizensnpcs.api.event.NPCDespawnEvent;
 import net.citizensnpcs.api.event.NPCEvent;
+import net.citizensnpcs.api.event.NPCSpawnEvent;
 
 import com.laytonsmith.abstraction.Implementation;
+import com.laytonsmith.abstraction.MCLocation;
+import com.laytonsmith.abstraction.bukkit.BukkitMCLocation;
 import com.laytonsmith.annotations.abstraction;
 
 import com.hekta.chcitizens.abstraction.MCCitizensNPC;
@@ -14,6 +17,7 @@ import com.hekta.chcitizens.abstraction.enums.bukkit.BukkitMCCitizensDespawnReas
 import com.hekta.chcitizens.abstraction.events.MCCitizensEvent;
 import com.hekta.chcitizens.abstraction.events.MCCitizensNPCDespawnEvent;
 import com.hekta.chcitizens.abstraction.events.MCCitizensNPCEvent;
+import com.hekta.chcitizens.abstraction.events.MCCitizensNPCSpawnEvent;
 
 /**
  *
@@ -69,9 +73,37 @@ public class BukkitCitizensEvents {
 		public Object _GetObject() {
 			return npcde;
 		}
+	
+		public static BukkitMCCitizensNPCDespawnEvent _instantiate(MCCitizensNPC npc, MCCitizensDespawnReason reason) {
+			return new BukkitMCCitizensNPCDespawnEvent(new NPCDespawnEvent(((BukkitMCCitizensNPC) npc).getConcrete(), BukkitMCCitizensDespawnReason.getConvertor().getConcreteEnum(reason)));
+		}
 
 		public MCCitizensDespawnReason getReason() {
 			return BukkitMCCitizensDespawnReason.getConvertor().getAbstractedEnum(npcde.getReason());
+		}
+	}
+
+	@abstraction(type = Implementation.Type.BUKKIT)
+	public static class BukkitMCCitizensNPCSpawnEvent extends BukkitMCCitizensNPCEvent implements MCCitizensNPCSpawnEvent {
+
+		NPCSpawnEvent npcse;
+
+		public BukkitMCCitizensNPCSpawnEvent(NPCSpawnEvent event) {
+			super(event);
+			this.npcse = event;
+		}
+
+		@Override
+		public Object _GetObject() {
+			return npcse;
+		}
+	
+		public static BukkitMCCitizensNPCSpawnEvent _instantiate(MCCitizensNPC npc, MCLocation location) {
+			return new BukkitMCCitizensNPCSpawnEvent(new NPCSpawnEvent(((BukkitMCCitizensNPC) npc).getConcrete(), ((BukkitMCLocation) location).asLocation()));
+		}
+
+		public MCLocation getLocation() {
+			return new BukkitMCLocation(npcse.getLocation());
 		}
 	}
 }

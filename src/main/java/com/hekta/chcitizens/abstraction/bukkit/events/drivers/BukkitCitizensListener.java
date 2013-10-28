@@ -5,6 +5,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 
 import net.citizensnpcs.api.event.NPCDespawnEvent;
+import net.citizensnpcs.api.event.NPCSpawnEvent;
 
 import com.laytonsmith.annotations.shutdown;
 import com.laytonsmith.annotations.startup;
@@ -37,6 +38,7 @@ public class BukkitCitizensListener implements Listener {
 	public static void unregister() {
 		if (CHCitizensExtension.citizensPlugin != null) {
 			NPCDespawnEvent.getHandlerList().unregister(cl);
+			NPCSpawnEvent.getHandlerList().unregister(cl);
 		}
 	}
 
@@ -45,5 +47,12 @@ public class BukkitCitizensListener implements Listener {
 		BukkitCitizensEvents.BukkitMCCitizensNPCDespawnEvent npcde = new BukkitCitizensEvents.BukkitMCCitizensNPCDespawnEvent(event);
 		EventUtils.TriggerExternal(npcde);
 		EventUtils.TriggerListener(Driver.EXTENSION, "ctz_npc_despawn", npcde);
+	}
+
+	@EventHandler(priority=EventPriority.LOWEST)
+	public void onNPCSpawn(NPCSpawnEvent event) {
+		BukkitCitizensEvents.BukkitMCCitizensNPCSpawnEvent npcse = new BukkitCitizensEvents.BukkitMCCitizensNPCSpawnEvent(event);
+		EventUtils.TriggerExternal(npcse);
+		EventUtils.TriggerListener(Driver.EXTENSION, "ctz_npc_spawn", npcse);
 	}
 }
