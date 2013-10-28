@@ -208,7 +208,7 @@ public class CitizensAI {
 
 		@Override
 		public Integer[] numArgs() {
-			return new Integer[]{0};
+			return new Integer[]{1, 2};
 		}
 
 		public String docs() {
