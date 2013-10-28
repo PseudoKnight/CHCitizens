@@ -5,6 +5,7 @@ import com.laytonsmith.core.exceptions.ConfigRuntimeException;
 import com.laytonsmith.core.functions.Exceptions.ExceptionType;
 
 import com.hekta.chcitizens.abstraction.MCCitizensNPC;
+import com.hekta.chcitizens.abstraction.MCCitizensNPCRegistry;
 import com.hekta.chcitizens.abstraction.MCCitizensPlugin;
 
 /**
@@ -18,12 +19,21 @@ public final class CHCitizensStatic {
 		if (plugin != null) {
 			return plugin;
 		} else {
-			throw new ConfigRuntimeException("Needed plugin Citizens not found!", ExceptionType.InvalidPluginException, t);
+			throw new ConfigRuntimeException("Needed plugin Citizens not found.", ExceptionType.InvalidPluginException, t);
+		}
+	}
+
+	public static MCCitizensNPCRegistry getNPCRegistry(Target t) {
+		MCCitizensNPCRegistry registry = com.hekta.chcitizens.extension.CHCitizensExtension.npcRegistry;
+		if (registry != null) {
+			return registry;
+		} else {
+			throw new ConfigRuntimeException("Needed plugin Citizens not found.", ExceptionType.InvalidPluginException, t);
 		}
 	}
 
 	public static MCCitizensNPC getNPC(int id, Target t) {
-		MCCitizensNPC npc = getCitizensPlugin(t).getNPCRegistry().getNPCById(id);
+		MCCitizensNPC npc = getNPCRegistry(t).getNPCById(id);
 		if (npc != null) {
 			return npc;
 		} else {

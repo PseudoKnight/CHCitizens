@@ -94,7 +94,7 @@ public class CitizensEvents {
 				mapEvent.put("reason", new CString(npcde.getReason().name(), Target.UNKNOWN));
 				return mapEvent;
 			} else {
-				throw new EventException("Cannot convert to NPCDespawnEvent.");
+				throw new EventException("Cannot convert event to NPCDespawnEvent.");
 			}
 		}
 	}

@@ -9,11 +9,11 @@ import net.citizensnpcs.api.event.NPCDespawnEvent;
 import com.laytonsmith.annotations.shutdown;
 import com.laytonsmith.annotations.startup;
 import com.laytonsmith.commandhelper.CommandHelperPlugin;
+import com.laytonsmith.core.events.Driver;
 import com.laytonsmith.core.events.EventUtils;
 
 import com.hekta.chcitizens.abstraction.bukkit.events.BukkitCitizensEvents;
 import com.hekta.chcitizens.extension.CHCitizensExtension;
-import com.laytonsmith.core.events.Driver;
 
 /**
  *

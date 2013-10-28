@@ -29,7 +29,7 @@ import com.hekta.chcitizens.core.CHCitizensStatic;
  *
  * @author Hekta
  */
-public class CitizensGeneric {
+public class CitizensManagement {
 
 	public static String docs() {
 		return "This class allows to manage the NPCs of the Citizens plugin.";
@@ -90,7 +90,7 @@ public class CitizensGeneric {
 
 		public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
 			CArray array = new CArray(t);
-			for (MCCitizensNPC npc : CHCitizensStatic.getCitizensPlugin(t).getNPCRegistry().getNPCs()) {
+			for (MCCitizensNPC npc : CHCitizensStatic.getNPCRegistry(t).getNPCs()) {
 				array.push(new CInt(npc.getId(), t));
 			}
 			return array;
@@ -120,7 +120,7 @@ public class CitizensGeneric {
 		public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
 			MCCitizensNPC npc;
 			if (args.length == 1) {
-				npc = CHCitizensStatic.getCitizensPlugin(t).getNPCRegistry().createNPC(MCEntityType.PLAYER, args[0].val());
+				npc = CHCitizensStatic.getNPCRegistry(t).createNPC(MCEntityType.PLAYER, args[0].val());
 			} else if (args.length == 2) {
 				MCEntityType type;
 				try {
@@ -129,13 +129,13 @@ public class CitizensGeneric {
 					throw new ConfigRuntimeException("Bad entity type :" + args[0].val() + ".", ExceptionType.FormatException, t);
 				}
 				try {
-					npc = CHCitizensStatic.getCitizensPlugin(t).getNPCRegistry().createNPC(type, args[1].val());
+					npc = CHCitizensStatic.getNPCRegistry(t).createNPC(type, args[1].val());
 				} catch (IllegalArgumentException exception) {
 					throw new ConfigRuntimeException("The given entity type (" + args[0].val() + ") is not a living entity type.", ExceptionType.BadEntityTypeException, t);
 				}
 			} else {
 				int id = Static.getInt32(args[1], t);
-				if (CHCitizensStatic.getCitizensPlugin(t).getNPCRegistry().getNPCById(id) == null) {
+				if (CHCitizensStatic.getNPCRegistry(t).getNPCById(id) == null) {
 					throw new ConfigRuntimeException("A NPC with this id (" + id + ") already exists.", ExceptionType.RangeException, t);
 				}
 				MCEntityType type;
@@ -145,7 +145,7 @@ public class CitizensGeneric {
 					throw new ConfigRuntimeException("Bad entity type :" + args[0].val() + ".", ExceptionType.FormatException, t);
 				}
 				try {
-					npc = CHCitizensStatic.getCitizensPlugin(t).getNPCRegistry().createNPC(type, id, args[2].val());
+					npc = CHCitizensStatic.getNPCRegistry(t).createNPC(type, id, args[2].val());
 				} catch (IllegalArgumentException exception) {
 					throw new ConfigRuntimeException("The given entity type (" + args[0].val() + ") is not a living entity type.", ExceptionType.BadEntityTypeException, t);
 				}
@@ -187,7 +187,7 @@ public class CitizensGeneric {
 		}
 
 		public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
-			return new CBoolean(CHCitizensStatic.getCitizensPlugin(t).getNPCRegistry().isNPC(Static.getLivingEntity(Static.getInt32(args[0], t), t)), t);
+			return new CBoolean(CHCitizensStatic.getNPCRegistry(t).isNPC(Static.getLivingEntity(Static.getInt32(args[0], t), t)), t);
 		}
 	}
 
@@ -203,7 +203,7 @@ public class CitizensGeneric {
 		}
 
 		public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
-			MCCitizensNPC npc = CHCitizensStatic.getCitizensPlugin(t).getNPCRegistry().getNPC(Static.getLivingEntity(Static.getInt32(args[0], t), t));
+			MCCitizensNPC npc = CHCitizensStatic.getNPCRegistry(t).getNPC(Static.getLivingEntity(Static.getInt32(args[0], t), t));
 			if (npc != null) {
 				return new CInt(npc.getId(), t);
                         } else {
