@@ -2,7 +2,7 @@ CHCitizens
 ========
 
 
-- CHDynmap is an extension for CommandHelper that allows to create, manage and interact with the NPC of Citizens plugin.
+- CHCitizens is an extension for CommandHelper that allows to create, manage and interact with the NPC of Citizens plugin.
 
 - To install the extension, put the [jar file](http://ci.nixium.com/job/CHCitizens/) in the extensions folder of the CommandHelper folder
  

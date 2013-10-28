@@ -4,5 +4,5 @@
 - [CitizensEvents](https://github.com/Hekta/CHCitizens/blob/master/documentation/CitizensEvents.md)
 
 ##Functions
-- [CitizensEvents](https://github.com/Hekta/CHCitizens/blob/master/documentation/CitizensAI.md)
-- [CitizensEvents](https://github.com/Hekta/CHCitizens/blob/master/documentation/CitizensManagement.md)
+- [CitizensAI](https://github.com/Hekta/CHCitizens/blob/master/documentation/CitizensAI.md)
+- [CitizensManagement](https://github.com/Hekta/CHCitizens/blob/master/documentation/CitizensManagement.md)
