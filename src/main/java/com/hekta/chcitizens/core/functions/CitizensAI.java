@@ -5,11 +5,12 @@ import java.util.Set;
 
 import com.laytonsmith.annotations.api;
 import com.laytonsmith.abstraction.MCLocation;
-import com.laytonsmith.core.CHVersion;
+import com.laytonsmith.abstraction.MCPlayer;
 import com.laytonsmith.core.Static;
 import com.laytonsmith.core.ObjectGenerator;
 import com.laytonsmith.core.constructs.CArray;
 import com.laytonsmith.core.constructs.CBoolean;
+import com.laytonsmith.core.constructs.CDouble;
 import com.laytonsmith.core.constructs.CInt;
 import com.laytonsmith.core.constructs.CNull;
 import com.laytonsmith.core.constructs.Construct;
@@ -18,7 +19,6 @@ import com.laytonsmith.core.constructs.CVoid;
 import com.laytonsmith.core.constructs.Target;
 import com.laytonsmith.core.environments.Environment;
 import com.laytonsmith.core.exceptions.ConfigRuntimeException;
-import com.laytonsmith.core.functions.AbstractFunction;
 import com.laytonsmith.core.functions.Exceptions.ExceptionType;
 import com.laytonsmith.PureUtilities.Common.StringUtils;
 
@@ -29,8 +29,9 @@ import com.hekta.chcitizens.abstraction.MCCitizensSpeechFactory;
 import com.hekta.chcitizens.abstraction.MCCitizensTalkable;
 import com.hekta.chcitizens.abstraction.enums.MCCitizensTargetType;
 import com.hekta.chcitizens.core.CHCitizensStatic;
-import com.laytonsmith.abstraction.MCPlayer;
-import com.laytonsmith.core.constructs.CDouble;
+import com.hekta.chcitizens.core.functions.CitizensFunctions.CitizensNPCGetterFunction;
+import com.hekta.chcitizens.core.functions.CitizensFunctions.CitizensNPCFunction;
+import com.hekta.chcitizens.core.functions.CitizensFunctions.CitizensNPCSetterFunction;
 
 /**
  *
@@ -40,40 +41,6 @@ public class CitizensAI {
 
 	public static String docs() {
 		return "This class allows to interact with the AI of the NPCs.";
-	}
-
-	public static abstract class CitizensNPCFunction extends AbstractFunction {
-		public boolean isRestricted() {
-			return true;
-		}
-
-		public Boolean runAsync() {
-			return false;
-		}
-
-		public CHVersion since() {
-			return CHVersion.V3_3_1;
-		}
-	}
-
-	public static abstract class CitizensNPCGetterFunction extends CitizensNPCFunction {
-		public ExceptionType[] thrown() {
-			return new ExceptionType[]{ExceptionType.InvalidPluginException, ExceptionType.CastException, ExceptionType.NotFoundException};
-		}
-
-		public Integer[] numArgs() {
-			return new Integer[]{1};
-		}
-	}
-
-	public static abstract class CitizensNPCSetterFunction extends CitizensNPCFunction {
-		public ExceptionType[] thrown() {
-			return new ExceptionType[]{ExceptionType.InvalidPluginException, ExceptionType.CastException, ExceptionType.NotFoundException};
-		}
-
-		public Integer[] numArgs() {
-			return new Integer[]{2};
-		}
 	}
 
 	@api

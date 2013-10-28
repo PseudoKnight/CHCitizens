@@ -4,7 +4,6 @@ import com.laytonsmith.annotations.api;
 import com.laytonsmith.abstraction.MCLivingEntity;
 import com.laytonsmith.abstraction.MCLocation;
 import com.laytonsmith.abstraction.enums.MCEntityType;
-import com.laytonsmith.core.CHVersion;
 import com.laytonsmith.core.Static;
 import com.laytonsmith.core.ObjectGenerator;
 import com.laytonsmith.core.constructs.CArray;
@@ -17,13 +16,15 @@ import com.laytonsmith.core.constructs.CVoid;
 import com.laytonsmith.core.constructs.Target;
 import com.laytonsmith.core.environments.Environment;
 import com.laytonsmith.core.exceptions.ConfigRuntimeException;
-import com.laytonsmith.core.functions.AbstractFunction;
 import com.laytonsmith.core.functions.Exceptions.ExceptionType;
 import com.laytonsmith.PureUtilities.Common.StringUtils;
 
 import com.hekta.chcitizens.abstraction.MCCitizensNPC;
 import com.hekta.chcitizens.abstraction.enums.MCCitizensDespawnReason;
 import com.hekta.chcitizens.core.CHCitizensStatic;
+import com.hekta.chcitizens.core.functions.CitizensFunctions.CitizensNPCGetterFunction;
+import com.hekta.chcitizens.core.functions.CitizensFunctions.CitizensNPCFunction;
+import com.hekta.chcitizens.core.functions.CitizensFunctions.CitizensNPCSetterFunction;
 
 /**
  *
@@ -33,40 +34,6 @@ public class CitizensManagement {
 
 	public static String docs() {
 		return "This class allows to manage the NPCs of the Citizens plugin.";
-	}
-
-	public static abstract class CitizensNPCFunction extends AbstractFunction {
-		public boolean isRestricted() {
-			return true;
-		}
-
-		public Boolean runAsync() {
-			return false;
-		}
-
-		public CHVersion since() {
-			return CHVersion.V3_3_1;
-		}
-	}
-
-	public static abstract class CitizensNPCGetterFunction extends CitizensNPCFunction {
-		public ExceptionType[] thrown() {
-			return new ExceptionType[]{ExceptionType.InvalidPluginException, ExceptionType.CastException, ExceptionType.NotFoundException};
-		}
-
-		public Integer[] numArgs() {
-			return new Integer[]{1};
-		}
-	}
-
-	public static abstract class CitizensNPCSetterFunction extends CitizensNPCFunction {
-		public ExceptionType[] thrown() {
-			return new ExceptionType[]{ExceptionType.InvalidPluginException, ExceptionType.CastException, ExceptionType.NotFoundException};
-		}
-
-		public Integer[] numArgs() {
-			return new Integer[]{2};
-		}
 	}
 
 	@api
