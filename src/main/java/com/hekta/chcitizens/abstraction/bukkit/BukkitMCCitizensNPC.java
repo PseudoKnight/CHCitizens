@@ -10,6 +10,7 @@ import net.citizensnpcs.api.trait.Trait;
 
 import com.laytonsmith.abstraction.MCLivingEntity;
 import com.laytonsmith.abstraction.MCLocation;
+import com.laytonsmith.abstraction.StaticLayer;
 import com.laytonsmith.abstraction.bukkit.BukkitMCLivingEntity;
 import com.laytonsmith.abstraction.bukkit.BukkitMCLocation;
 import com.laytonsmith.abstraction.enums.MCEntityType;
@@ -82,7 +83,7 @@ public class BukkitMCCitizensNPC implements MCCitizensNPC {
 
 	public MCLivingEntity getEntity() {
 		if (n.isSpawned()) {
-			return new BukkitMCLivingEntity(n.getBukkitEntity());
+			return (MCLivingEntity) StaticLayer.GetCorrectEntity(new BukkitMCLivingEntity(n.getBukkitEntity()));
 		} else {
 			return null;
 		}

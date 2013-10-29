@@ -18,13 +18,14 @@ public class CHCitizensExtension {
 
 	@startup
 	public static void onEnable() {
-		citizensPlugin = CHCitizensStaticLayer.getCitizensPlugin();
-		if (citizensPlugin != null) {
+		try {
+			citizensPlugin = CHCitizensStaticLayer.getCitizensPlugin();
 			npcRegistry = citizensPlugin.getNPCRegistry();
 			System.out.println("[CommandHelper] CHCitizens 1.0 loaded (for Citizens 2.0.10).");
-		} else {
+		} catch (Exception exception) {
+			citizensPlugin = null;
 			npcRegistry = null;
-			System.out.println("[CommandHelper] Plugin Citizens is missing, none of the CHCitizens functions will work.");
+			System.err.println("[CommandHelper] Plugin Citizens seems to be missing, none of the CHCitizens functions will work.");
 		}
 	}
 
