@@ -205,7 +205,7 @@ public class CitizensAI {
 	}
 
 	@api
-	public static class ctz_set_npc_avoid_water extends CitizensNPCGetterFunction {
+	public static class ctz_set_npc_avoid_water extends CitizensNPCSetterFunction {
 
 		public String getName() {
 			return "ctz_set_npc_avoid_water";
@@ -257,7 +257,7 @@ public class CitizensAI {
 	}
 
 	@api
-	public static class ctz_set_npc_base_speed extends CitizensNPCGetterFunction {
+	public static class ctz_set_npc_base_speed extends CitizensNPCSetterFunction {
 
 		public String getName() {
 			return "ctz_set_npc_base_speed";
@@ -293,7 +293,7 @@ public class CitizensAI {
 	}
 
 	@api
-	public static class ctz_set_npc_speed_modifier extends CitizensNPCGetterFunction {
+	public static class ctz_set_npc_speed_modifier extends CitizensNPCSetterFunction {
 
 		public String getName() {
 			return "ctz_set_npc_speed_modifier";
@@ -329,7 +329,7 @@ public class CitizensAI {
 	}
 
 	@api
-	public static class ctz_set_npc_distance_margin extends CitizensNPCGetterFunction {
+	public static class ctz_set_npc_distance_margin extends CitizensNPCSetterFunction {
 
 		public String getName() {
 			return "ctz_set_npc_distance_margin";
@@ -365,7 +365,7 @@ public class CitizensAI {
 	}
 
 	@api
-	public static class ctz_set_npc_range extends CitizensNPCGetterFunction {
+	public static class ctz_set_npc_range extends CitizensNPCSetterFunction {
 
 		public String getName() {
 			return "ctz_set_npc_range";
@@ -401,7 +401,7 @@ public class CitizensAI {
 	}
 
 	@api
-	public static class ctz_set_npc_stationary_ticks extends CitizensNPCGetterFunction {
+	public static class ctz_set_npc_stationary_ticks extends CitizensNPCSetterFunction {
 
 		public String getName() {
 			return "ctz_set_npc_stationary_ticks";

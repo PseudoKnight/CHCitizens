@@ -43,4 +43,8 @@ public final class CHCitizensStaticLayer {
 	public static MCCitizensPlugin getCitizensPlugin() {
 		return convertor.getCitizensPlugin();
 	}
+
+	public static MCCitizensTrait getCorrectTrait(MCCitizensTrait trait) {
+		return convertor.getCorrectTrait(trait);
+	}
 }

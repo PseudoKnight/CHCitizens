@@ -1,5 +1,6 @@
 package com.hekta.chcitizens.abstraction.bukkit;
 
+import com.hekta.chcitizens.abstraction.CHCitizensStaticLayer;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -43,13 +44,27 @@ public class BukkitMCCitizensNPC implements MCCitizensNPC {
 	public Set<MCCitizensTrait> getTraits() {
 		Set<MCCitizensTrait> traits = new HashSet<MCCitizensTrait>();
 		for (Trait trait : n.getTraits()) {
-			traits.add(new BukkitMCCitizensTrait(trait));
+			traits.add(CHCitizensStaticLayer.getCorrectTrait(new BukkitMCCitizensTrait(trait)));
 		}
 		return traits;
 	}
 
-	public void addTrait(MCCitizensTrait trait) {
-		n.addTrait(((BukkitMCCitizensTrait) trait).getConcrete());
+	public MCCitizensTrait getTrait(String name) {
+		for (Trait trait : n.getTraits()) {
+			if (trait.getName().equals(name)) {
+				return CHCitizensStaticLayer.getCorrectTrait(new BukkitMCCitizensTrait(trait));
+			}
+		}
+		return null;
+	}
+
+	public boolean hasTrait(String name) {
+		for (Trait trait : n.getTraits()) {
+			if (trait.getName().equals(name)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public boolean spawn(MCLocation location) {

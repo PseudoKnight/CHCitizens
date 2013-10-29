@@ -15,9 +15,8 @@ import com.hekta.chcitizens.abstraction.enums.MCCitizensDespawnReason;
 public interface MCCitizensNPC {
 
 	public Set<MCCitizensTrait> getTraits();
-	public void addTrait(MCCitizensTrait trait);
-
-//	public MCCitizensMetadataStore getData();
+	public MCCitizensTrait getTrait(String name);
+	public boolean hasTrait(String name);
 
 	public boolean spawn(MCLocation location);
 	public boolean despawn(MCCitizensDespawnReason reason);

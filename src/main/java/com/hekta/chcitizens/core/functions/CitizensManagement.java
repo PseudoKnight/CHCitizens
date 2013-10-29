@@ -25,6 +25,8 @@ import com.hekta.chcitizens.core.CHCitizensStatic;
 import com.hekta.chcitizens.core.functions.CitizensFunctions.CitizensNPCGetterFunction;
 import com.hekta.chcitizens.core.functions.CitizensFunctions.CitizensNPCFunction;
 import com.hekta.chcitizens.core.functions.CitizensFunctions.CitizensNPCSetterFunction;
+import com.laytonsmith.abstraction.MCPlayer;
+import com.laytonsmith.core.environments.CommandHelperEnvironment;
 
 /**
  *
@@ -72,21 +74,29 @@ public class CitizensManagement {
 		}
 
 		public Integer[] numArgs() {
-			return new Integer[]{1, 2, 3};
+			return new Integer[]{0, 1, 2, 3};
 		}
 
 		public ExceptionType[] thrown() {
-			return new ExceptionType[]{ExceptionType.InvalidPluginException, ExceptionType.CastException, ExceptionType.FormatException, ExceptionType.BadEntityTypeException, ExceptionType.RangeException};
+			return new ExceptionType[]{ExceptionType.InvalidPluginException, ExceptionType.CastException, ExceptionType.FormatException, ExceptionType.BadEntityTypeException, ExceptionType.RangeException, ExceptionType.PlayerOfflineException};
 		}
 
 		public String docs() {
-			return "int {[entityType], name | entityType, [id], name} Creates a NPC and return its id, or null if the creation failed."
-						+ " entityType must be a living entity type, default to PLAYER. id takes a integer.";
+			return "int {[[entityType], name] | entityType, [id], name} Creates a NPC and return its id, or null if the creation failed."
+						+ " entityType must be a living entity type, default to PLAYER. id takes a integer."
+						+ " If name is not given, the name of the NPC will be the name of the player which run the function.";
 		}
 
 		public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
 			MCCitizensNPC npc;
-			if (args.length == 1) {
+			if (args.length == 0) {
+				MCPlayer psender = environment.getEnv(CommandHelperEnvironment.class).GetPlayer();
+				if (psender != null) {
+					npc = CHCitizensStatic.getNPCRegistry(t).createNPC(MCEntityType.PLAYER, psender.getName());
+				} else {
+					throw new ConfigRuntimeException("The name is not given, the sender must be a player.", ExceptionType.PlayerOfflineException, t);
+				}
+			} else if (args.length == 1) {
 				npc = CHCitizensStatic.getNPCRegistry(t).createNPC(MCEntityType.PLAYER, args[0].val());
 			} else if (args.length == 2) {
 				MCEntityType type;
