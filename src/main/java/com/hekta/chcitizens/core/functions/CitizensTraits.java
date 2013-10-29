@@ -38,6 +38,7 @@ public class CitizensTraits {
 		public Integer[] numArgs() {
 			return new Integer[]{1, 2};
 		}
+
 		public ExceptionType[] thrown() {
 			return new ExceptionType[]{ExceptionType.InvalidPluginException, ExceptionType.NotFoundException, ExceptionType.IndexOverflowException};
 		}
@@ -89,6 +90,7 @@ public class CitizensTraits {
 		public Integer[] numArgs() {
 			return new Integer[]{3};
 		}
+
 		public ExceptionType[] thrown() {
 			return new ExceptionType[]{ExceptionType.InvalidPluginException, ExceptionType.NotFoundException, ExceptionType.IndexOverflowException, ExceptionType.CastException};
 		}
@@ -130,6 +132,7 @@ public class CitizensTraits {
 		public Integer[] numArgs() {
 			return new Integer[]{2};
 		}
+
 		public ExceptionType[] thrown() {
 			return new ExceptionType[]{ExceptionType.InvalidPluginException, ExceptionType.NotFoundException};
 		}
