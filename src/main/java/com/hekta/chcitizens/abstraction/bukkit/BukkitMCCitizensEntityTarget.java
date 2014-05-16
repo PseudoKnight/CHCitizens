@@ -2,9 +2,8 @@ package com.hekta.chcitizens.abstraction.bukkit;
 
 import net.citizensnpcs.api.ai.EntityTarget;
 
-import com.laytonsmith.abstraction.MCLivingEntity;
-import com.laytonsmith.abstraction.StaticLayer;
-import com.laytonsmith.abstraction.bukkit.BukkitMCEntity;
+import com.laytonsmith.abstraction.MCEntity;
+import com.laytonsmith.abstraction.bukkit.BukkitConvertor;
 
 import com.hekta.chcitizens.abstraction.MCCitizensEntityTarget;
 
@@ -14,21 +13,24 @@ import com.hekta.chcitizens.abstraction.MCCitizensEntityTarget;
  */
 public class BukkitMCCitizensEntityTarget implements MCCitizensEntityTarget {
 
-	EntityTarget et;
+	private final EntityTarget _target;
 
 	public BukkitMCCitizensEntityTarget(EntityTarget target) {
-		this.et = target;
+		_target = target;
 	}
 
-	public EntityTarget getConcrete() {
-		return et;
+	@Override
+	public EntityTarget getHandle() {
+		return _target;
 	}
 
-	public MCLivingEntity getTarget() {
-		return (MCLivingEntity) StaticLayer.GetCorrectEntity(new BukkitMCEntity(et.getTarget()));
+	@Override
+	public MCEntity getTarget() {
+		return BukkitConvertor.BukkitGetCorrectEntity(_target.getTarget());
 	}
 
+	@Override
 	public boolean isAggressive() {
-		return et.isAggressive();
+		return _target.isAggressive();
 	}
 }

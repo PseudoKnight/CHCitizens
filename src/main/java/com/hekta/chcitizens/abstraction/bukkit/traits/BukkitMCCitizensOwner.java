@@ -2,6 +2,9 @@ package com.hekta.chcitizens.abstraction.bukkit.traits;
 
 import net.citizensnpcs.api.trait.trait.Owner;
 
+import com.laytonsmith.abstraction.MCOfflinePlayer;
+import com.laytonsmith.abstraction.StaticLayer;
+
 import com.hekta.chcitizens.abstraction.bukkit.BukkitMCCitizensTrait;
 import com.hekta.chcitizens.abstraction.traits.MCCitizensOwner;
 
@@ -11,23 +14,25 @@ import com.hekta.chcitizens.abstraction.traits.MCCitizensOwner;
  */
 public class BukkitMCCitizensOwner extends BukkitMCCitizensTrait implements MCCitizensOwner {
 
-	Owner o;
+	private final Owner m_owner;
 
 	public BukkitMCCitizensOwner(Owner owner) {
 		super(owner);
-		this.o = owner;
+		m_owner = owner;
 	}
 
 	@Override
-	public Owner getConcrete() {
-		return o;
+	public Owner getHandle() {
+		return m_owner;
 	}
 
-	public String getOwner() {
-		return o.getOwner();
+	@Override
+	public MCOfflinePlayer getOwner() {
+		return StaticLayer.GetServer().getOfflinePlayer(m_owner.getOwner());
 	}
 
-	public void setOwner(String owner) {
-		o.setOwner(owner);
+	@Override
+	public void setOwner(MCOfflinePlayer owner) {
+		m_owner.setOwner(owner.getName());
 	}
 }

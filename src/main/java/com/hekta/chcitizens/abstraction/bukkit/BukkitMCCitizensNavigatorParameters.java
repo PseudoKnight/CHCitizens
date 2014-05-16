@@ -1,6 +1,5 @@
 package com.hekta.chcitizens.abstraction.bukkit;
 
-import net.citizensnpcs.api.ai.AttackStrategy;
 import net.citizensnpcs.api.ai.NavigatorParameters;
 
 import com.hekta.chcitizens.abstraction.MCCitizensNavigatorParameters;
@@ -11,65 +10,79 @@ import com.hekta.chcitizens.abstraction.MCCitizensNavigatorParameters;
  */
 public class BukkitMCCitizensNavigatorParameters implements MCCitizensNavigatorParameters {
 
-	NavigatorParameters np;
+	private final NavigatorParameters _parameters;
 
 	public BukkitMCCitizensNavigatorParameters(NavigatorParameters parameters) {
-		this.np = parameters;
+		_parameters = parameters;
 	}
 
-	public NavigatorParameters getConcrete() {
-		return np;
+	@Override
+	public NavigatorParameters getHandle() {
+		return _parameters;
 	}
 
+	@Override
 	public boolean getAvoidWater() {
-		return np.avoidWater();
+		return _parameters.avoidWater();
 	}
 
+	@Override
 	public void setAvoidWater(boolean avoidWater) {
-		np.avoidWater(avoidWater);
+		_parameters.avoidWater(avoidWater);
 	}
 
+	@Override
 	public float getSpeed() {
-		return np.speed();
+		return _parameters.speed();
 	}
 
+	@Override
 	public float getBaseSpeed() {
-		return np.baseSpeed();
+		return _parameters.baseSpeed();
 	}
 
+	@Override
 	public void setBaseSpeed(float speed) {
-		np.baseSpeed(speed);
+		_parameters.baseSpeed(speed);
 	}
 
+	@Override
 	public float getSpeedModifier() {
-		return np.speedModifier();
+		return _parameters.speedModifier();
 	}
 
+	@Override
 	public void setSpeedModifier(float modifier) {
-		np.speedModifier(modifier);
+		_parameters.speedModifier(modifier);
 	}
 
+	@Override
 	public double getDistanceMargin() {
-		return np.distanceMargin();
+		return _parameters.distanceMargin();
 	}
 
+	@Override
 	public void setDistanceMargin(double distanceMargin) {
-		np.distanceMargin(distanceMargin);
+		_parameters.distanceMargin(distanceMargin);
 	}
 
+	@Override
 	public float getRange() {
-		return np.range();
+		return _parameters.range();
 	}
 
+	@Override
 	public void setRange(float range) {
-		np.range(range);
+		_parameters.range(range);
 	}
 
+	@Override
 	public int getStationaryTicks() {
-		return np.stationaryTicks();
+		return _parameters.stationaryTicks();
 	}
 
+	@Override
 	public void setStationaryTicks(int ticks) {
-		np.stationaryTicks(ticks);
+		_parameters.stationaryTicks(ticks);
 	}
 }

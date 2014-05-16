@@ -10,33 +10,39 @@ import com.hekta.chcitizens.abstraction.MCCitizensGoalController;
  */
 public class BukkitMCCitizensGoalController implements MCCitizensGoalController {
 
-	GoalController gc;
+	private final GoalController _controller;
 
 	public BukkitMCCitizensGoalController(GoalController goalController) {
-		this.gc = goalController;
+		_controller = goalController;
 	}
 
-	public GoalController getConcrete() {
-		return gc;
+	@Override
+	public GoalController getHandle() {
+		return _controller;
 	}
 
+	@Override
 	public void cancelCurrentExecution() {
-		gc.cancelCurrentExecution();
+		_controller.cancelCurrentExecution();
 	}
 
+	@Override
 	public void clear() {
-		gc.clear();
+		_controller.clear();
 	}
 
+	@Override
 	public boolean isExecutingGoal() {
-		return gc.isExecutingGoal();
+		return _controller.isExecutingGoal();
 	}
 
+	@Override
 	public boolean isPaused() {
-		return gc.isPaused();
+		return _controller.isPaused();
 	}
 
+	@Override
 	public void setPaused(boolean isPaused) {
-		gc.setPaused(isPaused);
+		_controller.setPaused(isPaused);
 	}
 }

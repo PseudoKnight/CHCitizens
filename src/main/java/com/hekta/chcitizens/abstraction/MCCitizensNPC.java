@@ -2,7 +2,8 @@ package com.hekta.chcitizens.abstraction;
 
 import java.util.Set;
 
-import com.laytonsmith.abstraction.MCLivingEntity;
+import com.laytonsmith.abstraction.AbstractionObject;
+import com.laytonsmith.abstraction.MCEntity;
 import com.laytonsmith.abstraction.MCLocation;
 import com.laytonsmith.abstraction.enums.MCEntityType;
 
@@ -12,7 +13,7 @@ import com.hekta.chcitizens.abstraction.enums.MCCitizensDespawnReason;
  *
  * @author Hekta
  */
-public interface MCCitizensNPC {
+public interface MCCitizensNPC extends AbstractionObject {
 
 	public Set<MCCitizensTrait> getTraits();
 	public MCCitizensTrait getTrait(String name);
@@ -27,7 +28,7 @@ public interface MCCitizensNPC {
 	public void faceLocation(MCLocation location);
 	public MCLocation getStoredLocation();
 
-	public MCLivingEntity getEntity();
+	public MCEntity getEntity();
 	public void setEntityType(MCEntityType type);
 
 	public MCCitizensGoalController getDefaultGoalController();

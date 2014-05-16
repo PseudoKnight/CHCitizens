@@ -1,17 +1,18 @@
 package com.hekta.chcitizens.abstraction;
 
-import java.util.Set;
+import com.laytonsmith.abstraction.AbstractionObject;
 
 /**
  *
  * @author Hekta
  */
-public interface MCCitizensSpeechContext {
+public interface MCCitizensSpeechContext extends AbstractionObject {
 
 	public boolean hasRecipients();
-	public Set<MCCitizensTalkable> getRecipients();
+	public MCCitizensTalkable[] getRecipients();
 	public void addRecipient(MCCitizensTalkable talkable);
-	public void addRecipients(Set<MCCitizensTalkable> talkables);
+	public void addRecipients(MCCitizensTalkable[] talkables);
+	public void addRecipients(Iterable<MCCitizensTalkable> talkables);
 
 	public int size();
 

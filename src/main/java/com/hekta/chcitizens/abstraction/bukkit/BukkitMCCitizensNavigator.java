@@ -1,14 +1,13 @@
 package com.hekta.chcitizens.abstraction.bukkit;
 
-import org.bukkit.entity.Entity;
 import org.bukkit.Location;
 
 import net.citizensnpcs.api.ai.EntityTarget;
 import net.citizensnpcs.api.ai.Navigator;
 
-import com.laytonsmith.abstraction.MCLivingEntity;
+import com.laytonsmith.abstraction.MCEntity;
 import com.laytonsmith.abstraction.MCLocation;
-import com.laytonsmith.abstraction.bukkit.BukkitMCLivingEntity;
+import com.laytonsmith.abstraction.bukkit.BukkitMCEntity;
 import com.laytonsmith.abstraction.bukkit.BukkitMCLocation;
 
 import com.hekta.chcitizens.abstraction.MCCitizensEntityTarget;
@@ -24,26 +23,30 @@ import com.hekta.chcitizens.abstraction.enums.bukkit.BukkitMCCitizensTargetType;
  */
 public class BukkitMCCitizensNavigator implements MCCitizensNavigator {
 
-	Navigator n;
+	private final Navigator _navigator;
 
 	public BukkitMCCitizensNavigator(Navigator navigator) {
-		this.n = navigator;
+		_navigator = navigator;
 	}
 
-	public Navigator getConcrete() {
-		return n;
+	@Override
+	public Navigator getHandle() {
+		return _navigator;
 	}
 
+	@Override
 	public MCCitizensNavigatorParameters getDefaultParameters() {
-		return new BukkitMCCitizensNavigatorParameters(n.getDefaultParameters());
+		return new BukkitMCCitizensNavigatorParameters(_navigator.getDefaultParameters());
 	}
 
+	@Override
 	public MCCitizensNavigatorParameters getLocalParameters() {
-		return new BukkitMCCitizensNavigatorParameters(n.getLocalParameters());
+		return new BukkitMCCitizensNavigatorParameters(_navigator.getLocalParameters());
 	}
 
+	@Override
 	public MCCitizensEntityTarget getEntityTarget() {
-		EntityTarget target = n.getEntityTarget();
+		EntityTarget target = _navigator.getEntityTarget();
 		if (target != null) {
 			return new BukkitMCCitizensEntityTarget(target);
 		} else {
@@ -51,8 +54,9 @@ public class BukkitMCCitizensNavigator implements MCCitizensNavigator {
 		}
 	}
 
+	@Override
 	public MCLocation getTargetAsLocation() {
-		Location location = n.getTargetAsLocation();
+		Location location = _navigator.getTargetAsLocation();
 		if (location != null) {
 			return new BukkitMCLocation(location);
 		} else {
@@ -60,27 +64,33 @@ public class BukkitMCCitizensNavigator implements MCCitizensNavigator {
 		}
 	}
 
+	@Override
 	public MCCitizensTargetType getTargetType() {
-		return BukkitMCCitizensTargetType.getConvertor().getAbstractedEnum(n.getTargetType());
+		return BukkitMCCitizensTargetType.getConvertor().getAbstractedEnum(_navigator.getTargetType());
 	}
 
-	public void setTarget(MCLivingEntity target, boolean isAggressive) {
-		n.setTarget(((BukkitMCLivingEntity) target).asLivingEntity(), isAggressive);
+	@Override
+	public void setTarget(MCEntity target, boolean isAggressive) {
+		_navigator.setTarget(((BukkitMCEntity) target).getHandle(), isAggressive);
 	}
 
+	@Override
 	public void setTarget(MCLocation target) {
-		n.setTarget(((BukkitMCLocation) target).asLocation());
+		_navigator.setTarget(((BukkitMCLocation) target).asLocation());
 	}
 
+	@Override
 	public boolean isNavigating() {
-		return n.isNavigating();
+		return _navigator.isNavigating();
 	}
 
+	@Override
 	public void cancelNavigation() {
-		n.cancelNavigation();
+		_navigator.cancelNavigation();
 	}
 
+	@Override
 	public MCCitizensNPC getNPC() {
-		return new BukkitMCCitizensNPC(n.getNPC());
+		return new BukkitMCCitizensNPC(_navigator.getNPC());
 	}
 }

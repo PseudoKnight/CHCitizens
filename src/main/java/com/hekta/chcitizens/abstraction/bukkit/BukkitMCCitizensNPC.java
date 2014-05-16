@@ -1,6 +1,5 @@
 package com.hekta.chcitizens.abstraction.bukkit;
 
-import com.hekta.chcitizens.abstraction.CHCitizensStaticLayer;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -9,14 +8,14 @@ import org.bukkit.Location;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.trait.Trait;
 
-import com.laytonsmith.abstraction.MCLivingEntity;
+import com.laytonsmith.abstraction.MCEntity;
 import com.laytonsmith.abstraction.MCLocation;
-import com.laytonsmith.abstraction.StaticLayer;
-import com.laytonsmith.abstraction.bukkit.BukkitMCLivingEntity;
+import com.laytonsmith.abstraction.bukkit.BukkitConvertor;
 import com.laytonsmith.abstraction.bukkit.BukkitMCLocation;
 import com.laytonsmith.abstraction.enums.MCEntityType;
 import com.laytonsmith.abstraction.enums.bukkit.BukkitMCEntityType;
 
+import com.hekta.chcitizens.abstraction.CHCitizensStaticLayer;
 import com.hekta.chcitizens.abstraction.MCCitizensGoalController;
 import com.hekta.chcitizens.abstraction.MCCitizensNavigator;
 import com.hekta.chcitizens.abstraction.MCCitizensNPC;
@@ -31,26 +30,29 @@ import com.hekta.chcitizens.abstraction.enums.bukkit.BukkitMCCitizensDespawnReas
  */
 public class BukkitMCCitizensNPC implements MCCitizensNPC {
 
-	NPC n;
+	private final NPC _npc;
 
 	public BukkitMCCitizensNPC(NPC npc) {
-		this.n = npc;
+		_npc = npc;
 	}
 
-	public NPC getConcrete() {
-		return n;
+	@Override
+	public NPC getHandle() {
+		return _npc;
 	}
 
+	@Override
 	public Set<MCCitizensTrait> getTraits() {
-		Set<MCCitizensTrait> traits = new HashSet<MCCitizensTrait>();
-		for (Trait trait : n.getTraits()) {
+		Set<MCCitizensTrait> traits = new HashSet<>();
+		for (Trait trait : _npc.getTraits()) {
 			traits.add(CHCitizensStaticLayer.getCorrectTrait(new BukkitMCCitizensTrait(trait)));
 		}
 		return traits;
 	}
 
+	@Override
 	public MCCitizensTrait getTrait(String name) {
-		for (Trait trait : n.getTraits()) {
+		for (Trait trait : _npc.getTraits()) {
 			if (trait.getName().equals(name)) {
 				return CHCitizensStaticLayer.getCorrectTrait(new BukkitMCCitizensTrait(trait));
 			}
@@ -58,8 +60,9 @@ public class BukkitMCCitizensNPC implements MCCitizensNPC {
 		return null;
 	}
 
+	@Override
 	public boolean hasTrait(String name) {
-		for (Trait trait : n.getTraits()) {
+		for (Trait trait : _npc.getTraits()) {
 			if (trait.getName().equals(name)) {
 				return true;
 			}
@@ -67,28 +70,34 @@ public class BukkitMCCitizensNPC implements MCCitizensNPC {
 		return false;
 	}
 
+	@Override
 	public boolean spawn(MCLocation location) {
-		return n.spawn(((BukkitMCLocation) location).asLocation());
+		return _npc.spawn(((BukkitMCLocation) location).asLocation());
 	}
 
+	@Override
 	public boolean despawn(MCCitizensDespawnReason reason) {
-		return n.despawn(BukkitMCCitizensDespawnReason.getConvertor().getConcreteEnum(reason));
+		return _npc.despawn(BukkitMCCitizensDespawnReason.getConvertor().getConcreteEnum(reason));
 	}
 
+	@Override
 	public boolean isSpawned() {
-		return n.isSpawned();
+		return _npc.isSpawned();
 	}
 
+	@Override
 	public void destroy() {
-		n.destroy();
+		_npc.destroy();
 	}
 
+	@Override
 	public void faceLocation(MCLocation location) {
-		n.faceLocation(((BukkitMCLocation) location).asLocation());
+		_npc.faceLocation(((BukkitMCLocation) location).asLocation());
 	}
 
+	@Override
 	public MCLocation getStoredLocation() {
-		Location location = n.getStoredLocation();
+		Location location = _npc.getStoredLocation();
 		if (location != null) {
 			return new BukkitMCLocation(location);
 		} else {
@@ -96,51 +105,62 @@ public class BukkitMCCitizensNPC implements MCCitizensNPC {
 		}
 	}
 
-	public MCLivingEntity getEntity() {
-		if (n.isSpawned()) {
-			return (MCLivingEntity) StaticLayer.GetCorrectEntity(new BukkitMCLivingEntity(n.getBukkitEntity()));
+	@Override
+	public MCEntity getEntity() {
+		if (_npc.isSpawned()) {
+			return BukkitConvertor.BukkitGetCorrectEntity(_npc.getEntity());
 		} else {
 			return null;
 		}
 	}
 
+	@Override
 	public void setEntityType(MCEntityType type) {
-		n.setBukkitEntityType(BukkitMCEntityType.getConvertor().getConcreteEnum(type));
+		_npc.setBukkitEntityType(BukkitMCEntityType.getConvertor().getConcreteEnum(type));
 	}
 
+	@Override
 	public MCCitizensGoalController getDefaultGoalController() {
-		return new BukkitMCCitizensGoalController(n.getDefaultGoalController());
+		return new BukkitMCCitizensGoalController(_npc.getDefaultGoalController());
 	}
 
+	@Override
 	public MCCitizensNavigator getNavigator() {
-		return new BukkitMCCitizensNavigator(n.getNavigator());
+		return new BukkitMCCitizensNavigator(_npc.getNavigator());
 	}
 
+	@Override
 	public MCCitizensSpeechController getDefaultSpeechController() {
-		return new BukkitMCCitizensSpeechController(n.getDefaultSpeechController());
+		return new BukkitMCCitizensSpeechController(_npc.getDefaultSpeechController());
 	}
 
+	@Override
 	public int getId() {
-		return n.getId();
+		return _npc.getId();
 	}
 
+	@Override
 	public String getName() {
-		return n.getName();
+		return _npc.getName();
 	}
 
+	@Override
 	public void setName(String name) {
-		n.setName(name);
+		_npc.setName(name);
 	}
 
+	@Override
 	public String getFullName() {
-		return n.getFullName();
+		return _npc.getFullName();
 	}
 
+	@Override
 	public boolean isProtected() {
-		return n.isProtected();
+		return _npc.isProtected();
 	}
 
+	@Override
 	public void setProtected(boolean isProtected) {
-		n.setProtected(isProtected);
+		_npc.setProtected(isProtected);
 	}
 }

@@ -1,10 +1,12 @@
 package com.hekta.chcitizens.abstraction;
 
+import com.laytonsmith.abstraction.AbstractionObject;
+
 /**
  *
  * @author Hekta
  */
-public interface MCCitizensSpeechController {
+public interface MCCitizensSpeechController extends AbstractionObject {
 
 	public void speak(MCCitizensSpeechContext message);
 	public void speak(MCCitizensSpeechContext message, String vocalChordName);

@@ -11,21 +11,24 @@ import com.hekta.chcitizens.abstraction.MCCitizensTrait;
  */
 public class BukkitMCCitizensTrait implements MCCitizensTrait {
 
-	Trait t;
+	private final Trait _trait;
 
 	public BukkitMCCitizensTrait(Trait trait) {
-		this.t = trait;
+		_trait = trait;
 	}
 
-	public Trait getConcrete() {
-		return t;
+	@Override
+	public Trait getHandle() {
+		return _trait;
 	}
 
+	@Override
 	public String getName() {
-		return t.getName();
+		return _trait.getName();
 	}
 
+	@Override
 	public MCCitizensNPC getNPC() {
-		return new BukkitMCCitizensNPC(t.getNPC());
+		return new BukkitMCCitizensNPC(_trait.getNPC());
 	}
 }

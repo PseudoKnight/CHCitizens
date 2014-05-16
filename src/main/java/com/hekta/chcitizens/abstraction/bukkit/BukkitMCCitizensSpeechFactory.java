@@ -1,18 +1,17 @@
 package com.hekta.chcitizens.abstraction.bukkit;
 
-import java.util.Set;
-
 import net.citizensnpcs.api.ai.speech.SpeechContext;
 import net.citizensnpcs.api.ai.speech.SpeechFactory;
-import net.citizensnpcs.api.ai.speech.Talkable;
 
-import com.laytonsmith.abstraction.MCLivingEntity;
+import com.laytonsmith.abstraction.MCEntity;
+import com.laytonsmith.abstraction.bukkit.BukkitMCEntity;
 import com.laytonsmith.abstraction.bukkit.BukkitMCLivingEntity;
 
 import com.hekta.chcitizens.abstraction.MCCitizensNPC;
 import com.hekta.chcitizens.abstraction.MCCitizensSpeechContext;
 import com.hekta.chcitizens.abstraction.MCCitizensSpeechFactory;
 import com.hekta.chcitizens.abstraction.MCCitizensTalkable;
+import java.util.Collection;
 
 /**
  *
@@ -20,26 +19,37 @@ import com.hekta.chcitizens.abstraction.MCCitizensTalkable;
  */
 public class BukkitMCCitizensSpeechFactory implements MCCitizensSpeechFactory {
 
-	SpeechFactory sf;
+	private final SpeechFactory _factory;
 
 	public BukkitMCCitizensSpeechFactory(SpeechFactory speechFactory) {
-		this.sf = speechFactory;
+		_factory = speechFactory;
 	}
 
-	public SpeechFactory getConcrete() {
-		return sf;
+	@Override
+	public SpeechFactory getHandle() {
+		return _factory;
 	}
 
-	public MCCitizensTalkable newTalkableEntity(MCLivingEntity entity) {
-		return new BukkitMCCitizensTalkable(sf.newTalkableEntity(((BukkitMCLivingEntity) entity).asLivingEntity()));
+	@Override
+	public MCCitizensTalkable newTalkableEntity(MCEntity entity) {
+		return new BukkitMCCitizensTalkable(_factory.newTalkableEntity(((BukkitMCEntity) entity).getHandle()));
 	}
 
+	@Override
 	public MCCitizensSpeechContext newSpeechContext(MCCitizensNPC talker, String message, MCCitizensTalkable recipient) {
-		return new BukkitMCCitizensSpeechContext(new SpeechContext(((BukkitMCCitizensNPC) talker).getConcrete(), message, ((BukkitMCLivingEntity) recipient.getEntity()).asLivingEntity()));
+		return new BukkitMCCitizensSpeechContext(new SpeechContext(((BukkitMCCitizensNPC) talker).getHandle(), message, ((BukkitMCLivingEntity) recipient.getEntity()).asLivingEntity()));
 	}
 
-	public MCCitizensSpeechContext newSpeechContext(MCCitizensNPC talker, String message, Set<MCCitizensTalkable> recipients) {
-		MCCitizensSpeechContext speechContext = new BukkitMCCitizensSpeechContext(new SpeechContext(((BukkitMCCitizensNPC) talker).getConcrete(), message));
+	@Override
+	public MCCitizensSpeechContext newSpeechContext(MCCitizensNPC talker, String message, MCCitizensTalkable[] recipients) {
+		MCCitizensSpeechContext speechContext = new BukkitMCCitizensSpeechContext(new SpeechContext(((BukkitMCCitizensNPC) talker).getHandle(), message));
+		speechContext.addRecipients(recipients);
+		return speechContext;
+	}
+
+	@Override
+	public MCCitizensSpeechContext newSpeechContext(MCCitizensNPC talker, String message, Iterable<MCCitizensTalkable> recipients) {
+		MCCitizensSpeechContext speechContext = new BukkitMCCitizensSpeechContext(new SpeechContext(((BukkitMCCitizensNPC) talker).getHandle(), message));
 		speechContext.addRecipients(recipients);
 		return speechContext;
 	}

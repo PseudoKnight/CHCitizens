@@ -15,26 +15,30 @@ import com.hekta.chcitizens.abstraction.MCCitizensTraitFactory;
  */
 public class BukkitMCCitizensPlugin extends BukkitMCPlugin implements MCCitizensPlugin {
 
-	CitizensPlugin cp;
+	private final CitizensPlugin _citizens;
 
 	public BukkitMCCitizensPlugin(CitizensPlugin plugin) {
 		super(plugin);
-		this.cp = plugin;
+		_citizens = plugin;
 	}
 
-	public CitizensPlugin getConcrete() {
-		return cp;
+	@Override
+	public CitizensPlugin getHandle() {
+		return _citizens;
 	}
 
+	@Override
 	public MCCitizensNPCRegistry getNPCRegistry() {
-		return new BukkitMCCitizensNPCRegistry(cp.getNPCRegistry());
+		return new BukkitMCCitizensNPCRegistry(_citizens.getNPCRegistry());
 	}
 
+	@Override
 	public MCCitizensSpeechFactory getSpeechFactory() {
-		return new BukkitMCCitizensSpeechFactory(cp.getSpeechFactory());
+		return new BukkitMCCitizensSpeechFactory(_citizens.getSpeechFactory());
 	}
 
+	@Override
 	public MCCitizensTraitFactory getTraitFactory() {
-		return new BukkitMCCitizensTraitFactory(cp.getTraitFactory());
+		return new BukkitMCCitizensTraitFactory(_citizens.getTraitFactory());
 	}
 }

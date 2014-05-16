@@ -38,140 +38,148 @@ public class BukkitCitizensEvents {
 	@abstraction(type = Implementation.Type.BUKKIT)
 	public static class BukkitMCCitizensEvent implements MCCitizensEvent {
 
-		CitizensEvent ce;
+		private final CitizensEvent m_event;
 
 		public BukkitMCCitizensEvent(CitizensEvent event) {
-			this.ce = event;
+			m_event = event;
 		}
 
+		@Override
 		public Object _GetObject() {
-			return ce;
+			return m_event;
 		}
 	}
 
 	@abstraction(type = Implementation.Type.BUKKIT)
 	public static class BukkitMCCitizensNavigationEvent implements MCCitizensNavigationEvent {
 
-		NavigationEvent ne;
+		private final NavigationEvent m_event;
 
 		public BukkitMCCitizensNavigationEvent(NavigationEvent event) {
-			this.ne = event;
+			m_event = event;
 		}
 
+		@Override
 		public Object _GetObject() {
-			return ne;
+			return m_event;
 		}
 
+		@Override
 		public MCCitizensNavigator getNavigator() {
-			return new BukkitMCCitizensNavigator(ne.getNavigator());
+			return new BukkitMCCitizensNavigator(m_event.getNavigator());
 		}
 
+		@Override
 		public MCCitizensNPC getNPC() {
-			return new BukkitMCCitizensNPC(ne.getNPC());
+			return new BukkitMCCitizensNPC(m_event.getNPC());
 		}
 	}
 
 	@abstraction(type = Implementation.Type.BUKKIT)
 	public static class BukkitMCCitizensNavigationCompleteEvent extends BukkitMCCitizensNavigationEvent implements MCCitizensNavigationCompleteEvent {
 
-		NavigationCompleteEvent ncpe;
+		private final NavigationCompleteEvent m_event;
 
 		public BukkitMCCitizensNavigationCompleteEvent(NavigationCompleteEvent event) {
 			super(event);
-			this.ncpe = event;
+			m_event = event;
 		}
 
 		@Override
 		public Object _GetObject() {
-			return ncpe;
+			return m_event;
 		}
 	}
 
 	@abstraction(type = Implementation.Type.BUKKIT)
 	public static class BukkitMCCitizensNavigationCancelEvent extends BukkitMCCitizensNavigationCompleteEvent implements MCCitizensNavigationCancelEvent {
 
-		NavigationCancelEvent ncle;
+		private final NavigationCancelEvent m_event;
 
 		public BukkitMCCitizensNavigationCancelEvent(NavigationCancelEvent event) {
 			super(event);
-			this.ncle = event;
+			m_event = event;
 		}
 
 		@Override
 		public Object _GetObject() {
-			return ncle;
+			return m_event;
 		}
 
+		@Override
 		public MCCitizensCancelReason getCancelReason() {
-			return BukkitMCCitizensCancelReason.getConvertor().getAbstractedEnum(ncle.getCancelReason());
+			return BukkitMCCitizensCancelReason.getConvertor().getAbstractedEnum(m_event.getCancelReason());
 		}
 	}
 
 	@abstraction(type = Implementation.Type.BUKKIT)
 	public static class BukkitMCCitizensNPCEvent extends BukkitMCCitizensEvent implements MCCitizensNPCEvent {
 
-		NPCEvent npce;
+		private final NPCEvent m_event;
 
 		public BukkitMCCitizensNPCEvent(NPCEvent event) {
 			super(event);
-			this.npce = event;
+			m_event = event;
 		}
 
 		@Override
 		public Object _GetObject() {
-			return npce;
+			return m_event;
 		}
 
+		@Override
 		public MCCitizensNPC getNPC() {
-			return new BukkitMCCitizensNPC(npce.getNPC());
+			return new BukkitMCCitizensNPC(m_event.getNPC());
 		}
 	}
 
 	@abstraction(type = Implementation.Type.BUKKIT)
 	public static class BukkitMCCitizensNPCDespawnEvent extends BukkitMCCitizensNPCEvent implements MCCitizensNPCDespawnEvent {
 
-		NPCDespawnEvent npcde;
+		private final NPCDespawnEvent m_event;
 
 		public BukkitMCCitizensNPCDespawnEvent(NPCDespawnEvent event) {
 			super(event);
-			this.npcde = event;
+			m_event = event;
 		}
 
 		@Override
 		public Object _GetObject() {
-			return npcde;
+			return m_event;
 		}
 	
 		public static BukkitMCCitizensNPCDespawnEvent _instantiate(MCCitizensNPC npc, MCCitizensDespawnReason reason) {
-			return new BukkitMCCitizensNPCDespawnEvent(new NPCDespawnEvent(((BukkitMCCitizensNPC) npc).getConcrete(), BukkitMCCitizensDespawnReason.getConvertor().getConcreteEnum(reason)));
+			return new BukkitMCCitizensNPCDespawnEvent(new NPCDespawnEvent(((BukkitMCCitizensNPC) npc).getHandle(), BukkitMCCitizensDespawnReason.getConvertor().getConcreteEnum(reason)));
 		}
 
+		@Override
 		public MCCitizensDespawnReason getReason() {
-			return BukkitMCCitizensDespawnReason.getConvertor().getAbstractedEnum(npcde.getReason());
+			return BukkitMCCitizensDespawnReason.getConvertor().getAbstractedEnum(m_event.getReason());
 		}
 	}
 
 	@abstraction(type = Implementation.Type.BUKKIT)
 	public static class BukkitMCCitizensNPCSpawnEvent extends BukkitMCCitizensNPCEvent implements MCCitizensNPCSpawnEvent {
 
-		NPCSpawnEvent npcse;
+		private final NPCSpawnEvent m_event;
 
 		public BukkitMCCitizensNPCSpawnEvent(NPCSpawnEvent event) {
 			super(event);
-			this.npcse = event;
+			m_event = event;
 		}
 
 		@Override
 		public Object _GetObject() {
-			return npcse;
+			return m_event;
 		}
 	
 		public static BukkitMCCitizensNPCSpawnEvent _instantiate(MCCitizensNPC npc, MCLocation location) {
-			return new BukkitMCCitizensNPCSpawnEvent(new NPCSpawnEvent(((BukkitMCCitizensNPC) npc).getConcrete(), ((BukkitMCLocation) location).asLocation()));
+			return new BukkitMCCitizensNPCSpawnEvent(new NPCSpawnEvent(((BukkitMCCitizensNPC) npc).getHandle(), ((BukkitMCLocation) location).asLocation()));
 		}
 
+		@Override
 		public MCLocation getLocation() {
-			return new BukkitMCLocation(npcse.getLocation());
+			return new BukkitMCLocation(m_event.getLocation());
 		}
 	}
 }

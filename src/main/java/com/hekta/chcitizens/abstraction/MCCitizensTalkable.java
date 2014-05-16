@@ -1,14 +1,15 @@
 package com.hekta.chcitizens.abstraction;
 
-import com.laytonsmith.abstraction.MCLivingEntity;
+import com.laytonsmith.abstraction.AbstractionObject;
+import com.laytonsmith.abstraction.MCEntity;
 
 /**
  *
  * @author Hekta
  */
-public interface MCCitizensTalkable {
+public interface MCCitizensTalkable extends AbstractionObject {
 
-	public MCLivingEntity getEntity();
+	public MCEntity getEntity();
 
 	public String getName();
 }

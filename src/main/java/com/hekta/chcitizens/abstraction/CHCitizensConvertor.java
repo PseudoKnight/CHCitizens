@@ -6,7 +6,7 @@ package com.hekta.chcitizens.abstraction;
  */
 public interface CHCitizensConvertor {
 
-	public MCCitizensPlugin getCitizensPlugin();
+	public MCCitizensPlugin getCitizens();
 
 	public MCCitizensTrait getCorrectTrait(MCCitizensTrait trait);
 }

@@ -4,6 +4,7 @@ import com.laytonsmith.core.constructs.Target;
 import com.laytonsmith.core.exceptions.ConfigRuntimeException;
 import com.laytonsmith.core.functions.Exceptions.ExceptionType;
 
+import com.hekta.chcitizens.CHCitizens;
 import com.hekta.chcitizens.abstraction.MCCitizensNPC;
 import com.hekta.chcitizens.abstraction.MCCitizensNPCRegistry;
 import com.hekta.chcitizens.abstraction.MCCitizensPlugin;
@@ -15,7 +16,7 @@ import com.hekta.chcitizens.abstraction.MCCitizensPlugin;
 public final class CHCitizensStatic {
 
 	public static MCCitizensPlugin getCitizensPlugin(Target t) {
-		MCCitizensPlugin plugin = com.hekta.chcitizens.extension.CHCitizensExtension.citizensPlugin;
+		MCCitizensPlugin plugin = CHCitizens.getCitizensPlugin();
 		if (plugin != null) {
 			return plugin;
 		} else {
@@ -24,7 +25,7 @@ public final class CHCitizensStatic {
 	}
 
 	public static MCCitizensNPCRegistry getNPCRegistry(Target t) {
-		MCCitizensNPCRegistry registry = com.hekta.chcitizens.extension.CHCitizensExtension.npcRegistry;
+		MCCitizensNPCRegistry registry = CHCitizens.getNPCRegistry();
 		if (registry != null) {
 			return registry;
 		} else {
@@ -33,7 +34,7 @@ public final class CHCitizensStatic {
 	}
 
 	public static MCCitizensNPC getNPC(int id, Target t) {
-		MCCitizensNPC npc = getNPCRegistry(t).getNPCById(id);
+		MCCitizensNPC npc = getNPCRegistry(t).getNPC(id);
 		if (npc != null) {
 			return npc;
 		} else {

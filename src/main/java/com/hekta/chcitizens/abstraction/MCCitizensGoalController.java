@@ -1,10 +1,12 @@
 package com.hekta.chcitizens.abstraction;
 
+import com.laytonsmith.abstraction.AbstractionObject;
+
 /**
  *
  * @author Hekta
  */
-public interface MCCitizensGoalController {
+public interface MCCitizensGoalController extends AbstractionObject {
 
 	public void cancelCurrentExecution();
 

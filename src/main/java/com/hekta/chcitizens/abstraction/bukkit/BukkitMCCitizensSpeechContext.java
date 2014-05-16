@@ -1,14 +1,9 @@
 package com.hekta.chcitizens.abstraction.bukkit;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.HashSet;
-
 import net.citizensnpcs.api.ai.speech.SpeechContext;
 import net.citizensnpcs.api.ai.speech.Talkable;
 
-import com.laytonsmith.abstraction.bukkit.BukkitMCLivingEntity;
+import com.laytonsmith.abstraction.bukkit.BukkitMCEntity;
 
 import com.hekta.chcitizens.abstraction.MCCitizensSpeechContext;
 import com.hekta.chcitizens.abstraction.MCCitizensTalkable;
@@ -19,57 +14,74 @@ import com.hekta.chcitizens.abstraction.MCCitizensTalkable;
  */
 public class BukkitMCCitizensSpeechContext implements MCCitizensSpeechContext {
 
-	SpeechContext sc;
+	private final SpeechContext _context;
 
 	public BukkitMCCitizensSpeechContext(SpeechContext speechContext) {
-		this.sc = speechContext;
+		_context = speechContext;
 	}
 
-	public SpeechContext getConcrete() {
-		return sc;
+	@Override
+	public SpeechContext getHandle() {
+		return _context;
 	}
 
+	@Override
 	public boolean hasRecipients() {
-		return sc.hasRecipients();
+		return _context.hasRecipients();
 	}
 
-	public Set<MCCitizensTalkable> getRecipients() {
-		Set<MCCitizensTalkable> recipients = new HashSet<MCCitizensTalkable>();
-		for (Talkable recipient : sc) {
-			recipients.add(new BukkitMCCitizensTalkable(recipient));
+	@Override
+	public MCCitizensTalkable[] getRecipients() {
+		MCCitizensTalkable[] recipients = new MCCitizensTalkable[_context.size()];
+		int i = 0;
+		for (Talkable recipient : _context) {
+			recipients[i] = new BukkitMCCitizensTalkable(recipient);
+			i++;
 		}
 		return recipients;
 	}
 
+	@Override
 	public void addRecipient(MCCitizensTalkable talkable) {
-		sc.addRecipient(((BukkitMCLivingEntity) talkable.getEntity()).asLivingEntity());
+		_context.addRecipient(((BukkitMCEntity) talkable.getEntity()).getHandle());
 	}
 
-	public void addRecipients(Set<MCCitizensTalkable> talkables) {
-		List<Talkable> recipients = new ArrayList<Talkable>();
+	@Override
+	public void addRecipients(MCCitizensTalkable[] talkables) {
 		for (MCCitizensTalkable recipient : talkables) {
-			recipients.add(((BukkitMCCitizensTalkable) recipient).getConcrete());
+			_context.addRecipient(((BukkitMCEntity) recipient.getEntity()).getHandle());
 		}
-		sc.addRecipients(recipients);
 	}
 
+	@Override
+	public void addRecipients(Iterable<MCCitizensTalkable> talkables) {
+		for (MCCitizensTalkable recipient : talkables) {
+			_context.addRecipient(((BukkitMCEntity) recipient.getEntity()).getHandle());
+		}
+	}
+
+	@Override
 	public int size() {
-		return sc.size();
+		return _context.size();
 	}
 
+	@Override
 	public String getMessage() {
-		return sc.getMessage();
+		return _context.getMessage();
 	}
 
+	@Override
 	public void setMessage(String message) {
-		sc.setMessage(message);
+		_context.setMessage(message);
 	}
 
+	@Override
 	public MCCitizensTalkable getTalker() {
-		return new BukkitMCCitizensTalkable(sc.getTalker());
+		return new BukkitMCCitizensTalkable(_context.getTalker());
 	}
 
+	@Override
 	public void setTalker(MCCitizensTalkable talker) {
-		sc.setTalker(((BukkitMCLivingEntity) talker.getEntity()).asLivingEntity());
+		_context.setTalker(((BukkitMCEntity) talker.getEntity()).getHandle());
 	}
 }

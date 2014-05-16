@@ -1,5 +1,7 @@
 package com.hekta.chcitizens.abstraction.traits;
 
+import com.laytonsmith.abstraction.MCOfflinePlayer;
+
 import com.hekta.chcitizens.abstraction.MCCitizensTrait;
 
 /**
@@ -8,6 +10,6 @@ import com.hekta.chcitizens.abstraction.MCCitizensTrait;
  */
 public interface MCCitizensOwner extends MCCitizensTrait {
 
-	public String getOwner();
-	public void setOwner(String owner);
+	public MCOfflinePlayer getOwner();
+	public void setOwner(MCOfflinePlayer owner);
 }

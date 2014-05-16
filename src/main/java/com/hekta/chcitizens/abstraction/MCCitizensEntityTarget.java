@@ -1,14 +1,15 @@
 package com.hekta.chcitizens.abstraction;
 
-import com.laytonsmith.abstraction.MCLivingEntity;
+import com.laytonsmith.abstraction.AbstractionObject;
+import com.laytonsmith.abstraction.MCEntity;
 
 /**
  *
  * @author Hekta
  */
-public interface MCCitizensEntityTarget {
+public interface MCCitizensEntityTarget extends AbstractionObject {
 
-	public MCLivingEntity getTarget();
+	public MCEntity getTarget();
 
 	public boolean isAggressive();
 }

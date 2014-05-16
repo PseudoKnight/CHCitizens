@@ -11,17 +11,19 @@ import com.hekta.chcitizens.abstraction.MCCitizensTraitFactory;
  */
 public class BukkitMCCitizensTraitFactory implements MCCitizensTraitFactory {
 
-	TraitFactory tf;
+	private final TraitFactory _factory;
 
 	public BukkitMCCitizensTraitFactory(TraitFactory traitFactory) {
-		this.tf = traitFactory;
+		_factory = traitFactory;
 	}
 
-	public TraitFactory getConcrete() {
-		return tf;
+	@Override
+	public TraitFactory getHandle() {
+		return _factory;
 	}
 
+	@Override
 	public void addDefaultTraits(MCCitizensNPC npc) {
-		tf.addDefaultTraits(((BukkitMCCitizensNPC) npc).getConcrete());
+		_factory.addDefaultTraits(((BukkitMCCitizensNPC) npc).getHandle());
 	}
 }

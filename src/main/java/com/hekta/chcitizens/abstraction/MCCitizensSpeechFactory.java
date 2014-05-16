@@ -1,17 +1,18 @@
 package com.hekta.chcitizens.abstraction;
 
-import java.util.Set;
-
-import com.laytonsmith.abstraction.MCLivingEntity;
+import com.laytonsmith.abstraction.AbstractionObject;
+import com.laytonsmith.abstraction.MCEntity;
+import java.util.Collection;
 
 /**
  *
  * @author Hekta
  */
-public interface MCCitizensSpeechFactory {
+public interface MCCitizensSpeechFactory extends AbstractionObject {
 
-	public MCCitizensTalkable newTalkableEntity(MCLivingEntity entity);
+	public MCCitizensTalkable newTalkableEntity(MCEntity entity);
 
 	public MCCitizensSpeechContext newSpeechContext(MCCitizensNPC talker, String message, MCCitizensTalkable recipient);
-	public MCCitizensSpeechContext newSpeechContext(MCCitizensNPC talker, String message, Set<MCCitizensTalkable> recipients);
+	public MCCitizensSpeechContext newSpeechContext(MCCitizensNPC talker, String message, MCCitizensTalkable[] recipients);
+	public MCCitizensSpeechContext newSpeechContext(MCCitizensNPC talker, String message, Iterable<MCCitizensTalkable> recipients);
 }

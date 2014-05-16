@@ -46,18 +46,22 @@ public class CitizensAI {
 	@api
 	public static class ctz_npc_target extends CitizensNPCFunction {
 
+		@Override
 		public String getName() {
 			return "ctz_npc_target";
 		}
 
+		@Override
 		public Integer[] numArgs() {
 			return new Integer[]{1, 2};
 		}
 
+		@Override
 		public ExceptionType[] thrown() {
 			return new ExceptionType[]{ExceptionType.InvalidPluginException, ExceptionType.CastException, ExceptionType.NotFoundException, ExceptionType.FormatException};
 		}
 
+		@Override
 		public String docs() {
 			return "mixed {npcID, [field]} Returns the target of the given NPC. Field can be one of 'location', 'entity' or 'type', default to 'type'."
 						+ " If field is 'location', the function will returns a location array, else if field is 'entity', the function fill return the entity id,"
@@ -65,20 +69,21 @@ public class CitizensAI {
 						+ " The function will return null if the NPC has not a target, or if the field is 'entity' and that the target type is a location.";
 		}
 
+		@Override
 		public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
 			if ((args.length == 1) || args[1].val().equalsIgnoreCase("LOCATION")) {
 				MCLocation location = CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t).getNavigator().getTargetAsLocation();
 				if (location != null) {
 					return ObjectGenerator.GetGenerator().location(location);
 				} else {
-					return new CNull(t);
+					return CNull.NULL;
 				}
 			} else if (args[1].val().equalsIgnoreCase("ENTITY")) {
 				MCCitizensEntityTarget target = CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t).getNavigator().getEntityTarget();
 				if (target != null) {
 					return new CInt(target.getTarget().getEntityId(), t);
 				} else {
-					return new CNull(t);
+					return CNull.NULL;
 				}
 			} else if (args[1].val().equalsIgnoreCase("TYPE")) {
 				return new CString(CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t).getNavigator().getTargetType().toString(), t);
@@ -91,23 +96,28 @@ public class CitizensAI {
 	@api
 	public static class ctz_set_npc_target extends CitizensNPCFunction {
 
+		@Override
 		public String getName() {
 			return "ctz_set_npc_target";
 		}
 
+		@Override
 		public Integer[] numArgs() {
 			return new Integer[]{2, 3};
 		}
 
+		@Override
 		public ExceptionType[] thrown() {
 			return new ExceptionType[]{ExceptionType.InvalidPluginException, ExceptionType.CastException, ExceptionType.NotFoundException, ExceptionType.PluginInternalException};
 		}
 
+		@Override
 		public String docs() {
 			return "void {npcID, target, [isAggressive]} Sets the target of the given NPC. target can be a location array or an entityID."
 						+ " If target is an entityID, isAggressive (a boolean) will specify if the NPC will attack the targeted entity, defaut to false.";
 		}
 
+		@Override
 		public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
 			MCCitizensNPC npc = CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t);
 			if (!npc.isSpawned()) {
@@ -125,27 +135,30 @@ public class CitizensAI {
 				npc.getNavigator().setTarget(Static.getLivingEntity(Static.getInt32(args[1], t), t), isAggressive);
 			}
 			CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t).setProtected(Static.getBoolean(args[1]));
-			return new CVoid(t);
+			return CVoid.VOID;
 		}
 	}
 
 	@api
 	public static class ctz_npc_is_aggressive extends CitizensNPCGetterFunction {
 
+		@Override
 		public String getName() {
 			return "ctz_npc_is_aggressive";
 		}
 
+		@Override
 		public String docs() {
 			return "boolean {npcID} Returns if the given NPC is aggressive.";
 		}
 
+		@Override
 		public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
 			MCCitizensEntityTarget target = CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t).getNavigator().getEntityTarget();
 			if (target != null) {
 				return new CBoolean(target.isAggressive(), t);
 			} else {
-				return new CBoolean(false, t);
+				return CBoolean.FALSE;
 			}
 		}
 	}
@@ -153,14 +166,17 @@ public class CitizensAI {
 	@api
 	public static class ctz_npc_is_navigating extends CitizensNPCGetterFunction {
 
+		@Override
 		public String getName() {
 			return "ctz_npc_is_navigating";
 		}
 
+		@Override
 		public String docs() {
 			return "boolean {npcID} Returns if the given NPC is navigating.";
 		}
 
+		@Override
 		public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
 			return new CBoolean(CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t).getNavigator().isNavigating(), t);
 		}
@@ -169,6 +185,7 @@ public class CitizensAI {
 	@api
 	public static class ctz_cancel_npc_navigation extends CitizensNPCSetterFunction {
 
+		@Override
 		public String getName() {
 			return "ctz_cancel_npc_navigation";
 		}
@@ -178,27 +195,32 @@ public class CitizensAI {
 			return new Integer[]{1, 2};
 		}
 
+		@Override
 		public String docs() {
 			return "void {npcID} Cancels the current navigation of the given NPC towards a target.";
 		}
 
+		@Override
 		public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
 			CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t).getNavigator().cancelNavigation();
-			return new CVoid(t);
+			return CVoid.VOID;
 		}
 	}
 
 	@api
 	public static class ctz_npc_avoid_water extends CitizensNPCGetterFunction {
 
+		@Override
 		public String getName() {
 			return "ctz_npc_avoid_water";
 		}
 
+		@Override
 		public String docs() {
 			return "boolean {npcID} Returns if the given NPC has to avoid water.";
 		}
 
+		@Override
 		public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
 			return new CBoolean(CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t).getNavigator().getLocalParameters().getAvoidWater(), t);
 		}
@@ -207,34 +229,40 @@ public class CitizensAI {
 	@api
 	public static class ctz_set_npc_avoid_water extends CitizensNPCSetterFunction {
 
+		@Override
 		public String getName() {
 			return "ctz_set_npc_avoid_water";
 		}
 
+		@Override
 		public String docs() {
 			return "void {npcID, boolean} Sets if the given NPC has to avoid water.";
 		}
 
+		@Override
 		public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
 			MCCitizensNavigator navigator = CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t).getNavigator();
 			boolean avoidWater = Static.getBoolean(args[1]);
 			navigator.getDefaultParameters().setAvoidWater(avoidWater);
 			navigator.getLocalParameters().setAvoidWater(avoidWater);
-			return new CVoid(t);
+			return CVoid.VOID;
 		}
 	}
 
 	@api
 	public static class ctz_npc_speed extends CitizensNPCGetterFunction {
 
+		@Override
 		public String getName() {
 			return "ctz_npc_speed";
 		}
 
+		@Override
 		public String docs() {
 			return "double {npcID} Returns the speed of the given NPC.";
 		}
 
+		@Override
 		public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
 			return new CDouble(CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t).getNavigator().getLocalParameters().getSpeed(), t);
 		}
@@ -243,14 +271,17 @@ public class CitizensAI {
 	@api
 	public static class ctz_npc_base_speed extends CitizensNPCGetterFunction {
 
+		@Override
 		public String getName() {
 			return "ctz_npc_base_speed";
 		}
 
+		@Override
 		public String docs() {
 			return "double {npcID} Returns the base speed of the given NPC.";
 		}
 
+		@Override
 		public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
 			return new CDouble(CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t).getNavigator().getLocalParameters().getBaseSpeed(), t);
 		}
@@ -259,34 +290,40 @@ public class CitizensAI {
 	@api
 	public static class ctz_set_npc_base_speed extends CitizensNPCSetterFunction {
 
+		@Override
 		public String getName() {
 			return "ctz_set_npc_base_speed";
 		}
 
+		@Override
 		public String docs() {
 			return "void {npcID, double} Sets the base speed of the given NPC.";
 		}
 
+		@Override
 		public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
 			MCCitizensNavigator navigator = CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t).getNavigator();
 			float baseSpeed = Static.getDouble32(args[1], t);
 			navigator.getDefaultParameters().setBaseSpeed(baseSpeed);
 			navigator.getLocalParameters().setBaseSpeed(baseSpeed);
-			return new CVoid(t);
+			return CVoid.VOID;
 		}
 	}
 
 	@api
 	public static class ctz_npc_speed_modifier extends CitizensNPCGetterFunction {
 
+		@Override
 		public String getName() {
 			return "ctz_npc_speed_modifier";
 		}
 
+		@Override
 		public String docs() {
 			return "double {npcID} Returns the speed modifier of the given NPC.";
 		}
 
+		@Override
 		public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
 			return new CDouble(CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t).getNavigator().getLocalParameters().getSpeedModifier(), t);
 		}
@@ -295,34 +332,40 @@ public class CitizensAI {
 	@api
 	public static class ctz_set_npc_speed_modifier extends CitizensNPCSetterFunction {
 
+		@Override
 		public String getName() {
 			return "ctz_set_npc_speed_modifier";
 		}
 
+		@Override
 		public String docs() {
 			return "void {npcID, double} Sets the speed modifier of the given NPC.";
 		}
 
+		@Override
 		public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
 			MCCitizensNavigator navigator = CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t).getNavigator();
 			float speedModifier = Static.getDouble32(args[1], t);
 			navigator.getDefaultParameters().setSpeedModifier(speedModifier);
 			navigator.getLocalParameters().setSpeedModifier(speedModifier);
-			return new CVoid(t);
+			return CVoid.VOID;
 		}
 	}
 
 	@api
 	public static class ctz_npc_distance_margin extends CitizensNPCGetterFunction {
 
+		@Override
 		public String getName() {
 			return "ctz_npc_distance_margin";
 		}
 
+		@Override
 		public String docs() {
 			return "double {npcID} Returns the distance margin of the given NPC.";
 		}
 
+		@Override
 		public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
 			return new CDouble(CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t).getNavigator().getLocalParameters().getDistanceMargin(), t);
 		}
@@ -331,34 +374,40 @@ public class CitizensAI {
 	@api
 	public static class ctz_set_npc_distance_margin extends CitizensNPCSetterFunction {
 
+		@Override
 		public String getName() {
 			return "ctz_set_npc_distance_margin";
 		}
 
+		@Override
 		public String docs() {
 			return "void {npcID, double} Sets the distance margin of the given NPC.";
 		}
 
+		@Override
 		public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
 			MCCitizensNavigator navigator = CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t).getNavigator();
 			double distanceMargin = Static.getDouble(args[1], t);
 			navigator.getDefaultParameters().setDistanceMargin(distanceMargin);
 			navigator.getLocalParameters().setDistanceMargin(distanceMargin);
-			return new CVoid(t);
+			return CVoid.VOID;
 		}
 	}
 
 	@api
 	public static class ctz_npc_range extends CitizensNPCGetterFunction {
 
+		@Override
 		public String getName() {
 			return "ctz_npc_range";
 		}
 
+		@Override
 		public String docs() {
 			return "double {npcID} Returns the range of the given NPC.";
 		}
 
+		@Override
 		public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
 			return new CDouble(CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t).getNavigator().getLocalParameters().getRange(), t);
 		}
@@ -367,34 +416,40 @@ public class CitizensAI {
 	@api
 	public static class ctz_set_npc_range extends CitizensNPCSetterFunction {
 
+		@Override
 		public String getName() {
 			return "ctz_set_npc_range";
 		}
 
+		@Override
 		public String docs() {
 			return "void {npcID, double} Sets the range of the given NPC.";
 		}
 
+		@Override
 		public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
 			MCCitizensNavigator navigator = CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t).getNavigator();
 			float range = Static.getDouble32(args[1], t);
 			navigator.getDefaultParameters().setRange(range);
 			navigator.getLocalParameters().setRange(range);
-			return new CVoid(t);
+			return CVoid.VOID;
 		}
 	}
 
 	@api
 	public static class ctz_npc_stationary_ticks extends CitizensNPCGetterFunction {
 
+		@Override
 		public String getName() {
 			return "ctz_npc_stationary_ticks";
 		}
 
+		@Override
 		public String docs() {
 			return "int {npcID} Returns the stationary ticks of the given NPC.";
 		}
 
+		@Override
 		public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
 			return new CDouble(CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t).getNavigator().getLocalParameters().getStationaryTicks(), t);
 		}
@@ -403,50 +458,61 @@ public class CitizensAI {
 	@api
 	public static class ctz_set_npc_stationary_ticks extends CitizensNPCSetterFunction {
 
+		@Override
 		public String getName() {
 			return "ctz_set_npc_stationary_ticks";
 		}
 
+		@Override
 		public String docs() {
 			return "void {npcID, int} Sets the stationary ticks of the given NPC.";
 		}
 
+		@Override
 		public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
 			MCCitizensNavigator navigator = CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t).getNavigator();
 			int ticks = Static.getInt32(args[1], t);
 			navigator.getDefaultParameters().setStationaryTicks(ticks);
 			navigator.getLocalParameters().setStationaryTicks(ticks);
-			return new CVoid(t);
+			return CVoid.VOID;
 		}
 	}
 
 	@api
 	public static class ctz_npc_speak extends CitizensNPCFunction {
 
+		@Override
 		public String getName() {
 			return "ctz_npc_speak";
 		}
 
+		@Override
 		public Integer[] numArgs() {
 			return new Integer[]{2, 3};
 		}
 
+		@Override
 		public ExceptionType[] thrown() {
 			return new ExceptionType[]{ExceptionType.InvalidPluginException, ExceptionType.CastException, ExceptionType.PlayerOfflineException, ExceptionType.BadEntityException};
 		}
 
+		@Override
 		public String docs() {
 			return "void {npcID, message, [recipients]} Makes the given NPC speak a message to the given recipients."
-						+ " recipients can take an array of player names and/or living entity ids, an int (living entity id), or a string (player name).";
+						+ " recipients can take an array of player names and/or entity ids, an int (living entity id), or a string (player name).";
 		}
 
+		@Override
 		public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
 			MCCitizensNPC npc = CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t);
 			MCCitizensSpeechFactory speechFactory = CHCitizensStatic.getCitizensPlugin(t).getSpeechFactory();
 			if (args.length == 2) {
-				Set<MCCitizensTalkable> recipients = new HashSet<MCCitizensTalkable>();
-				for (MCPlayer player : Static.getServer().getOnlinePlayers()) {
-					recipients.add(speechFactory.newTalkableEntity(player));
+				MCPlayer[] p = Static.getServer().getOnlinePlayers();
+				MCCitizensTalkable[] recipients = new MCCitizensTalkable[p.length];
+				int i = 0;
+				for (MCPlayer player : p) {
+					recipients[i] = speechFactory.newTalkableEntity(player);
+					i++;
 				}
 				npc.getDefaultSpeechController().speak(speechFactory.newSpeechContext(npc, args[1].val(), recipients));
 			} else if (args[2] instanceof CArray) {
@@ -454,7 +520,7 @@ public class CitizensAI {
 				if (array.inAssociativeMode()) {
 					throw new ConfigRuntimeException("The array of recipients must not be associative.", ExceptionType.CastException, t);
 				}
-				Set<MCCitizensTalkable> recipients = new HashSet<MCCitizensTalkable>();
+				Set<MCCitizensTalkable> recipients = new HashSet<>();
 				for (Construct recipient : array.asList()) {
 					if (recipient instanceof CInt) {
 						recipients.add(speechFactory.newTalkableEntity(Static.getLivingEntity(Static.getInt32(args[2], t), t)));
@@ -468,7 +534,7 @@ public class CitizensAI {
 			} else {
 				npc.getDefaultSpeechController().speak(speechFactory.newSpeechContext(npc, args[1].val(), speechFactory.newTalkableEntity(Static.GetPlayer(args[2].val(), t))));
 			}
-			return new CVoid(t);
+			return CVoid.VOID;
 		}
 	}
 }

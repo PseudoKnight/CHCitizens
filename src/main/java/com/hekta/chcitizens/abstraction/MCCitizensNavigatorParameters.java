@@ -1,10 +1,12 @@
 package com.hekta.chcitizens.abstraction;
 
+import com.laytonsmith.abstraction.AbstractionObject;
+
 /**
  *
  * @author Hekta
  */
-public interface MCCitizensNavigatorParameters {
+public interface MCCitizensNavigatorParameters extends AbstractionObject {
 
 	public boolean getAvoidWater();
 	public void setAvoidWater(boolean avoidWater);

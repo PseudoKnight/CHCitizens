@@ -9,14 +9,11 @@ import net.citizensnpcs.api.ai.event.NavigationCompleteEvent;
 import net.citizensnpcs.api.event.NPCDespawnEvent;
 import net.citizensnpcs.api.event.NPCSpawnEvent;
 
-import com.laytonsmith.annotations.shutdown;
-import com.laytonsmith.annotations.startup;
 import com.laytonsmith.commandhelper.CommandHelperPlugin;
 import com.laytonsmith.core.events.Driver;
 import com.laytonsmith.core.events.EventUtils;
 
 import com.hekta.chcitizens.abstraction.bukkit.events.BukkitCitizensEvents;
-import com.hekta.chcitizens.extension.CHCitizensExtension;
 
 /**
  *
@@ -24,53 +21,39 @@ import com.hekta.chcitizens.extension.CHCitizensExtension;
  */
 public class BukkitCitizensListener implements Listener {
 
-	protected static BukkitCitizensListener cl;
+	private static BukkitCitizensListener _listener;
 
-	@startup
 	public static void register() {
-		if (CHCitizensExtension.citizensPlugin != null) {
-			if (cl == null) {
-				cl = new BukkitCitizensListener();
-			}
-			CommandHelperPlugin.self.registerEvent(cl);
+		if (_listener == null) {
+			_listener = new BukkitCitizensListener();
 		}
+		CommandHelperPlugin.self.registerEvent(_listener);
 	}
 
-	@shutdown
 	public static void unregister() {
-		if (CHCitizensExtension.citizensPlugin != null) {
-			NavigationCancelEvent.getHandlerList().unregister(cl);
-			NavigationCompleteEvent.getHandlerList().unregister(cl);
-			NPCDespawnEvent.getHandlerList().unregister(cl);
-			NPCSpawnEvent.getHandlerList().unregister(cl);
-		}
+		NavigationCancelEvent.getHandlerList().unregister(_listener);
+		NavigationCompleteEvent.getHandlerList().unregister(_listener);
+		NPCDespawnEvent.getHandlerList().unregister(_listener);
+		NPCSpawnEvent.getHandlerList().unregister(_listener);
 	}
 
-	@EventHandler(priority=EventPriority.LOWEST)
+	@EventHandler(priority = EventPriority.LOWEST)
 	public void onNavigationComplete(NavigationCompleteEvent event) {
-		BukkitCitizensEvents.BukkitMCCitizensNavigationCompleteEvent nce = new BukkitCitizensEvents.BukkitMCCitizensNavigationCompleteEvent(event);
-		EventUtils.TriggerExternal(nce);
-		EventUtils.TriggerListener(Driver.EXTENSION, "ctz_npc_navigation_complete", nce);
+		EventUtils.TriggerListener(Driver.EXTENSION, "ctz_npc_navigation_complete", new BukkitCitizensEvents.BukkitMCCitizensNavigationCompleteEvent(event));
 	}
 
-	@EventHandler(priority=EventPriority.LOWEST)
+	@EventHandler(priority = EventPriority.LOWEST)
 	public void onNavigationCancel(NavigationCancelEvent event) {
-		BukkitCitizensEvents.BukkitMCCitizensNavigationCancelEvent nce = new BukkitCitizensEvents.BukkitMCCitizensNavigationCancelEvent(event);
-		EventUtils.TriggerExternal(nce);
-		EventUtils.TriggerListener(Driver.EXTENSION, "ctz_npc_navigation_cancel", nce);
+		EventUtils.TriggerListener(Driver.EXTENSION, "ctz_npc_navigation_cancel", new BukkitCitizensEvents.BukkitMCCitizensNavigationCancelEvent(event));
 	}
 
 	@EventHandler(priority=EventPriority.LOWEST)
 	public void onNPCDespawn(NPCDespawnEvent event) {
-		BukkitCitizensEvents.BukkitMCCitizensNPCDespawnEvent npcde = new BukkitCitizensEvents.BukkitMCCitizensNPCDespawnEvent(event);
-		EventUtils.TriggerExternal(npcde);
-		EventUtils.TriggerListener(Driver.EXTENSION, "ctz_npc_despawn", npcde);
+		EventUtils.TriggerListener(Driver.EXTENSION, "ctz_npc_despawn", new BukkitCitizensEvents.BukkitMCCitizensNPCDespawnEvent(event));
 	}
 
 	@EventHandler(priority=EventPriority.LOWEST)
 	public void onNPCSpawn(NPCSpawnEvent event) {
-		BukkitCitizensEvents.BukkitMCCitizensNPCSpawnEvent npcse = new BukkitCitizensEvents.BukkitMCCitizensNPCSpawnEvent(event);
-		EventUtils.TriggerExternal(npcse);
-		EventUtils.TriggerListener(Driver.EXTENSION, "ctz_npc_spawn", npcse);
+		EventUtils.TriggerListener(Driver.EXTENSION, "ctz_npc_spawn", new BukkitCitizensEvents.BukkitMCCitizensNPCSpawnEvent(event));
 	}
 }

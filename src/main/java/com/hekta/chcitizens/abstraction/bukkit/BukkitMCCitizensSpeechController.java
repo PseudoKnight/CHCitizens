@@ -11,21 +11,24 @@ import com.hekta.chcitizens.abstraction.MCCitizensSpeechController;
  */
 public class BukkitMCCitizensSpeechController implements MCCitizensSpeechController {
 
-	SpeechController sc;
+	private final SpeechController _controller;
 
 	public BukkitMCCitizensSpeechController(SpeechController speechController) {
-		this.sc = speechController;
+		_controller = speechController;
 	}
 
-	public SpeechController getConcrete() {
-		return sc;
+	@Override
+	public SpeechController getHandle() {
+		return _controller;
 	}
 
+	@Override
 	public void speak(MCCitizensSpeechContext message) {
-		sc.speak(((BukkitMCCitizensSpeechContext) message).getConcrete());
+		_controller.speak(((BukkitMCCitizensSpeechContext) message).getHandle());
 	}
 
+	@Override
 	public void speak(MCCitizensSpeechContext message, String vocalChordName) {
-		sc.speak(((BukkitMCCitizensSpeechContext) message).getConcrete(), vocalChordName);
+		_controller.speak(((BukkitMCCitizensSpeechContext) message).getHandle(), vocalChordName);
 	}
 }

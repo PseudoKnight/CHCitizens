@@ -2,8 +2,8 @@ package com.hekta.chcitizens.abstraction.bukkit;
 
 import net.citizensnpcs.api.ai.speech.Talkable;
 
-import com.laytonsmith.abstraction.MCLivingEntity;
-import com.laytonsmith.abstraction.bukkit.BukkitMCLivingEntity;
+import com.laytonsmith.abstraction.MCEntity;
+import com.laytonsmith.abstraction.bukkit.BukkitConvertor;
 
 import com.hekta.chcitizens.abstraction.MCCitizensTalkable;
 
@@ -13,21 +13,24 @@ import com.hekta.chcitizens.abstraction.MCCitizensTalkable;
  */
 public class BukkitMCCitizensTalkable implements MCCitizensTalkable {
 
-	Talkable t;
+	private final Talkable _talkable;
 
 	public BukkitMCCitizensTalkable(Talkable talkable) {
-		this.t = talkable;
+		_talkable = talkable;
 	}
 
-	public Talkable getConcrete() {
-		return t;
+	@Override
+	public Talkable getHandle() {
+		return _talkable;
 	}
 
-	public MCLivingEntity getEntity() {
-		return new BukkitMCLivingEntity(t.getEntity());
+	@Override
+	public MCEntity getEntity() {
+		return BukkitConvertor.BukkitGetCorrectEntity(_talkable.getEntity());
 	}
 
+	@Override
 	public String getName() {
-		return t.getName();
+		return _talkable.getName();
 	}
 }
