@@ -40,13 +40,21 @@ import com.hekta.chcitizens.core.CHCitizensStatic;
  *
  * @author Hekta
  */
-public class CitizensEvents {
+public final class CitizensEvents {
+
+	private CitizensEvents() {
+	}
 
 	public static String docs() {
 		return "Contains events related to the Citizens plugin.";
 	}
 
-	public static abstract class CitizensEvent extends AbstractEvent {
+	protected static abstract class CitizensEvent extends AbstractEvent {
+			
+		@Override
+		public String getName() {
+			return getClass().getSimpleName();
+		}
 
 		@Override
 		public Version since() {
@@ -65,12 +73,7 @@ public class CitizensEvents {
 	}
 
 	@api
-	public static class ctz_npc_despawn extends CitizensEvent {
-			
-		@Override
-		public String getName() {
-			return "ctz_npc_despawn";
-		}
+	public static final class ctz_npc_despawn extends CitizensEvent {
 
 		@Override
 		public String docs() {
@@ -128,12 +131,7 @@ public class CitizensEvents {
 	}
 
 	@api
-	public static class ctz_npc_navigation_cancel extends CitizensEvent {
-			
-		@Override
-		public String getName() {
-			return "ctz_npc_navigation_cancel";
-		}
+	public static final class ctz_npc_navigation_cancel extends CitizensEvent {
 
 		@Override
 		public String docs() {
@@ -196,12 +194,7 @@ public class CitizensEvents {
 	}
 
 	@api
-	public static class ctz_npc_navigation_complete extends CitizensEvent {
-			
-		@Override
-		public String getName() {
-			return "ctz_npc_navigation_complete";
-		}
+	public static final class ctz_npc_navigation_complete extends CitizensEvent {
 
 		@Override
 		public String docs() {
@@ -250,12 +243,7 @@ public class CitizensEvents {
 	}
 
 	@api
-	public static class ctz_npc_spawn extends CitizensEvent {
-			
-		@Override
-		public String getName() {
-			return "ctz_npc_spawn";
-		}
+	public static final class ctz_npc_spawn extends CitizensEvent {
 
 		@Override
 		public String docs() {

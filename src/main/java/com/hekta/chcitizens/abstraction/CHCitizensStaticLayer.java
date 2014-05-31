@@ -3,39 +3,52 @@ package com.hekta.chcitizens.abstraction;
 import com.laytonsmith.abstraction.Implementation;
 import com.laytonsmith.PureUtilities.ClassLoading.ClassDiscovery;
 
-import com.hekta.chcitizens.annotations.CHCitizensConvert;
+import com.laytonsmith.annotations.abstraction;
+import com.laytonsmith.core.InternalException;
 
 /**
  *
- * @author Hekta, based on layton's StaticLayer
+ * @author Hekta
  */
 public final class CHCitizensStaticLayer {
 
-	private static final CHCitizensConvertor _convertor = InitConvertor();
+	private static final CHCitizensConvertor _convertor = getConvertorInstance();
 
 	private CHCitizensStaticLayer() {
 	}
 
-	private static CHCitizensConvertor InitConvertor() {
-		for(Class c : ClassDiscovery.getDefaultInstance().loadClassesWithAnnotation(CHCitizensConvert.class)) {
-			if (CHCitizensConvertor.class.isAssignableFrom(c)) {
-				CHCitizensConvert convert = (CHCitizensConvert) c.getAnnotation(CHCitizensConvert.class);
-				if (convert.type() == Implementation.GetServerType()) {
+	private static CHCitizensConvertor getConvertorInstance() {
+		CHCitizensConvertor convertor = null;
+		for (Class<CHCitizensConvertor> clazz : ClassDiscovery.getDefaultInstance().loadClassesWithAnnotationThatExtend(abstraction.class, CHCitizensConvertor.class)) {
+			if (clazz.getAnnotation(abstraction.class).type().equals(Implementation.GetServerType())) {
+				if (convertor == null) {
 					try {
-						if (_convertor == null) {
-							return (CHCitizensConvertor) c.newInstance();
-						} else {
-							System.err.println("[CommandHelper] [CHCitizens] More than one CHCitizensConvertor for this server type was detected!");
-						}
-					} catch (IllegalAccessException | InstantiationException exception) {
-						System.err.println("[CommandHelper] [CHCitizens] Tried to instantiate the CHCitizensConvertor, but couldn't: " + exception.getMessage());
+						convertor = clazz.newInstance();
+					} catch (InstantiationException | IllegalAccessException ex) {
+						throw (RuntimeException) new InternalException().initCause(ex);
 					}
+				} else {
+					throw new InternalException("More than one CHCitizensConvertor implementation detected.");
 				}
-			} else {
-				System.err.println("[CommandHelper] [CHCitizens] The CHCitizensConvertor " + c.getSimpleName() + " doesn't implement CHCitizensConvertor!");
 			}
 		}
+		if (convertor != null) {
+			return convertor;
+		} else {
+			throw new InternalException("No CHCitizensConvertor implementation detected.");
+		}
+	}
+
+	public static CHCitizensConvertor getConvertor() {
 		return _convertor;
+	}
+
+	public static void startup() {
+		_convertor.startup();
+	}
+
+	public static void shutdown() {
+		_convertor.shutdown();
 	}
 
 	public static MCCitizensPlugin getCitizens() {

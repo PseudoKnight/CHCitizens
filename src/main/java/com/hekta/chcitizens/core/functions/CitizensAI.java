@@ -1,8 +1,13 @@
 package com.hekta.chcitizens.core.functions;
 
-import java.util.HashSet;
-import java.util.Set;
-
+import com.hekta.chcitizens.abstraction.MCCitizensEntityTarget;
+import com.hekta.chcitizens.abstraction.MCCitizensNPC;
+import com.hekta.chcitizens.abstraction.MCCitizensNavigator;
+import com.hekta.chcitizens.abstraction.MCCitizensSpeechFactory;
+import com.hekta.chcitizens.abstraction.MCCitizensTalkable;
+import com.hekta.chcitizens.abstraction.enums.MCCitizensTargetType;
+import com.hekta.chcitizens.core.CHCitizensStatic;
+import com.laytonsmith.PureUtilities.Common.StringUtils;
 import com.laytonsmith.annotations.api;
 import com.laytonsmith.abstraction.MCLocation;
 import com.laytonsmith.abstraction.MCPlayer;
@@ -20,36 +25,21 @@ import com.laytonsmith.core.constructs.Target;
 import com.laytonsmith.core.environments.Environment;
 import com.laytonsmith.core.exceptions.ConfigRuntimeException;
 import com.laytonsmith.core.functions.Exceptions.ExceptionType;
-import com.laytonsmith.PureUtilities.Common.StringUtils;
-
-import com.hekta.chcitizens.abstraction.MCCitizensEntityTarget;
-import com.hekta.chcitizens.abstraction.MCCitizensNPC;
-import com.hekta.chcitizens.abstraction.MCCitizensNavigator;
-import com.hekta.chcitizens.abstraction.MCCitizensSpeechFactory;
-import com.hekta.chcitizens.abstraction.MCCitizensTalkable;
-import com.hekta.chcitizens.abstraction.enums.MCCitizensTargetType;
-import com.hekta.chcitizens.core.CHCitizensStatic;
-import com.hekta.chcitizens.core.functions.CitizensFunctions.CitizensNPCGetterFunction;
-import com.hekta.chcitizens.core.functions.CitizensFunctions.CitizensNPCFunction;
-import com.hekta.chcitizens.core.functions.CitizensFunctions.CitizensNPCSetterFunction;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  *
  * @author Hekta
  */
-public class CitizensAI {
+public abstract class CitizensAI extends CitizensFunctions {
 
 	public static String docs() {
 		return "This class allows to interact with the AI of the NPCs.";
 	}
 
 	@api
-	public static class ctz_npc_target extends CitizensNPCFunction {
-
-		@Override
-		public String getName() {
-			return "ctz_npc_target";
-		}
+	public static final class ctz_npc_target extends CitizensNPCFunction {
 
 		@Override
 		public Integer[] numArgs() {
@@ -94,12 +84,7 @@ public class CitizensAI {
 	}
 
 	@api
-	public static class ctz_set_npc_target extends CitizensNPCFunction {
-
-		@Override
-		public String getName() {
-			return "ctz_set_npc_target";
-		}
+	public static final class ctz_set_npc_target extends CitizensNPCFunction {
 
 		@Override
 		public Integer[] numArgs() {
@@ -140,12 +125,7 @@ public class CitizensAI {
 	}
 
 	@api
-	public static class ctz_npc_is_aggressive extends CitizensNPCGetterFunction {
-
-		@Override
-		public String getName() {
-			return "ctz_npc_is_aggressive";
-		}
+	public static final class ctz_npc_is_aggressive extends CitizensNPCGetterFunction {
 
 		@Override
 		public String docs() {
@@ -156,7 +136,7 @@ public class CitizensAI {
 		public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
 			MCCitizensEntityTarget target = CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t).getNavigator().getEntityTarget();
 			if (target != null) {
-				return new CBoolean(target.isAggressive(), t);
+				return CBoolean.get(target.isAggressive());
 			} else {
 				return CBoolean.FALSE;
 			}
@@ -164,12 +144,7 @@ public class CitizensAI {
 	}
 
 	@api
-	public static class ctz_npc_is_navigating extends CitizensNPCGetterFunction {
-
-		@Override
-		public String getName() {
-			return "ctz_npc_is_navigating";
-		}
+	public static final class ctz_npc_is_navigating extends CitizensNPCGetterFunction {
 
 		@Override
 		public String docs() {
@@ -178,17 +153,12 @@ public class CitizensAI {
 
 		@Override
 		public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
-			return new CBoolean(CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t).getNavigator().isNavigating(), t);
+			return CBoolean.get(CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t).getNavigator().isNavigating());
 		}
 	}
 
 	@api
-	public static class ctz_cancel_npc_navigation extends CitizensNPCSetterFunction {
-
-		@Override
-		public String getName() {
-			return "ctz_cancel_npc_navigation";
-		}
+	public static final class ctz_cancel_npc_navigation extends CitizensNPCSetterFunction {
 
 		@Override
 		public Integer[] numArgs() {
@@ -208,12 +178,7 @@ public class CitizensAI {
 	}
 
 	@api
-	public static class ctz_npc_avoid_water extends CitizensNPCGetterFunction {
-
-		@Override
-		public String getName() {
-			return "ctz_npc_avoid_water";
-		}
+	public static final class ctz_npc_avoid_water extends CitizensNPCGetterFunction {
 
 		@Override
 		public String docs() {
@@ -222,17 +187,12 @@ public class CitizensAI {
 
 		@Override
 		public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
-			return new CBoolean(CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t).getNavigator().getLocalParameters().getAvoidWater(), t);
+			return CBoolean.get(CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t).getNavigator().getLocalParameters().getAvoidWater());
 		}
 	}
 
 	@api
-	public static class ctz_set_npc_avoid_water extends CitizensNPCSetterFunction {
-
-		@Override
-		public String getName() {
-			return "ctz_set_npc_avoid_water";
-		}
+	public static final class ctz_set_npc_avoid_water extends CitizensNPCSetterFunction {
 
 		@Override
 		public String docs() {
@@ -250,12 +210,7 @@ public class CitizensAI {
 	}
 
 	@api
-	public static class ctz_npc_speed extends CitizensNPCGetterFunction {
-
-		@Override
-		public String getName() {
-			return "ctz_npc_speed";
-		}
+	public static final class ctz_npc_speed extends CitizensNPCGetterFunction {
 
 		@Override
 		public String docs() {
@@ -269,12 +224,7 @@ public class CitizensAI {
 	}
 
 	@api
-	public static class ctz_npc_base_speed extends CitizensNPCGetterFunction {
-
-		@Override
-		public String getName() {
-			return "ctz_npc_base_speed";
-		}
+	public static final class ctz_npc_base_speed extends CitizensNPCGetterFunction {
 
 		@Override
 		public String docs() {
@@ -288,12 +238,7 @@ public class CitizensAI {
 	}
 
 	@api
-	public static class ctz_set_npc_base_speed extends CitizensNPCSetterFunction {
-
-		@Override
-		public String getName() {
-			return "ctz_set_npc_base_speed";
-		}
+	public static final class ctz_set_npc_base_speed extends CitizensNPCSetterFunction {
 
 		@Override
 		public String docs() {
@@ -311,12 +256,7 @@ public class CitizensAI {
 	}
 
 	@api
-	public static class ctz_npc_speed_modifier extends CitizensNPCGetterFunction {
-
-		@Override
-		public String getName() {
-			return "ctz_npc_speed_modifier";
-		}
+	public static final class ctz_npc_speed_modifier extends CitizensNPCGetterFunction {
 
 		@Override
 		public String docs() {
@@ -330,12 +270,7 @@ public class CitizensAI {
 	}
 
 	@api
-	public static class ctz_set_npc_speed_modifier extends CitizensNPCSetterFunction {
-
-		@Override
-		public String getName() {
-			return "ctz_set_npc_speed_modifier";
-		}
+	public static final class ctz_set_npc_speed_modifier extends CitizensNPCSetterFunction {
 
 		@Override
 		public String docs() {
@@ -353,12 +288,7 @@ public class CitizensAI {
 	}
 
 	@api
-	public static class ctz_npc_distance_margin extends CitizensNPCGetterFunction {
-
-		@Override
-		public String getName() {
-			return "ctz_npc_distance_margin";
-		}
+	public static final class ctz_npc_distance_margin extends CitizensNPCGetterFunction {
 
 		@Override
 		public String docs() {
@@ -372,12 +302,7 @@ public class CitizensAI {
 	}
 
 	@api
-	public static class ctz_set_npc_distance_margin extends CitizensNPCSetterFunction {
-
-		@Override
-		public String getName() {
-			return "ctz_set_npc_distance_margin";
-		}
+	public static final class ctz_set_npc_distance_margin extends CitizensNPCSetterFunction {
 
 		@Override
 		public String docs() {
@@ -395,12 +320,7 @@ public class CitizensAI {
 	}
 
 	@api
-	public static class ctz_npc_range extends CitizensNPCGetterFunction {
-
-		@Override
-		public String getName() {
-			return "ctz_npc_range";
-		}
+	public static final class ctz_npc_range extends CitizensNPCGetterFunction {
 
 		@Override
 		public String docs() {
@@ -414,12 +334,7 @@ public class CitizensAI {
 	}
 
 	@api
-	public static class ctz_set_npc_range extends CitizensNPCSetterFunction {
-
-		@Override
-		public String getName() {
-			return "ctz_set_npc_range";
-		}
+	public static final class ctz_set_npc_range extends CitizensNPCSetterFunction {
 
 		@Override
 		public String docs() {
@@ -437,12 +352,7 @@ public class CitizensAI {
 	}
 
 	@api
-	public static class ctz_npc_stationary_ticks extends CitizensNPCGetterFunction {
-
-		@Override
-		public String getName() {
-			return "ctz_npc_stationary_ticks";
-		}
+	public static final class ctz_npc_stationary_ticks extends CitizensNPCGetterFunction {
 
 		@Override
 		public String docs() {
@@ -456,12 +366,7 @@ public class CitizensAI {
 	}
 
 	@api
-	public static class ctz_set_npc_stationary_ticks extends CitizensNPCSetterFunction {
-
-		@Override
-		public String getName() {
-			return "ctz_set_npc_stationary_ticks";
-		}
+	public static final class ctz_set_npc_stationary_ticks extends CitizensNPCSetterFunction {
 
 		@Override
 		public String docs() {
@@ -479,12 +384,7 @@ public class CitizensAI {
 	}
 
 	@api
-	public static class ctz_npc_speak extends CitizensNPCFunction {
-
-		@Override
-		public String getName() {
-			return "ctz_npc_speak";
-		}
+	public static final class ctz_npc_speak extends CitizensNPCFunction {
 
 		@Override
 		public Integer[] numArgs() {

@@ -1,5 +1,8 @@
 package com.hekta.chcitizens.core.functions;
 
+import com.hekta.chcitizens.abstraction.MCCitizensNPC;
+import com.hekta.chcitizens.abstraction.traits.MCCitizensOwner;
+import com.hekta.chcitizens.core.CHCitizensStatic;
 import com.laytonsmith.annotations.api;
 import com.laytonsmith.core.Static;
 import com.laytonsmith.core.constructs.CArray;
@@ -13,28 +16,18 @@ import com.laytonsmith.core.environments.Environment;
 import com.laytonsmith.core.exceptions.ConfigRuntimeException;
 import com.laytonsmith.core.functions.Exceptions.ExceptionType;
 
-import com.hekta.chcitizens.abstraction.MCCitizensNPC;
-import com.hekta.chcitizens.abstraction.traits.MCCitizensOwner;
-import com.hekta.chcitizens.core.CHCitizensStatic;
-import com.hekta.chcitizens.core.functions.CitizensFunctions.CitizensNPCFunction;
-
 /**
  *
  * @author Hekta
  */
-public class CitizensTraits {
+public abstract class CitizensTraits extends CitizensFunctions {
 
 	public static String docs() {
 		return "This class allows to manage the traits of the NPCs.";
 	}
 
 	@api
-	public static class ctz_npc_traits extends CitizensNPCFunction {
-
-		@Override
-		public String getName() {
-			return "ctz_npc_traits";
-		}
+	public static final class ctz_npc_traits extends CitizensNPCFunction {
 
 		@Override
 		public Integer[] numArgs() {
@@ -86,12 +79,7 @@ public class CitizensTraits {
 	}
 
 	@api
-	public static class ctz_set_npc_trait extends CitizensNPCFunction {
-
-		@Override
-		public String getName() {
-			return "ctz_set_npc_trait";
-		}
+	public static final class ctz_set_npc_trait extends CitizensNPCFunction {
 
 		@Override
 		public Integer[] numArgs() {
@@ -133,12 +121,7 @@ public class CitizensTraits {
 	}
 
 	@api
-	public static class ctz_npc_has_trait extends CitizensNPCFunction {
-
-		@Override
-		public String getName() {
-			return "ctz_npc_has_trait";
-		}
+	public static final class ctz_npc_has_trait extends CitizensNPCFunction {
 
 		@Override
 		public Integer[] numArgs() {
@@ -160,7 +143,7 @@ public class CitizensTraits {
 			MCCitizensNPC npc = CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t);
 			String trait = args[1].val();
 			if (trait.equalsIgnoreCase("owner")) {
-				return new CBoolean(npc.hasTrait("owner"), t);
+				return CBoolean.get(npc.hasTrait("owner"));
 			} else {
 				throw new ConfigRuntimeException("Unknown or unsupported trait: " + trait + ".", ExceptionType.IndexOverflowException, t);
 			}

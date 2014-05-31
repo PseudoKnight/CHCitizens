@@ -1,4 +1,4 @@
-package com.hekta.chcitizens.abstraction.bukkit.events.drivers;
+package com.hekta.chcitizens.abstraction.bukkit.events;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -12,8 +12,6 @@ import net.citizensnpcs.api.event.NPCSpawnEvent;
 import com.laytonsmith.commandhelper.CommandHelperPlugin;
 import com.laytonsmith.core.events.Driver;
 import com.laytonsmith.core.events.EventUtils;
-
-import com.hekta.chcitizens.abstraction.bukkit.events.BukkitCitizensEvents;
 
 /**
  *

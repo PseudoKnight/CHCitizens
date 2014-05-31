@@ -1,5 +1,9 @@
 package com.hekta.chcitizens.core.functions;
 
+import com.hekta.chcitizens.abstraction.MCCitizensNPC;
+import com.hekta.chcitizens.abstraction.enums.MCCitizensDespawnReason;
+import com.hekta.chcitizens.core.CHCitizensStatic;
+import com.laytonsmith.PureUtilities.Common.StringUtils;
 import com.laytonsmith.annotations.api;
 import com.laytonsmith.abstraction.MCEntity;
 import com.laytonsmith.abstraction.MCLocation;
@@ -17,34 +21,19 @@ import com.laytonsmith.core.constructs.Target;
 import com.laytonsmith.core.environments.Environment;
 import com.laytonsmith.core.exceptions.ConfigRuntimeException;
 import com.laytonsmith.core.functions.Exceptions.ExceptionType;
-import com.laytonsmith.PureUtilities.Common.StringUtils;
-
-import com.hekta.chcitizens.abstraction.MCCitizensNPC;
-import com.hekta.chcitizens.abstraction.enums.MCCitizensDespawnReason;
-import com.hekta.chcitizens.core.CHCitizensStatic;
-import com.hekta.chcitizens.core.functions.CitizensFunctions.CitizensNPCGetterFunction;
-import com.hekta.chcitizens.core.functions.CitizensFunctions.CitizensNPCFunction;
-import com.hekta.chcitizens.core.functions.CitizensFunctions.CitizensNPCSetterFunction;
-import com.laytonsmith.abstraction.MCPlayer;
-import com.laytonsmith.core.environments.CommandHelperEnvironment;
 
 /**
  *
  * @author Hekta
  */
-public class CitizensManagement {
+public abstract class CitizensManagement extends CitizensFunctions {
 
 	public static String docs() {
 		return "This class allows to manage the NPCs of the Citizens plugin.";
 	}
 
 	@api
-	public static class ctz_all_npcs extends CitizensNPCFunction {
-
-		@Override
-		public String getName() {
-			return "ctz_all_npcs";
-		}
+	public static final class ctz_all_npcs extends CitizensNPCFunction {
 
 		@Override
 		public Integer[] numArgs() {
@@ -72,12 +61,7 @@ public class CitizensManagement {
 	}
 
 	@api
-	public static class ctz_create_npc extends CitizensNPCFunction {
-
-		@Override
-		public String getName() {
-			return "ctz_create_npc";
-		}
+	public static final class ctz_create_npc extends CitizensNPCFunction {
 
 		@Override
 		public Integer[] numArgs() {
@@ -100,12 +84,7 @@ public class CitizensManagement {
 		public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
 			MCCitizensNPC npc;
 			if (args.length == 0) {
-				MCPlayer psender = environment.getEnv(CommandHelperEnvironment.class).GetPlayer();
-				if (psender != null) {
-					npc = CHCitizensStatic.getNPCRegistry(t).createNPC(MCEntityType.PLAYER, psender.getName());
-				} else {
-					throw new ConfigRuntimeException("The name is not given, the sender must be a player.", ExceptionType.PlayerOfflineException, t);
-				}
+				npc = CHCitizensStatic.getNPCRegistry(t).createNPC(MCEntityType.PLAYER, Static.getPlayer(environment, t).getName());
 			} else if (args.length == 1) {
 				npc = CHCitizensStatic.getNPCRegistry(t).createNPC(MCEntityType.PLAYER, args[0].val());
 			} else if (args.length == 2) {
@@ -146,12 +125,7 @@ public class CitizensManagement {
 	}
 
 	@api
-	public static class ctz_remove_npc extends CitizensNPCGetterFunction {
-
-		@Override
-		public String getName() {
-			return "ctz_remove_npc";
-		}
+	public static final class ctz_remove_npc extends CitizensNPCGetterFunction {
 
 		@Override
 		public String docs() {
@@ -166,12 +140,7 @@ public class CitizensManagement {
 	}
 
 	@api
-	public static class ctz_entity_is_npc extends CitizensNPCGetterFunction {
-
-		@Override
-		public String getName() {
-			return "ctz_entity_is_npc";
-		}
+	public static final class ctz_entity_is_npc extends CitizensNPCGetterFunction {
 
 		@Override
 		public String docs() {
@@ -180,17 +149,12 @@ public class CitizensManagement {
 
 		@Override
 		public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
-			return new CBoolean(CHCitizensStatic.getNPCRegistry(t).isNPC(Static.getEntity(args[0], t)), t);
+			return CBoolean.get(CHCitizensStatic.getNPCRegistry(t).isNPC(Static.getEntity(args[0], t)));
 		}
 	}
 
 	@api
-	public static class ctz_npc_id extends CitizensNPCGetterFunction {
-
-		@Override
-		public String getName() {
-			return "ctz_npc_id";
-		}
+	public static final class ctz_npc_id extends CitizensNPCGetterFunction {
 
 		@Override
 		public String docs() {
@@ -209,12 +173,7 @@ public class CitizensManagement {
 	}
 
 	@api
-	public static class ctz_npc_stored_loc extends CitizensNPCGetterFunction {
-
-		@Override
-		public String getName() {
-			return "ctz_npc_stored_loc";
-		}
+	public static final class ctz_npc_stored_loc extends CitizensNPCGetterFunction {
 
 		@Override
 		public String docs() {
@@ -233,12 +192,7 @@ public class CitizensManagement {
 	}
 
 	@api
-	public static class ctz_set_npc_face_loc extends CitizensNPCSetterFunction {
-
-		@Override
-		public String getName() {
-			return "ctz_set_npc_face_loc";
-		}
+	public static final class ctz_set_npc_face_loc extends CitizensNPCSetterFunction {
 
 		@Override
 		public ExceptionType[] thrown() {
@@ -258,12 +212,7 @@ public class CitizensManagement {
 	}
 
 	@api
-	public static class ctz_npc_is_spawned extends CitizensNPCGetterFunction {
-
-		@Override
-		public String getName() {
-			return "ctz_npc_is_spawned";
-		}
+	public static final class ctz_npc_is_spawned extends CitizensNPCGetterFunction {
 
 		@Override
 		public String docs() {
@@ -272,17 +221,12 @@ public class CitizensManagement {
 
 		@Override
 		public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
-			return new CBoolean(CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t).isSpawned(), t);
+			return CBoolean.get(CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t).isSpawned());
 		}
 	}
 
 	@api
-	public static class ctz_spawn_npc extends CitizensNPCSetterFunction {
-
-		@Override
-		public String getName() {
-			return "ctz_spawn_npc";
-		}
+	public static final class ctz_spawn_npc extends CitizensNPCSetterFunction {
 
 		@Override
 		public String docs() {
@@ -298,12 +242,7 @@ public class CitizensManagement {
 	}
 
 	@api
-	public static class ctz_despawn_npc extends CitizensNPCFunction {
-
-		@Override
-		public String getName() {
-			return "ctz_despawn_npc";
-		}
+	public static final class ctz_despawn_npc extends CitizensNPCFunction {
 
 		@Override
 		public Integer[] numArgs() {
@@ -339,12 +278,7 @@ public class CitizensManagement {
 	}
 
 	@api
-	public static class ctz_npc_entity_id extends CitizensNPCGetterFunction {
-
-		@Override
-		public String getName() {
-			return "ctz_npc_entity_id";
-		}
+	public static final class ctz_npc_entity_id extends CitizensNPCGetterFunction {
 
 		@Override
 		public String docs() {
@@ -363,12 +297,7 @@ public class CitizensManagement {
 	}
 
 	@api
-	public static class ctz_set_npc_entity_type extends CitizensNPCSetterFunction {
-
-		@Override
-		public String getName() {
-			return "ctz_set_npc_entity_type";
-		}
+	public static final class ctz_set_npc_entity_type extends CitizensNPCSetterFunction {
 
 		@Override
 		public ExceptionType[] thrown() {
@@ -398,12 +327,7 @@ public class CitizensManagement {
 	}
 
 	@api
-	public static class ctz_npc_name extends CitizensNPCGetterFunction {
-
-		@Override
-		public String getName() {
-			return "ctz_npc_name";
-		}
+	public static final class ctz_npc_name extends CitizensNPCGetterFunction {
 
 		@Override
 		public String docs() {
@@ -417,12 +341,7 @@ public class CitizensManagement {
 	}
 
 	@api
-	public static class ctz_set_npc_name extends CitizensNPCSetterFunction {
-
-		@Override
-		public String getName() {
-			return "ctz_set_npc_name";
-		}
+	public static final class ctz_set_npc_name extends CitizensNPCSetterFunction {
 
 		@Override
 		public String docs() {
@@ -437,12 +356,7 @@ public class CitizensManagement {
 	}
 
 	@api
-	public static class ctz_npc_full_name extends CitizensNPCGetterFunction {
-
-		@Override
-		public String getName() {
-			return "ctz_npc_full_name";
-		}
+	public static final class ctz_npc_full_name extends CitizensNPCGetterFunction {
 
 		@Override
 		public String docs() {
@@ -456,12 +370,7 @@ public class CitizensManagement {
 	}
 
 	@api
-	public static class ctz_npc_is_protected extends CitizensNPCGetterFunction {
-
-		@Override
-		public String getName() {
-			return "ctz_npc_is_protected";
-		}
+	public static final class ctz_npc_is_protected extends CitizensNPCGetterFunction {
 
 		@Override
 		public String docs() {
@@ -470,17 +379,12 @@ public class CitizensManagement {
 
 		@Override
 		public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
-			return new CBoolean(CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t).isProtected(), t);
+			return CBoolean.get(CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t).isProtected());
 		}
 	}
 
 	@api
-	public static class ctz_set_npc_protected extends CitizensNPCSetterFunction {
-
-		@Override
-		public String getName() {
-			return "ctz_set_npc_protected";
-		}
+	public static final class ctz_set_npc_protected extends CitizensNPCSetterFunction {
 
 		@Override
 		public String docs() {

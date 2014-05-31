@@ -1,5 +1,6 @@
 package com.hekta.chcitizens.core.functions;
 
+import com.laytonsmith.PureUtilities.Version;
 import com.laytonsmith.core.CHVersion;
 import com.laytonsmith.core.functions.AbstractFunction;
 import com.laytonsmith.core.functions.Exceptions.ExceptionType;
@@ -8,9 +9,15 @@ import com.laytonsmith.core.functions.Exceptions.ExceptionType;
  *
  * @author Hekta
  */
-public class CitizensFunctions {
+public abstract class CitizensFunctions {
 
-	public static abstract class CitizensNPCFunction extends AbstractFunction {
+	protected static abstract class CitizensNPCFunction extends AbstractFunction {
+
+		@Override
+		public String getName() {
+			return getClass().getSimpleName();
+		}
+
 		@Override
 		public boolean isRestricted() {
 			return true;
@@ -22,12 +29,13 @@ public class CitizensFunctions {
 		}
 
 		@Override
-		public CHVersion since() {
+		public Version since() {
 			return CHVersion.V3_3_1;
 		}
 	}
 
-	public static abstract class CitizensNPCGetterFunction extends CitizensNPCFunction {
+	protected static abstract class CitizensNPCGetterFunction extends CitizensNPCFunction {
+
 		@Override
 		public ExceptionType[] thrown() {
 			return new ExceptionType[]{ExceptionType.InvalidPluginException, ExceptionType.CastException, ExceptionType.NotFoundException};
@@ -39,7 +47,8 @@ public class CitizensFunctions {
 		}
 	}
 
-	public static abstract class CitizensNPCSetterFunction extends CitizensNPCFunction {
+	protected static abstract class CitizensNPCSetterFunction extends CitizensNPCFunction {
+
 		@Override
 		public ExceptionType[] thrown() {
 			return new ExceptionType[]{ExceptionType.InvalidPluginException, ExceptionType.CastException, ExceptionType.NotFoundException};
