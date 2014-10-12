@@ -25,6 +25,7 @@ import com.laytonsmith.core.constructs.Target;
 import com.laytonsmith.core.environments.Environment;
 import com.laytonsmith.core.exceptions.ConfigRuntimeException;
 import com.laytonsmith.core.functions.Exceptions.ExceptionType;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -407,8 +408,8 @@ public abstract class CitizensAI extends CitizensFunctions {
 			MCCitizensNPC npc = CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t);
 			MCCitizensSpeechFactory speechFactory = CHCitizensStatic.getCitizensPlugin(t).getSpeechFactory();
 			if (args.length == 2) {
-				MCPlayer[] p = Static.getServer().getOnlinePlayers();
-				MCCitizensTalkable[] recipients = new MCCitizensTalkable[p.length];
+                Collection<MCPlayer> p = Static.getServer().getOnlinePlayers();
+				MCCitizensTalkable[] recipients = new MCCitizensTalkable[p.size()];
 				int i = 0;
 				for (MCPlayer player : p) {
 					recipients[i] = speechFactory.newTalkableEntity(player);
