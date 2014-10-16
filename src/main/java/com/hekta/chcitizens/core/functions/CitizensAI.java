@@ -408,7 +408,7 @@ public abstract class CitizensAI extends CitizensFunctions {
 			MCCitizensNPC npc = CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t);
 			MCCitizensSpeechFactory speechFactory = CHCitizensStatic.getCitizensPlugin(t).getSpeechFactory();
 			if (args.length == 2) {
-                Collection<MCPlayer> p = Static.getServer().getOnlinePlayers();
+				Collection<MCPlayer> p = Static.getServer().getOnlinePlayers();
 				MCCitizensTalkable[] recipients = new MCCitizensTalkable[p.size()];
 				int i = 0;
 				for (MCPlayer player : p) {
