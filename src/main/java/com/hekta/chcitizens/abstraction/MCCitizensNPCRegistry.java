@@ -13,9 +13,9 @@ import com.laytonsmith.abstraction.enums.MCEntityType;
  */
 public interface MCCitizensNPCRegistry extends AbstractionObject {
 
-	public MCCitizensNPC createNPC(MCEntityType type, UUID uuid, int id, String name);
-	public MCCitizensNPC createNPC(MCEntityType type, int id, String name);
-	public MCCitizensNPC createNPC(MCEntityType type, String name);
+	public MCCitizensNPC createNPC(MCEntityType.MCVanillaEntityType type, UUID uuid, int id, String name);
+	public MCCitizensNPC createNPC(MCEntityType.MCVanillaEntityType type, int id, String name);
+	public MCCitizensNPC createNPC(MCEntityType.MCVanillaEntityType type, String name);
 
 	public void deregisterNPC(MCCitizensNPC npc);
 

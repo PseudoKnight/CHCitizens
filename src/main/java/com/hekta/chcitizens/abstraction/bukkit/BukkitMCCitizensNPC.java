@@ -116,7 +116,7 @@ public class BukkitMCCitizensNPC implements MCCitizensNPC {
 
 	@Override
 	public void setEntityType(MCEntityType type) {
-		_npc.setBukkitEntityType(BukkitMCEntityType.getConvertor().getConcreteEnum(type));
+		_npc.setBukkitEntityType(((BukkitMCEntityType) type).getConcrete());
 	}
 
 	@Override

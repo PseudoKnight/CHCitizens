@@ -3,7 +3,7 @@ package com.hekta.chcitizens.abstraction.bukkit;
 import net.citizensnpcs.api.ai.speech.SpeechContext;
 import net.citizensnpcs.api.ai.speech.Talkable;
 
-import com.laytonsmith.abstraction.bukkit.BukkitMCEntity;
+import com.laytonsmith.abstraction.bukkit.entities.BukkitMCEntity;
 
 import com.hekta.chcitizens.abstraction.MCCitizensSpeechContext;
 import com.hekta.chcitizens.abstraction.MCCitizensTalkable;

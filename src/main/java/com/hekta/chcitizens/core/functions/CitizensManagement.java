@@ -84,13 +84,13 @@ public abstract class CitizensManagement extends CitizensFunctions {
 		public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
 			MCCitizensNPC npc;
 			if (args.length == 0) {
-				npc = CHCitizensStatic.getNPCRegistry(t).createNPC(MCEntityType.PLAYER, Static.getPlayer(environment, t).getName());
+				npc = CHCitizensStatic.getNPCRegistry(t).createNPC(MCEntityType.MCVanillaEntityType.PLAYER, Static.getPlayer(environment, t).getName());
 			} else if (args.length == 1) {
-				npc = CHCitizensStatic.getNPCRegistry(t).createNPC(MCEntityType.PLAYER, args[0].val());
+				npc = CHCitizensStatic.getNPCRegistry(t).createNPC(MCEntityType.MCVanillaEntityType.PLAYER, args[0].val());
 			} else if (args.length == 2) {
-				MCEntityType type;
+				MCEntityType.MCVanillaEntityType type;
 				try {
-					type = MCEntityType.valueOf(args[0].val().toUpperCase());
+					type = MCEntityType.MCVanillaEntityType.valueOf(args[0].val().toUpperCase());
 				} catch (IllegalArgumentException exception) {
 					throw new ConfigRuntimeException("Bad entity type :" + args[0].val() + ".", ExceptionType.FormatException, t);
 				}
@@ -104,9 +104,9 @@ public abstract class CitizensManagement extends CitizensFunctions {
 				if (CHCitizensStatic.getNPCRegistry(t).getNPC(id) == null) {
 					throw new ConfigRuntimeException("A NPC with this id (" + id + ") already exists.", ExceptionType.RangeException, t);
 				}
-				MCEntityType type;
+				MCEntityType.MCVanillaEntityType type;
 				try {
-					type = MCEntityType.valueOf(args[0].val().toUpperCase());
+					type = MCEntityType.MCVanillaEntityType.valueOf(args[0].val().toUpperCase());
 				} catch (IllegalArgumentException exception) {
 					throw new ConfigRuntimeException("Bad entity type :" + args[0].val() + ".", ExceptionType.FormatException, t);
 				}

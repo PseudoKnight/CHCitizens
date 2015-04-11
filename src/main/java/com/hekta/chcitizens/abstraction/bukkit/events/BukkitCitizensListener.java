@@ -25,7 +25,7 @@ public class BukkitCitizensListener implements Listener {
 		if (_listener == null) {
 			_listener = new BukkitCitizensListener();
 		}
-		CommandHelperPlugin.self.registerEvent(_listener);
+		CommandHelperPlugin.self.registerEvents(_listener);
 	}
 
 	public static void unregister() {

@@ -8,12 +8,13 @@ import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.npc.NPCRegistry;
 
 import com.laytonsmith.abstraction.MCEntity;
-import com.laytonsmith.abstraction.bukkit.BukkitMCEntity;
+import com.laytonsmith.abstraction.bukkit.entities.BukkitMCEntity;
 import com.laytonsmith.abstraction.enums.MCEntityType;
 import com.laytonsmith.abstraction.enums.bukkit.BukkitMCEntityType;
 
 import com.hekta.chcitizens.abstraction.MCCitizensNPC;
 import com.hekta.chcitizens.abstraction.MCCitizensNPCRegistry;
+import org.bukkit.entity.EntityType;
 
 /**
  *
@@ -33,19 +34,19 @@ public class BukkitMCCitizensNPCRegistry implements MCCitizensNPCRegistry {
 	}
 
 	@Override
-	public MCCitizensNPC createNPC(MCEntityType type, UUID uuid, int id, String name) {
-		NPC npc = _registry.createNPC(BukkitMCEntityType.getConvertor().getConcreteEnum(type), uuid, id, name);
+	public MCCitizensNPC createNPC(MCEntityType.MCVanillaEntityType type, UUID uuid, int id, String name) {
+		NPC npc = _registry.createNPC((EntityType) MCEntityType.valueOfVanillaType(type).getConcrete(), uuid, id, name);
 		return (npc != null) ? new BukkitMCCitizensNPC(npc) : null;
 	}
 
 	@Override
-	public MCCitizensNPC createNPC(MCEntityType type, int id, String name) {
+	public MCCitizensNPC createNPC(MCEntityType.MCVanillaEntityType type, int id, String name) {
 		return createNPC(type, UUID.randomUUID(), id, name);
 	}
 
 	@Override
-	public MCCitizensNPC createNPC(MCEntityType type, String name) {
-		NPC npc = _registry.createNPC(BukkitMCEntityType.getConvertor().getConcreteEnum(type), name);
+	public MCCitizensNPC createNPC(MCEntityType.MCVanillaEntityType type, String name) {
+		NPC npc = _registry.createNPC((EntityType) MCEntityType.valueOfVanillaType(type).getConcrete(), name);
 		return (npc != null) ? new BukkitMCCitizensNPC(npc) : null;
 	}
 

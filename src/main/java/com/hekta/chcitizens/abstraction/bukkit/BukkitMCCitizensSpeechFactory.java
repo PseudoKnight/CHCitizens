@@ -4,8 +4,8 @@ import net.citizensnpcs.api.ai.speech.SpeechContext;
 import net.citizensnpcs.api.ai.speech.SpeechFactory;
 
 import com.laytonsmith.abstraction.MCEntity;
-import com.laytonsmith.abstraction.bukkit.BukkitMCEntity;
-import com.laytonsmith.abstraction.bukkit.BukkitMCLivingEntity;
+import com.laytonsmith.abstraction.bukkit.entities.BukkitMCEntity;
+import com.laytonsmith.abstraction.bukkit.entities.BukkitMCLivingEntity;
 
 import com.hekta.chcitizens.abstraction.MCCitizensNPC;
 import com.hekta.chcitizens.abstraction.MCCitizensSpeechContext;

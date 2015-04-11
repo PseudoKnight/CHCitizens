@@ -7,7 +7,7 @@ import net.citizensnpcs.api.ai.Navigator;
 
 import com.laytonsmith.abstraction.MCEntity;
 import com.laytonsmith.abstraction.MCLocation;
-import com.laytonsmith.abstraction.bukkit.BukkitMCEntity;
+import com.laytonsmith.abstraction.bukkit.entities.BukkitMCEntity;
 import com.laytonsmith.abstraction.bukkit.BukkitMCLocation;
 
 import com.hekta.chcitizens.abstraction.MCCitizensEntityTarget;
