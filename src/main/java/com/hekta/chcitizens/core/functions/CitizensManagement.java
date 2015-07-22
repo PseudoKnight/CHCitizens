@@ -289,7 +289,7 @@ public abstract class CitizensManagement extends CitizensFunctions {
 		public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
 			MCEntity entity = CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t).getEntity();
 			if (entity != null) {
-				return new CInt(entity.getEntityId(), t);
+				return new CString(entity.getUniqueId().toString(), t);
 			} else {
 				return CNull.NULL;
 			}

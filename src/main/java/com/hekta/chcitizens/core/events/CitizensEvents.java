@@ -119,7 +119,7 @@ public final class CitizensEvents {
 				MCCitizensNPC npc = npcde.getNPC();
 				mapEvent.put("npc", new CInt(npc.getId(), Target.UNKNOWN));
 				MCEntity entity = npc.getEntity();
-				mapEvent.put("entity", new CInt(entity.getEntityId(), Target.UNKNOWN));
+				mapEvent.put("entity", new CString(entity.getUniqueId().toString(), Target.UNKNOWN));
 				mapEvent.put("type", new CString(entity.getType().name(), Target.UNKNOWN));
 				mapEvent.put("location", ObjectGenerator.GetGenerator().location(entity.getLocation()));
 				mapEvent.put("reason", new CString(npcde.getReason().name(), Target.UNKNOWN));
@@ -178,7 +178,7 @@ public final class CitizensEvents {
 				MCCitizensNPC npc = nce.getNPC();
 				mapEvent.put("npc", new CInt(npc.getId(), Target.UNKNOWN));
 				MCEntity entity = npc.getEntity();
-				mapEvent.put("entity", new CInt(entity.getEntityId(), Target.UNKNOWN));
+				mapEvent.put("entity", new CString(entity.getUniqueId().toString(), Target.UNKNOWN));
 				mapEvent.put("type", new CString(entity.getType().name(), Target.UNKNOWN));
 				if (npc.isSpawned()) {
 					mapEvent.put("location", ObjectGenerator.GetGenerator().location(entity.getLocation()));
@@ -232,7 +232,7 @@ public final class CitizensEvents {
 				MCCitizensNPC npc = nce.getNPC();
 				mapEvent.put("npc", new CInt(npc.getId(), Target.UNKNOWN));
 				MCEntity entity = npc.getEntity();
-				mapEvent.put("entity", new CInt(entity.getEntityId(), Target.UNKNOWN));
+				mapEvent.put("entity", new CString(entity.getUniqueId().toString(), Target.UNKNOWN));
 				mapEvent.put("type", new CString(entity.getType().name(), Target.UNKNOWN));
 				mapEvent.put("location", ObjectGenerator.GetGenerator().location(entity.getLocation()));
 				return mapEvent;
@@ -282,7 +282,7 @@ public final class CitizensEvents {
 				MCCitizensNPC npc = npcse.getNPC();
 				mapEvent.put("npc", new CInt(npc.getId(), Target.UNKNOWN));
 				MCEntity entity = npc.getEntity();
-				mapEvent.put("entity", new CInt(entity.getEntityId(), Target.UNKNOWN));
+				mapEvent.put("entity", new CString(entity.getUniqueId().toString(), Target.UNKNOWN));
 				mapEvent.put("type", new CString(entity.getType().name(), Target.UNKNOWN));
 				mapEvent.put("location", ObjectGenerator.GetGenerator().location(npcse.getLocation()));
 				return mapEvent;

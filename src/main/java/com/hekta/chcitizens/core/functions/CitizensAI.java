@@ -72,7 +72,7 @@ public abstract class CitizensAI extends CitizensFunctions {
 			} else if (args[1].val().equalsIgnoreCase("ENTITY")) {
 				MCCitizensEntityTarget target = CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t).getNavigator().getEntityTarget();
 				if (target != null) {
-					return new CInt(target.getTarget().getEntityId(), t);
+					return new CString(target.getTarget().getUniqueId().toString(), t);
 				} else {
 					return CNull.NULL;
 				}
@@ -118,7 +118,7 @@ public abstract class CitizensAI extends CitizensFunctions {
 				} else {
 					isAggressive = Static.getBoolean(args[2]);
 				}
-				npc.getNavigator().setTarget(Static.getLivingEntity(Static.getInt32(args[1], t), t), isAggressive);
+				npc.getNavigator().setTarget(Static.getLivingEntity(args[1], t), isAggressive);
 			}
 			CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t).setProtected(Static.getBoolean(args[1]));
 			return CVoid.VOID;
