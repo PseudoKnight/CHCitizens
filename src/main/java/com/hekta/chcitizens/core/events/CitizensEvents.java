@@ -103,6 +103,9 @@ public final class CitizensEvents {
 				MCCitizensNPCDespawnEvent npcde = (MCCitizensNPCDespawnEvent) event;
 				Prefilters.match(prefilter, "reason", npcde.getReason().name(), Prefilters.PrefilterType.MACRO);
 				MCEntity entity = npcde.getNPC().getEntity();
+				if(entity == null) {
+					return false;
+				}
 				Prefilters.match(prefilter, "world", entity.getWorld().getName(), Prefilters.PrefilterType.MACRO);
 				Prefilters.match(prefilter, "type", entity.getType().name(), Prefilters.PrefilterType.MACRO);
 				return true;
