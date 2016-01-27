@@ -1,8 +1,8 @@
 package com.hekta.chcitizens.core;
 
 import com.laytonsmith.core.constructs.Target;
-import com.laytonsmith.core.exceptions.ConfigRuntimeException;
-import com.laytonsmith.core.functions.Exceptions.ExceptionType;
+import com.laytonsmith.core.exceptions.CRE.CREInvalidPluginException;
+import com.laytonsmith.core.exceptions.CRE.CRENotFoundException;
 
 import com.hekta.chcitizens.CHCitizens;
 import com.hekta.chcitizens.abstraction.MCCitizensNPC;
@@ -20,7 +20,7 @@ public final class CHCitizensStatic {
 		if (plugin != null) {
 			return plugin;
 		} else {
-			throw new ConfigRuntimeException("Needed plugin Citizens not found.", ExceptionType.InvalidPluginException, t);
+			throw new CREInvalidPluginException("Needed plugin Citizens not found.", t);
 		}
 	}
 
@@ -29,7 +29,7 @@ public final class CHCitizensStatic {
 		if (registry != null) {
 			return registry;
 		} else {
-			throw new ConfigRuntimeException("Needed plugin Citizens not found.", ExceptionType.InvalidPluginException, t);
+			throw new CREInvalidPluginException("Needed plugin Citizens not found.", t);
 		}
 	}
 
@@ -38,7 +38,7 @@ public final class CHCitizensStatic {
 		if (npc != null) {
 			return npc;
 		} else {
-			throw new ConfigRuntimeException("There is no existing NPC with this id (" + id + ").", ExceptionType.NotFoundException, t);
+			throw new CRENotFoundException("There is no existing NPC with this id (" + id + ").", t);
 		}
 	}
 }

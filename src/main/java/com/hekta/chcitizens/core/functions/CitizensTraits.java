@@ -13,8 +13,12 @@ import com.laytonsmith.core.constructs.CString;
 import com.laytonsmith.core.constructs.CVoid;
 import com.laytonsmith.core.constructs.Target;
 import com.laytonsmith.core.environments.Environment;
+import com.laytonsmith.core.exceptions.CRE.CRECastException;
+import com.laytonsmith.core.exceptions.CRE.CREIndexOverflowException;
+import com.laytonsmith.core.exceptions.CRE.CREInvalidPluginException;
+import com.laytonsmith.core.exceptions.CRE.CRENotFoundException;
+import com.laytonsmith.core.exceptions.CRE.CREThrowable;
 import com.laytonsmith.core.exceptions.ConfigRuntimeException;
-import com.laytonsmith.core.functions.Exceptions.ExceptionType;
 
 /**
  *
@@ -35,8 +39,8 @@ public abstract class CitizensTraits extends CitizensFunctions {
 		}
 
 		@Override
-		public ExceptionType[] thrown() {
-			return new ExceptionType[]{ExceptionType.InvalidPluginException, ExceptionType.NotFoundException, ExceptionType.IndexOverflowException};
+		public Class<? extends CREThrowable>[] thrown() {
+			return new Class[]{CREInvalidPluginException.class, CRENotFoundException.class, CREIndexOverflowException.class};
 		}
 
 		@Override
@@ -47,7 +51,7 @@ public abstract class CitizensTraits extends CitizensFunctions {
 		}
 
 		@Override
-		public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
+		public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException{
 			MCCitizensNPC npc = CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t);
 			String trait;
 			if (args.length == 1) {
@@ -73,7 +77,7 @@ public abstract class CitizensTraits extends CitizensFunctions {
 				for (String key : traitArray.stringKeySet()) {
 					return traitArray.get(key, t);
 				}
-				throw new ConfigRuntimeException("Unknown or unsupported trait: " + args[1].val() + ".", ExceptionType.IndexOverflowException, t);
+				throw new CREIndexOverflowException("Unknown or unsupported trait: " + args[1].val() + ".", t);
 			}
 		}
 	}
@@ -87,8 +91,8 @@ public abstract class CitizensTraits extends CitizensFunctions {
 		}
 
 		@Override
-		public ExceptionType[] thrown() {
-			return new ExceptionType[]{ExceptionType.InvalidPluginException, ExceptionType.NotFoundException, ExceptionType.IndexOverflowException, ExceptionType.CastException};
+		public Class<? extends CREThrowable>[] thrown() {
+			return new Class[]{CREInvalidPluginException.class, CRENotFoundException.class, CREIndexOverflowException.class, CRECastException.class};
 		}
 
 		@Override
@@ -107,14 +111,14 @@ public abstract class CitizensTraits extends CitizensFunctions {
 						if (key.equals("owner")) {
 							((MCCitizensOwner) npc.getTrait("owner")).setOwner(Static.getServer().getOfflinePlayer(array.get(key, t).val()));
 						} else {
-							throw new ConfigRuntimeException("Invalid key:" + key + ".", ExceptionType.IndexOverflowException, t);
+							throw new CREIndexOverflowException("Invalid key:" + key + ".", t);
 						}
 					}
 				} else {
-					throw new ConfigRuntimeException("The NPC does not have the given trait:" + args[1].val() + ".", ExceptionType.NotFoundException, t);
+					throw new CRENotFoundException("The NPC does not have the given trait:" + args[1].val() + ".", t);
 				}
 			} else {
-				throw new ConfigRuntimeException("Unknown or unsupported trait: " + trait + ".", ExceptionType.IndexOverflowException, t);
+				throw new CREIndexOverflowException("Unknown or unsupported trait: " + trait + ".", t);
 			}
 			return CVoid.VOID;
 		}
@@ -129,8 +133,8 @@ public abstract class CitizensTraits extends CitizensFunctions {
 		}
 
 		@Override
-		public ExceptionType[] thrown() {
-			return new ExceptionType[]{ExceptionType.InvalidPluginException, ExceptionType.NotFoundException};
+		public Class<? extends CREThrowable>[] thrown() {
+			return new Class[]{CREInvalidPluginException.class, CRENotFoundException.class};
 		}
 
 		@Override
@@ -145,7 +149,7 @@ public abstract class CitizensTraits extends CitizensFunctions {
 			if (trait.equalsIgnoreCase("owner")) {
 				return CBoolean.get(npc.hasTrait("owner"));
 			} else {
-				throw new ConfigRuntimeException("Unknown or unsupported trait: " + trait + ".", ExceptionType.IndexOverflowException, t);
+				throw new CREIndexOverflowException("Unknown or unsupported trait: " + trait + ".", t);
 			}
 		}
 	}

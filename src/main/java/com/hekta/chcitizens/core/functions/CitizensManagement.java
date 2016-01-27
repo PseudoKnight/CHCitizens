@@ -19,8 +19,15 @@ import com.laytonsmith.core.constructs.CString;
 import com.laytonsmith.core.constructs.CVoid;
 import com.laytonsmith.core.constructs.Target;
 import com.laytonsmith.core.environments.Environment;
+import com.laytonsmith.core.exceptions.CRE.CREBadEntityTypeException;
+import com.laytonsmith.core.exceptions.CRE.CRECastException;
+import com.laytonsmith.core.exceptions.CRE.CREFormatException;
+import com.laytonsmith.core.exceptions.CRE.CREInvalidPluginException;
+import com.laytonsmith.core.exceptions.CRE.CRENotFoundException;
+import com.laytonsmith.core.exceptions.CRE.CREPlayerOfflineException;
+import com.laytonsmith.core.exceptions.CRE.CRERangeException;
+import com.laytonsmith.core.exceptions.CRE.CREThrowable;
 import com.laytonsmith.core.exceptions.ConfigRuntimeException;
-import com.laytonsmith.core.functions.Exceptions.ExceptionType;
 
 /**
  *
@@ -41,8 +48,8 @@ public abstract class CitizensManagement extends CitizensFunctions {
 		}
 
 		@Override
-		public ExceptionType[] thrown() {
-			return new ExceptionType[]{ExceptionType.InvalidPluginException};
+		public Class<? extends CREThrowable>[] thrown() {
+			return new Class[]{CREInvalidPluginException.class};
 		}
 
 		@Override
@@ -51,10 +58,10 @@ public abstract class CitizensManagement extends CitizensFunctions {
 		}
 
 		@Override
-		public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
+		public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException{
 			CArray array = new CArray(t);
 			for (MCCitizensNPC npc : CHCitizensStatic.getNPCRegistry(t).getNPCs()) {
-				array.push(new CInt(npc.getId(), t));
+				array.push(new CInt(npc.getId(), t), t);
 			}
 			return array;
 		}
@@ -69,8 +76,8 @@ public abstract class CitizensManagement extends CitizensFunctions {
 		}
 
 		@Override
-		public ExceptionType[] thrown() {
-			return new ExceptionType[]{ExceptionType.InvalidPluginException, ExceptionType.CastException, ExceptionType.FormatException, ExceptionType.BadEntityTypeException, ExceptionType.RangeException, ExceptionType.PlayerOfflineException};
+		public Class<? extends CREThrowable>[] thrown() {
+			return new Class[]{CREInvalidPluginException.class, CRECastException.class, CREFormatException.class, CREBadEntityTypeException.class, CRERangeException.class, CREPlayerOfflineException.class};
 		}
 
 		@Override
@@ -92,28 +99,28 @@ public abstract class CitizensManagement extends CitizensFunctions {
 				try {
 					type = MCEntityType.MCVanillaEntityType.valueOf(args[0].val().toUpperCase());
 				} catch (IllegalArgumentException exception) {
-					throw new ConfigRuntimeException("Bad entity type :" + args[0].val() + ".", ExceptionType.FormatException, t);
+					throw new CREFormatException("Bad entity type :" + args[0].val() + ".", t);
 				}
 				try {
 					npc = CHCitizensStatic.getNPCRegistry(t).createNPC(type, args[1].val());
 				} catch (IllegalArgumentException exception) {
-					throw new ConfigRuntimeException("The given entity type (" + args[0].val() + ") is not a living entity type.", ExceptionType.BadEntityTypeException, t);
+					throw new CREBadEntityTypeException("The given entity type (" + args[0].val() + ") is not a living entity type.", t);
 				}
 			} else {
 				int id = Static.getInt32(args[1], t);
 				if (CHCitizensStatic.getNPCRegistry(t).getNPC(id) == null) {
-					throw new ConfigRuntimeException("A NPC with this id (" + id + ") already exists.", ExceptionType.RangeException, t);
+					throw new CRERangeException("A NPC with this id (" + id + ") already exists.", t);
 				}
 				MCEntityType.MCVanillaEntityType type;
 				try {
 					type = MCEntityType.MCVanillaEntityType.valueOf(args[0].val().toUpperCase());
 				} catch (IllegalArgumentException exception) {
-					throw new ConfigRuntimeException("Bad entity type :" + args[0].val() + ".", ExceptionType.FormatException, t);
+					throw new CREFormatException("Bad entity type :" + args[0].val() + ".", t);
 				}
 				try {
 					npc = CHCitizensStatic.getNPCRegistry(t).createNPC(type, id, args[2].val());
 				} catch (IllegalArgumentException exception) {
-					throw new ConfigRuntimeException("The given entity type (" + args[0].val() + ") is not a living entity type.", ExceptionType.BadEntityTypeException, t);
+					throw new CREBadEntityTypeException("The given entity type (" + args[0].val() + ") is not a living entity type.", t);
 				}
 			}
 			if (npc != null) {
@@ -195,8 +202,8 @@ public abstract class CitizensManagement extends CitizensFunctions {
 	public static final class ctz_set_npc_face_loc extends CitizensNPCSetterFunction {
 
 		@Override
-		public ExceptionType[] thrown() {
-			return new ExceptionType[]{ExceptionType.InvalidPluginException, ExceptionType.CastException, ExceptionType.NotFoundException, ExceptionType.FormatException};
+		public Class<? extends CREThrowable>[] thrown() {
+			return new Class[]{CREInvalidPluginException.class, CRECastException.class, CRENotFoundException.class, CREFormatException.class};
 		}
 
 		@Override
@@ -250,8 +257,8 @@ public abstract class CitizensManagement extends CitizensFunctions {
 		}
 
 		@Override
-		public ExceptionType[] thrown() {
-			return new ExceptionType[]{ExceptionType.InvalidPluginException, ExceptionType.CastException, ExceptionType.NotFoundException, ExceptionType.FormatException};
+		public Class<? extends CREThrowable>[] thrown() {
+			return new Class[]{CREInvalidPluginException.class, CRECastException.class, CRENotFoundException.class, CREFormatException.class};
 		}
 
 		@Override
@@ -269,7 +276,7 @@ public abstract class CitizensManagement extends CitizensFunctions {
 				try {
 					reason = MCCitizensDespawnReason.valueOf(args[1].val().toUpperCase());
 				} catch (IllegalArgumentException exception) {
-					throw new ConfigRuntimeException(args[1].val() + " is not a valid despawn reason.", ExceptionType.FormatException, t);
+					throw new CREFormatException(args[1].val() + " is not a valid despawn reason.", t);
 				}
 			}
 			CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t).despawn(reason);
@@ -300,8 +307,8 @@ public abstract class CitizensManagement extends CitizensFunctions {
 	public static final class ctz_set_npc_entity_type extends CitizensNPCSetterFunction {
 
 		@Override
-		public ExceptionType[] thrown() {
-			return new ExceptionType[]{ExceptionType.InvalidPluginException, ExceptionType.CastException, ExceptionType.NotFoundException, ExceptionType.FormatException, ExceptionType.BadEntityTypeException};
+		public Class<? extends CREThrowable>[] thrown() {
+			return new Class[]{CREInvalidPluginException.class, CRECastException.class, CRENotFoundException.class, CREFormatException.class, CREBadEntityTypeException.class};
 		}
 
 		@Override
@@ -315,12 +322,12 @@ public abstract class CitizensManagement extends CitizensFunctions {
 			try {
 				type = MCEntityType.valueOf(args[1].val().toUpperCase());
 			} catch (IllegalArgumentException exception) {
-				throw new ConfigRuntimeException("Bad entity type :" + args[1].val() + ".", ExceptionType.FormatException, t);
+				throw new CREFormatException("Bad entity type :" + args[1].val() + ".", t);
 			}
 			try {
 				CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t).setEntityType(type);
 			} catch (IllegalArgumentException exception) {
-				throw new ConfigRuntimeException("The given entity type (" + args[1].val() + ") is not a living entity type.", ExceptionType.BadEntityTypeException, t);
+				throw new CREBadEntityTypeException("The given entity type (" + args[1].val() + ") is not a living entity type.", t);
 			}
 			return CVoid.VOID;
 		}

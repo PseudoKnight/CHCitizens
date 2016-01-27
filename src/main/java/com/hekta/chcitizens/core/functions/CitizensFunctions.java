@@ -2,8 +2,11 @@ package com.hekta.chcitizens.core.functions;
 
 import com.laytonsmith.PureUtilities.Version;
 import com.laytonsmith.core.CHVersion;
+import com.laytonsmith.core.exceptions.CRE.CRECastException;
+import com.laytonsmith.core.exceptions.CRE.CREInvalidPluginException;
+import com.laytonsmith.core.exceptions.CRE.CRENotFoundException;
+import com.laytonsmith.core.exceptions.CRE.CREThrowable;
 import com.laytonsmith.core.functions.AbstractFunction;
-import com.laytonsmith.core.functions.Exceptions.ExceptionType;
 
 /**
  *
@@ -37,8 +40,8 @@ public abstract class CitizensFunctions {
 	protected static abstract class CitizensNPCGetterFunction extends CitizensNPCFunction {
 
 		@Override
-		public ExceptionType[] thrown() {
-			return new ExceptionType[]{ExceptionType.InvalidPluginException, ExceptionType.CastException, ExceptionType.NotFoundException};
+		public Class<? extends CREThrowable>[] thrown() {
+			return new Class[]{CREInvalidPluginException.class, CRECastException.class, CRENotFoundException.class};
 		}
 
 		@Override
@@ -50,8 +53,8 @@ public abstract class CitizensFunctions {
 	protected static abstract class CitizensNPCSetterFunction extends CitizensNPCFunction {
 
 		@Override
-		public ExceptionType[] thrown() {
-			return new ExceptionType[]{ExceptionType.InvalidPluginException, ExceptionType.CastException, ExceptionType.NotFoundException};
+		public Class<? extends CREThrowable>[] thrown() {
+			return new Class[]{CREInvalidPluginException.class, CRECastException.class, CRENotFoundException.class};
 		}
 
 		@Override

@@ -5,7 +5,7 @@ CHCitizens
 
 - To install the extension, put the [jar file](http://ci.nixium.com/job/CHCitizens/) in the extensions folder of the CommandHelper folder.
  
-- The last version is compatible with Citizens 2.0.14, CommandHelper 3.3.1-2861 and Craftbukkit 1.8-R0.1.
+- The last version is compatible with Citizens 2.0.14 - 2.0.16, CommandHelper 3.3.1-3042 and Craftbukkit/Spigot 1.8 - 1.8.8.
 
 - The documentation for the extension is [here](https://github.com/Hekta/CHCitizens/blob/master/documentation/Documentation.md).
 

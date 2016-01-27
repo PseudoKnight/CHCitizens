@@ -19,6 +19,7 @@ import com.laytonsmith.core.events.BindableEvent;
 import com.laytonsmith.core.events.Driver;
 import com.laytonsmith.core.events.EventBuilder;
 import com.laytonsmith.core.events.Prefilters;
+import com.laytonsmith.core.exceptions.CRE.CREFormatException;
 import com.laytonsmith.core.exceptions.ConfigRuntimeException;
 import com.laytonsmith.core.exceptions.EventException;
 import com.laytonsmith.core.exceptions.PrefilterNonMatchException;
@@ -92,7 +93,7 @@ public final class CitizensEvents {
 			try {
 				reason = MCCitizensDespawnReason.valueOf(manualObject.get("reason", t).val().toUpperCase());
 			} catch (IllegalArgumentException exception) {
-				throw new ConfigRuntimeException(manualObject.get("reason", t).val() + " is not a valid despawn reason.", Exceptions.ExceptionType.FormatException, t);
+				throw new CREFormatException(manualObject.get("reason", t).val() + " is not a valid despawn reason.", t);
 			}
 			return EventBuilder.instantiate(MCCitizensNPCDespawnEvent.class, npc, reason);
 		}
@@ -153,7 +154,7 @@ public final class CitizensEvents {
 			try {
 				reason = MCCitizensCancelReason.valueOf(manualObject.get("reason", t).val().toUpperCase());
 			} catch (IllegalArgumentException exception) {
-				throw new ConfigRuntimeException(manualObject.get("reason", t).val() + " is not a valid cancel reason.", Exceptions.ExceptionType.FormatException, t);
+				throw new CREFormatException(manualObject.get("reason", t).val() + " is not a valid cancel reason.", t);
 			}
 			MCCitizensNavigator navigator = CHCitizensStatic.getNPC(Static.getInt32(manualObject.get("npc", t), t), t).getNavigator();
 			return EventBuilder.instantiate(MCCitizensNavigationCancelEvent.class, navigator, reason);

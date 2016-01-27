@@ -23,8 +23,16 @@ import com.laytonsmith.core.constructs.CString;
 import com.laytonsmith.core.constructs.CVoid;
 import com.laytonsmith.core.constructs.Target;
 import com.laytonsmith.core.environments.Environment;
+import com.laytonsmith.core.exceptions.CRE.CREBadEntityException;
+import com.laytonsmith.core.exceptions.CRE.CRECastException;
+import com.laytonsmith.core.exceptions.CRE.CREFormatException;
+import com.laytonsmith.core.exceptions.CRE.CREInvalidPluginException;
+import com.laytonsmith.core.exceptions.CRE.CRENotFoundException;
+import com.laytonsmith.core.exceptions.CRE.CREPlayerOfflineException;
+import com.laytonsmith.core.exceptions.CRE.CREPluginInternalException;
+import com.laytonsmith.core.exceptions.CRE.CREThrowable;
 import com.laytonsmith.core.exceptions.ConfigRuntimeException;
-import com.laytonsmith.core.functions.Exceptions.ExceptionType;
+
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -48,8 +56,8 @@ public abstract class CitizensAI extends CitizensFunctions {
 		}
 
 		@Override
-		public ExceptionType[] thrown() {
-			return new ExceptionType[]{ExceptionType.InvalidPluginException, ExceptionType.CastException, ExceptionType.NotFoundException, ExceptionType.FormatException};
+		public Class<? extends CREThrowable>[] thrown() {
+			return new Class[]{CREInvalidPluginException.class, CRECastException.class, CRENotFoundException.class, CREFormatException.class};
 		}
 
 		@Override
@@ -61,7 +69,7 @@ public abstract class CitizensAI extends CitizensFunctions {
 		}
 
 		@Override
-		public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
+		public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException{
 			if ((args.length == 1) || args[1].val().equalsIgnoreCase("LOCATION")) {
 				MCLocation location = CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t).getNavigator().getTargetAsLocation();
 				if (location != null) {
@@ -79,7 +87,7 @@ public abstract class CitizensAI extends CitizensFunctions {
 			} else if (args[1].val().equalsIgnoreCase("TYPE")) {
 				return new CString(CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t).getNavigator().getTargetType().toString(), t);
 			} else {
-				throw new ConfigRuntimeException("Invalid field:'" + args[1].val() + "'.", ExceptionType.FormatException, t);
+				throw new CREFormatException("Invalid field:'" + args[1].val() + "'.", t);
 			}
 		}
 	}
@@ -93,8 +101,8 @@ public abstract class CitizensAI extends CitizensFunctions {
 		}
 
 		@Override
-		public ExceptionType[] thrown() {
-			return new ExceptionType[]{ExceptionType.InvalidPluginException, ExceptionType.CastException, ExceptionType.NotFoundException, ExceptionType.PluginInternalException};
+		public Class<? extends CREThrowable>[] thrown() {
+			return new Class[]{CREInvalidPluginException.class, CRECastException.class, CRENotFoundException.class, CREPluginInternalException.class};
 		}
 
 		@Override
@@ -107,7 +115,7 @@ public abstract class CitizensAI extends CitizensFunctions {
 		public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
 			MCCitizensNPC npc = CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t);
 			if (!npc.isSpawned()) {
-				throw new ConfigRuntimeException("The NPC is not spawned.", ExceptionType.PluginInternalException, t);
+				throw new CREPluginInternalException("The NPC is not spawned.", t);
 			}
 			if (args[1] instanceof CArray) {
 				npc.getNavigator().setTarget(ObjectGenerator.GetGenerator().location(args[1], npc.getEntity().getWorld(), t));
@@ -393,8 +401,8 @@ public abstract class CitizensAI extends CitizensFunctions {
 		}
 
 		@Override
-		public ExceptionType[] thrown() {
-			return new ExceptionType[]{ExceptionType.InvalidPluginException, ExceptionType.CastException, ExceptionType.PlayerOfflineException, ExceptionType.BadEntityException};
+		public Class<? extends CREThrowable>[] thrown() {
+			return new Class[]{CREInvalidPluginException.class, CRECastException.class, CREPlayerOfflineException.class, CREBadEntityException.class};
 		}
 
 		@Override
@@ -419,7 +427,7 @@ public abstract class CitizensAI extends CitizensFunctions {
 			} else if (args[2] instanceof CArray) {
 				CArray array = Static.getArray(args[2], t);
 				if (array.inAssociativeMode()) {
-					throw new ConfigRuntimeException("The array of recipients must not be associative.", ExceptionType.CastException, t);
+					throw new CRECastException("The array of recipients must not be associative.", t);
 				}
 				Set<MCCitizensTalkable> recipients = new HashSet<>();
 				for (Construct recipient : array.asList()) {
