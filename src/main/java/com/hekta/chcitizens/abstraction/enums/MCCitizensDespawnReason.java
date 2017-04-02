@@ -12,6 +12,7 @@ public enum MCCitizensDespawnReason {
 	DEATH,
 	PENDING_RESPAWN,
 	PLUGIN,
+	RELOAD,
 	REMOVAL,
 	WORLD_UNLOAD;
 }
