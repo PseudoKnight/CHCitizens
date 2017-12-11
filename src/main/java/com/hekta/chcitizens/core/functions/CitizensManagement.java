@@ -289,7 +289,7 @@ public abstract class CitizensManagement extends CitizensFunctions {
 
 		@Override
 		public String docs() {
-			return "int {npcID} Returns the entity id of the NPC, or null if the NPC is not spawned.";
+			return "string {npcID} Returns the entity id of the NPC, or null if the NPC is not spawned.";
 		}
 
 		@Override

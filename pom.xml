@@ -20,18 +20,10 @@
 			<url>http://repo.md-5.net/content/repositories/snapshots/</url>
 		</repository>
 		<repository>
-			<releases>
-			</releases>
-			<snapshots>
-			</snapshots>
 			<id>sk89q-mvn2</id>
 			<url>http://mvn2.sk89q.com/repo</url>
 		</repository>
 		<repository>
-			<releases>
-			</releases>
-			<snapshots>
-			</snapshots>
 			<id>citizensnpcs-repo</id>
 			<url>http://repo.citizensnpcs.co</url>
 		</repository>
@@ -41,7 +33,7 @@
 		<dependency>
 			<groupId>org.bukkit</groupId>
 			<artifactId>bukkit</artifactId>
-			<version>1.8-R0.1-SNAPSHOT</version>
+			<version>1.12.2-R0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>com.sk89q</groupId>
@@ -51,7 +43,7 @@
 		<dependency>
 			<groupId>net.citizensnpcs</groupId>
 			<artifactId>citizensapi</artifactId>
-			<version>2.0.21-SNAPSHOT</version>
+			<version>2.0.22-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 
