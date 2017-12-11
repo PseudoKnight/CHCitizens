@@ -9,4 +9,4 @@ CHCitizens
 
 - The documentation for the extension is [here](documentation/Documentation.md).
 
-- You can report bugs or requests [here](issues).
+- You can report bugs or requests [here](https://github.com/Hekta/CHCitizens/issues).
