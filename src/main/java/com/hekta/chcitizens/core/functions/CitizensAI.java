@@ -16,7 +16,6 @@ import com.laytonsmith.core.ObjectGenerator;
 import com.laytonsmith.core.constructs.CArray;
 import com.laytonsmith.core.constructs.CBoolean;
 import com.laytonsmith.core.constructs.CDouble;
-import com.laytonsmith.core.constructs.CInt;
 import com.laytonsmith.core.constructs.CNull;
 import com.laytonsmith.core.constructs.Construct;
 import com.laytonsmith.core.constructs.CString;
@@ -402,13 +401,13 @@ public abstract class CitizensAI extends CitizensFunctions {
 
 		@Override
 		public Class<? extends CREThrowable>[] thrown() {
-			return new Class[]{CREInvalidPluginException.class, CRECastException.class, CREPlayerOfflineException.class, CREBadEntityException.class};
+			return new Class[]{CREInvalidPluginException.class, CREPlayerOfflineException.class, CREBadEntityException.class};
 		}
 
 		@Override
 		public String docs() {
 			return "void {npcID, message, [recipients]} Makes the given NPC speak a message to the given recipients."
-						+ " recipients can take an array of player names and/or entity ids, an int (living entity id), or a string (player name).";
+						+ " recipients can take an array of player names and/or UUIDs, or a single player name or UUID.";
 		}
 
 		@Override
@@ -431,17 +430,11 @@ public abstract class CitizensAI extends CitizensFunctions {
 				}
 				Set<MCCitizensTalkable> recipients = new HashSet<>();
 				for (Construct recipient : array.asList()) {
-					if (recipient instanceof CInt) {
-						recipients.add(speechFactory.newTalkableEntity(Static.getLivingEntity(Static.getInt32(args[2], t), t)));
-					} else {
-						recipients.add(speechFactory.newTalkableEntity(Static.GetPlayer(recipient.val(), t)));
-					}
+					recipients.add(speechFactory.newTalkableEntity(Static.GetPlayer(recipient, t)));
 				}
 				npc.getDefaultSpeechController().speak(speechFactory.newSpeechContext(npc, args[1].val(), recipients));
-			} else if (args[2] instanceof CInt) {
-				npc.getDefaultSpeechController().speak(speechFactory.newSpeechContext(npc, args[1].val(), speechFactory.newTalkableEntity(Static.getLivingEntity(Static.getInt32(args[2], t), t))));
 			} else {
-				npc.getDefaultSpeechController().speak(speechFactory.newSpeechContext(npc, args[1].val(), speechFactory.newTalkableEntity(Static.GetPlayer(args[2].val(), t))));
+				npc.getDefaultSpeechController().speak(speechFactory.newSpeechContext(npc, args[1].val(), speechFactory.newTalkableEntity(Static.GetPlayer(args[2], t))));
 			}
 			return CVoid.VOID;
 		}
