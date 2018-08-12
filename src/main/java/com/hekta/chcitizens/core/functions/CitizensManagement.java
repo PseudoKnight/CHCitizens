@@ -400,7 +400,7 @@ public abstract class CitizensManagement extends CitizensFunctions {
 
 		@Override
 		public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
-			CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t).setProtected(Static.getBoolean(args[1]));
+			CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t).setProtected(Static.getBoolean(args[1], t));
 			return CVoid.VOID;
 		}
 	}

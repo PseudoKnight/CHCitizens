@@ -19,7 +19,7 @@ public final class CHCitizensStaticLayer {
 
 	private static CHCitizensConvertor getConvertorInstance() {
 		CHCitizensConvertor convertor = null;
-		for (Class<CHCitizensConvertor> clazz : ClassDiscovery.getDefaultInstance().loadClassesWithAnnotationThatExtend(abstraction.class, CHCitizensConvertor.class)) {
+		for (Class<? extends CHCitizensConvertor> clazz : ClassDiscovery.getDefaultInstance().loadClassesWithAnnotationThatExtend(abstraction.class, CHCitizensConvertor.class)) {
 			if (clazz.getAnnotation(abstraction.class).type().equals(Implementation.GetServerType())) {
 				if (convertor == null) {
 					try {

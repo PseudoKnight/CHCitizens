@@ -16,7 +16,7 @@ import com.laytonsmith.core.extensions.MSExtension;
 @MSExtension("CHCitizens")
 public class CHCitizens extends AbstractExtension {
 
-	private static final Version VERSION = new SimpleVersion(1, 1, 6);
+	private static final Version VERSION = new SimpleVersion(1, 1, 7);
 
 	private static MCCitizensPlugin _citizens;
 	private static MCCitizensNPCRegistry _registry;

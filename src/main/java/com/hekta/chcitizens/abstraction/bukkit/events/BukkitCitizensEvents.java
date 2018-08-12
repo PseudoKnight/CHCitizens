@@ -28,6 +28,7 @@ import com.hekta.chcitizens.abstraction.events.MCCitizensNPCSpawnEvent;
 import com.hekta.chcitizens.abstraction.events.MCCitizensNavigationCancelEvent;
 import com.hekta.chcitizens.abstraction.events.MCCitizensNavigationCompleteEvent;
 import com.hekta.chcitizens.abstraction.events.MCCitizensNavigationEvent;
+import net.citizensnpcs.api.event.SpawnReason;
 
 /**
  *
@@ -172,9 +173,9 @@ public class BukkitCitizensEvents {
 		public Object _GetObject() {
 			return m_event;
 		}
-	
+
 		public static BukkitMCCitizensNPCSpawnEvent _instantiate(MCCitizensNPC npc, MCLocation location) {
-			return new BukkitMCCitizensNPCSpawnEvent(new NPCSpawnEvent(((BukkitMCCitizensNPC) npc).getHandle(), ((BukkitMCLocation) location).asLocation()));
+			return new BukkitMCCitizensNPCSpawnEvent(new NPCSpawnEvent(((BukkitMCCitizensNPC) npc).getHandle(), ((BukkitMCLocation) location).asLocation(), SpawnReason.PLUGIN));
 		}
 
 		@Override

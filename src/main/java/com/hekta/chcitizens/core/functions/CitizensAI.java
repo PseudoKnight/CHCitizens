@@ -123,11 +123,11 @@ public abstract class CitizensAI extends CitizensFunctions {
 				if (args.length == 2) {
 					isAggressive = false;
 				} else {
-					isAggressive = Static.getBoolean(args[2]);
+					isAggressive = Static.getBoolean(args[2], t);
 				}
 				npc.getNavigator().setTarget(Static.getLivingEntity(args[1], t), isAggressive);
 			}
-			CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t).setProtected(Static.getBoolean(args[1]));
+			CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t).setProtected(Static.getBoolean(args[1], t));
 			return CVoid.VOID;
 		}
 	}
@@ -210,7 +210,7 @@ public abstract class CitizensAI extends CitizensFunctions {
 		@Override
 		public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
 			MCCitizensNavigator navigator = CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t).getNavigator();
-			boolean avoidWater = Static.getBoolean(args[1]);
+			boolean avoidWater = Static.getBoolean(args[1], t);
 			navigator.getDefaultParameters().setAvoidWater(avoidWater);
 			navigator.getLocalParameters().setAvoidWater(avoidWater);
 			return CVoid.VOID;
