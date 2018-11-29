@@ -14,7 +14,6 @@ import com.laytonsmith.core.constructs.CArray;
 import com.laytonsmith.core.constructs.CBoolean;
 import com.laytonsmith.core.constructs.CInt;
 import com.laytonsmith.core.constructs.CNull;
-import com.laytonsmith.core.constructs.Construct;
 import com.laytonsmith.core.constructs.CString;
 import com.laytonsmith.core.constructs.CVoid;
 import com.laytonsmith.core.constructs.Target;
@@ -28,6 +27,7 @@ import com.laytonsmith.core.exceptions.CRE.CREPlayerOfflineException;
 import com.laytonsmith.core.exceptions.CRE.CRERangeException;
 import com.laytonsmith.core.exceptions.CRE.CREThrowable;
 import com.laytonsmith.core.exceptions.ConfigRuntimeException;
+import com.laytonsmith.core.natives.interfaces.Mixed;
 
 /**
  *
@@ -58,7 +58,7 @@ public abstract class CitizensManagement extends CitizensFunctions {
 		}
 
 		@Override
-		public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException{
+		public Mixed exec(Target t, Environment environment, Mixed... args) throws ConfigRuntimeException{
 			CArray array = new CArray(t);
 			for (MCCitizensNPC npc : CHCitizensStatic.getNPCRegistry(t).getNPCs()) {
 				array.push(new CInt(npc.getId(), t), t);
@@ -88,7 +88,7 @@ public abstract class CitizensManagement extends CitizensFunctions {
 		}
 
 		@Override
-		public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
+		public Mixed exec(Target t, Environment environment, Mixed... args) throws ConfigRuntimeException {
 			MCCitizensNPC npc;
 			if (args.length == 0) {
 				npc = CHCitizensStatic.getNPCRegistry(t).createNPC(MCEntityType.MCVanillaEntityType.PLAYER, Static.getPlayer(environment, t).getName());
@@ -140,7 +140,7 @@ public abstract class CitizensManagement extends CitizensFunctions {
 		}
 
 		@Override
-		public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
+		public Mixed exec(Target t, Environment environment, Mixed... args) throws ConfigRuntimeException {
 			CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t).destroy();
 			return CVoid.VOID;
 		}
@@ -155,7 +155,7 @@ public abstract class CitizensManagement extends CitizensFunctions {
 		}
 
 		@Override
-		public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
+		public Mixed exec(Target t, Environment environment, Mixed... args) throws ConfigRuntimeException {
 			return CBoolean.get(CHCitizensStatic.getNPCRegistry(t).isNPC(Static.getEntity(args[0], t)));
 		}
 	}
@@ -169,7 +169,7 @@ public abstract class CitizensManagement extends CitizensFunctions {
 		}
 
 		@Override
-		public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
+		public Mixed exec(Target t, Environment environment, Mixed... args) throws ConfigRuntimeException {
 			MCCitizensNPC npc = CHCitizensStatic.getNPCRegistry(t).getNPC(Static.getEntity(args[0], t));
 			if (npc != null) {
 				return new CInt(npc.getId(), t);
@@ -188,7 +188,7 @@ public abstract class CitizensManagement extends CitizensFunctions {
 		}
 
 		@Override
-		public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
+		public Mixed exec(Target t, Environment environment, Mixed... args) throws ConfigRuntimeException {
 			MCLocation location = CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t).getStoredLocation();
 			if (location != null) {
 				return ObjectGenerator.GetGenerator().location(location);
@@ -212,7 +212,7 @@ public abstract class CitizensManagement extends CitizensFunctions {
 		}
 
 		@Override
-		public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
+		public Mixed exec(Target t, Environment environment, Mixed... args) throws ConfigRuntimeException {
 			CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t).faceLocation(ObjectGenerator.GetGenerator().location(args[1], null, t));
 			return CVoid.VOID;
 		}
@@ -227,7 +227,7 @@ public abstract class CitizensManagement extends CitizensFunctions {
 		}
 
 		@Override
-		public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
+		public Mixed exec(Target t, Environment environment, Mixed... args) throws ConfigRuntimeException {
 			return CBoolean.get(CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t).isSpawned());
 		}
 	}
@@ -241,7 +241,7 @@ public abstract class CitizensManagement extends CitizensFunctions {
 		}
 
 		@Override
-		public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
+		public Mixed exec(Target t, Environment environment, Mixed... args) throws ConfigRuntimeException {
 			MCLocation location = (args.length == 1) ? Static.getPlayer(environment, t).getLocation() : ObjectGenerator.GetGenerator().location(args[1], null, t);
 			CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t).spawn(location);
 			return CVoid.VOID;
@@ -268,7 +268,7 @@ public abstract class CitizensManagement extends CitizensFunctions {
 		}
 
 		@Override
-		public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
+		public Mixed exec(Target t, Environment environment, Mixed... args) throws ConfigRuntimeException {
 			MCCitizensDespawnReason reason;
 			if ((args.length == 1) || (args[1] instanceof CNull)) {
 				reason = MCCitizensDespawnReason.PLUGIN;
@@ -293,7 +293,7 @@ public abstract class CitizensManagement extends CitizensFunctions {
 		}
 
 		@Override
-		public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
+		public Mixed exec(Target t, Environment environment, Mixed... args) throws ConfigRuntimeException {
 			MCEntity entity = CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t).getEntity();
 			if (entity != null) {
 				return new CString(entity.getUniqueId().toString(), t);
@@ -317,7 +317,7 @@ public abstract class CitizensManagement extends CitizensFunctions {
 		}
 
 		@Override
-		public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
+		public Mixed exec(Target t, Environment environment, Mixed... args) throws ConfigRuntimeException {
 			MCEntityType type;
 			try {
 				type = MCEntityType.valueOf(args[1].val().toUpperCase());
@@ -342,7 +342,7 @@ public abstract class CitizensManagement extends CitizensFunctions {
 		}
 
 		@Override
-		public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
+		public Mixed exec(Target t, Environment environment, Mixed... args) throws ConfigRuntimeException {
 			return new CString(CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t).getName(), t);
 		}
 	}
@@ -356,7 +356,7 @@ public abstract class CitizensManagement extends CitizensFunctions {
 		}
 
 		@Override
-		public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
+		public Mixed exec(Target t, Environment environment, Mixed... args) throws ConfigRuntimeException {
 			CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t).setName(args[1].val());
 			return CVoid.VOID;
 		}
@@ -371,7 +371,7 @@ public abstract class CitizensManagement extends CitizensFunctions {
 		}
 
 		@Override
-		public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
+		public Mixed exec(Target t, Environment environment, Mixed... args) throws ConfigRuntimeException {
 			return new CString(CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t).getFullName(), t);
 		}
 	}
@@ -385,7 +385,7 @@ public abstract class CitizensManagement extends CitizensFunctions {
 		}
 
 		@Override
-		public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
+		public Mixed exec(Target t, Environment environment, Mixed... args) throws ConfigRuntimeException {
 			return CBoolean.get(CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t).isProtected());
 		}
 	}
@@ -399,7 +399,7 @@ public abstract class CitizensManagement extends CitizensFunctions {
 		}
 
 		@Override
-		public Construct exec(Target t, Environment environment, Construct... args) throws ConfigRuntimeException {
+		public Mixed exec(Target t, Environment environment, Mixed... args) throws ConfigRuntimeException {
 			CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t).setProtected(Static.getBoolean(args[1], t));
 			return CVoid.VOID;
 		}

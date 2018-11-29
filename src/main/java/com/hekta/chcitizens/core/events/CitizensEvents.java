@@ -5,13 +5,12 @@ import java.util.Map;
 import com.laytonsmith.abstraction.MCEntity;
 import com.laytonsmith.abstraction.MCLocation;
 import com.laytonsmith.annotations.api;
-import com.laytonsmith.core.CHVersion;
+import com.laytonsmith.core.MSVersion;
 import com.laytonsmith.core.ObjectGenerator;
 import com.laytonsmith.core.Static;
 import com.laytonsmith.core.constructs.CArray;
 import com.laytonsmith.core.constructs.CInt;
 import com.laytonsmith.core.constructs.CNull;
-import com.laytonsmith.core.constructs.Construct;
 import com.laytonsmith.core.constructs.CString;
 import com.laytonsmith.core.constructs.Target;
 import com.laytonsmith.core.events.AbstractEvent;
@@ -20,10 +19,8 @@ import com.laytonsmith.core.events.Driver;
 import com.laytonsmith.core.events.EventBuilder;
 import com.laytonsmith.core.events.Prefilters;
 import com.laytonsmith.core.exceptions.CRE.CREFormatException;
-import com.laytonsmith.core.exceptions.ConfigRuntimeException;
 import com.laytonsmith.core.exceptions.EventException;
 import com.laytonsmith.core.exceptions.PrefilterNonMatchException;
-import com.laytonsmith.core.functions.Exceptions;
 import com.laytonsmith.PureUtilities.Common.StringUtils;
 import com.laytonsmith.PureUtilities.Version;
 
@@ -36,6 +33,7 @@ import com.hekta.chcitizens.abstraction.events.MCCitizensNPCSpawnEvent;
 import com.hekta.chcitizens.abstraction.events.MCCitizensNavigationCancelEvent;
 import com.hekta.chcitizens.abstraction.events.MCCitizensNavigationCompleteEvent;
 import com.hekta.chcitizens.core.CHCitizensStatic;
+import com.laytonsmith.core.natives.interfaces.Mixed;
 
 /**
  *
@@ -59,7 +57,7 @@ public final class CitizensEvents {
 
 		@Override
 		public Version since() {
-			return CHVersion.V3_3_1;
+			return MSVersion.V3_3_1;
 		}
 
 		@Override
@@ -68,7 +66,7 @@ public final class CitizensEvents {
 		}
 
 		@Override
-		public boolean modifyEvent(String key, Construct value, BindableEvent event) {
+		public boolean modifyEvent(String key, Mixed value, BindableEvent event) {
 			return false;
 		}
 	}
@@ -99,7 +97,7 @@ public final class CitizensEvents {
 		}
 
 		@Override
-		public boolean matches(Map<String, Construct> prefilter, BindableEvent event) throws PrefilterNonMatchException {
+		public boolean matches(Map<String, Mixed> prefilter, BindableEvent event) throws PrefilterNonMatchException {
 			if (event instanceof MCCitizensNPCDespawnEvent) {
 				MCCitizensNPCDespawnEvent npcde = (MCCitizensNPCDespawnEvent) event;
 				Prefilters.match(prefilter, "reason", npcde.getReason().name(), Prefilters.PrefilterType.MACRO);
@@ -116,10 +114,10 @@ public final class CitizensEvents {
 		}
 
 		@Override
-		public Map<String, Construct> evaluate(BindableEvent event) throws EventException {
+		public Map<String, Mixed> evaluate(BindableEvent event) throws EventException {
 			if (event instanceof MCCitizensNPCDespawnEvent) {
 				MCCitizensNPCDespawnEvent npcde = (MCCitizensNPCDespawnEvent) event;
-				Map<String, Construct> mapEvent = evaluate_helper(event);
+				Map<String, Mixed> mapEvent = evaluate_helper(event);
 				MCCitizensNPC npc = npcde.getNPC();
 				mapEvent.put("npc", new CInt(npc.getId(), Target.UNKNOWN));
 				MCEntity entity = npc.getEntity();
@@ -161,7 +159,7 @@ public final class CitizensEvents {
 		}
 
 		@Override
-		public boolean matches(Map<String, Construct> prefilter, BindableEvent event) throws PrefilterNonMatchException {
+		public boolean matches(Map<String, Mixed> prefilter, BindableEvent event) throws PrefilterNonMatchException {
 			if (event instanceof MCCitizensNavigationCancelEvent) {
 				MCCitizensNavigationCancelEvent nce = (MCCitizensNavigationCancelEvent) event;
 				Prefilters.match(prefilter, "cause", nce.getCancelReason().name(), Prefilters.PrefilterType.MACRO);
@@ -175,10 +173,10 @@ public final class CitizensEvents {
 		}
 
 		@Override
-		public Map<String, Construct> evaluate(BindableEvent event) throws EventException {
+		public Map<String, Mixed> evaluate(BindableEvent event) throws EventException {
 			if (event instanceof MCCitizensNavigationCancelEvent) {
 				MCCitizensNavigationCancelEvent nce = (MCCitizensNavigationCancelEvent) event;
-				Map<String, Construct> mapEvent = evaluate_helper(event);
+				Map<String, Mixed> mapEvent = evaluate_helper(event);
 				MCCitizensNPC npc = nce.getNPC();
 				mapEvent.put("npc", new CInt(npc.getId(), Target.UNKNOWN));
 				MCEntity entity = npc.getEntity();
@@ -216,7 +214,7 @@ public final class CitizensEvents {
 		}
 
 		@Override
-		public boolean matches(Map<String, Construct> prefilter, BindableEvent event) throws PrefilterNonMatchException {
+		public boolean matches(Map<String, Mixed> prefilter, BindableEvent event) throws PrefilterNonMatchException {
 			if ((event instanceof MCCitizensNavigationCompleteEvent) && !(event instanceof MCCitizensNavigationCancelEvent)) {
 				MCCitizensNavigationCompleteEvent nce = (MCCitizensNavigationCompleteEvent) event;
 				MCEntity entity = nce.getNPC().getEntity();
@@ -229,10 +227,10 @@ public final class CitizensEvents {
 		}
 
 		@Override
-		public Map<String, Construct> evaluate(BindableEvent event) throws EventException {
+		public Map<String, Mixed> evaluate(BindableEvent event) throws EventException {
 			if (event instanceof MCCitizensNavigationCompleteEvent) {
 				MCCitizensNavigationCompleteEvent nce = (MCCitizensNavigationCompleteEvent) event;
-				Map<String, Construct> mapEvent = evaluate_helper(event);
+				Map<String, Mixed> mapEvent = evaluate_helper(event);
 				MCCitizensNPC npc = nce.getNPC();
 				mapEvent.put("npc", new CInt(npc.getId(), Target.UNKNOWN));
 				MCEntity entity = npc.getEntity();
@@ -266,7 +264,7 @@ public final class CitizensEvents {
 		}
 
 		@Override
-		public boolean matches(Map<String, Construct> prefilter, BindableEvent event) throws PrefilterNonMatchException {
+		public boolean matches(Map<String, Mixed> prefilter, BindableEvent event) throws PrefilterNonMatchException {
 			if (event instanceof MCCitizensNPCSpawnEvent) {
 				MCCitizensNPCSpawnEvent npcse = (MCCitizensNPCSpawnEvent) event;
 				MCEntity entity = npcse.getNPC().getEntity();
@@ -279,10 +277,10 @@ public final class CitizensEvents {
 		}
 
 		@Override
-		public Map<String, Construct> evaluate(BindableEvent event) throws EventException {
+		public Map<String, Mixed> evaluate(BindableEvent event) throws EventException {
 			if (event instanceof MCCitizensNPCSpawnEvent) {
 				MCCitizensNPCSpawnEvent npcse = (MCCitizensNPCSpawnEvent) event;
-				Map<String, Construct> mapEvent = evaluate_helper(event);
+				Map<String, Mixed> mapEvent = evaluate_helper(event);
 				MCCitizensNPC npc = npcse.getNPC();
 				mapEvent.put("npc", new CInt(npc.getId(), Target.UNKNOWN));
 				MCEntity entity = npc.getEntity();
