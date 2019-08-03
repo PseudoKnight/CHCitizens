@@ -29,6 +29,8 @@ import com.laytonsmith.core.exceptions.CRE.CREThrowable;
 import com.laytonsmith.core.exceptions.ConfigRuntimeException;
 import com.laytonsmith.core.natives.interfaces.Mixed;
 
+import java.util.UUID;
+
 /**
  *
  * @author Hekta
@@ -170,7 +172,8 @@ public abstract class CitizensManagement extends CitizensFunctions {
 
 		@Override
 		public Mixed exec(Target t, Environment environment, Mixed... args) throws ConfigRuntimeException {
-			MCCitizensNPC npc = CHCitizensStatic.getNPCRegistry(t).getNPC(Static.getEntity(args[0], t));
+			UUID uuid = Static.GetUUID(args[0], t);
+			MCCitizensNPC npc = CHCitizensStatic.getNPCRegistry(t).getNPC(uuid);
 			if (npc != null) {
 				return new CInt(npc.getId(), t);
                         } else {

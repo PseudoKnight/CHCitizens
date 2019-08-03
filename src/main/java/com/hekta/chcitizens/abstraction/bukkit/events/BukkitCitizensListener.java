@@ -1,7 +1,10 @@
 package com.hekta.chcitizens.abstraction.bukkit.events;
 
+import net.citizensnpcs.api.event.NPCLeftClickEvent;
+import net.citizensnpcs.api.event.NPCRightClickEvent;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
+import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 
 import net.citizensnpcs.api.ai.event.NavigationCancelEvent;
@@ -14,7 +17,6 @@ import com.laytonsmith.core.events.Driver;
 import com.laytonsmith.core.events.EventUtils;
 
 /**
- *
  * @author Hekta
  */
 public class BukkitCitizensListener implements Listener {
@@ -29,10 +31,7 @@ public class BukkitCitizensListener implements Listener {
 	}
 
 	public static void unregister() {
-		NavigationCancelEvent.getHandlerList().unregister(_listener);
-		NavigationCompleteEvent.getHandlerList().unregister(_listener);
-		NPCDespawnEvent.getHandlerList().unregister(_listener);
-		NPCSpawnEvent.getHandlerList().unregister(_listener);
+		HandlerList.unregisterAll(_listener);
 	}
 
 	@EventHandler(priority = EventPriority.LOWEST)
@@ -45,13 +44,23 @@ public class BukkitCitizensListener implements Listener {
 		EventUtils.TriggerListener(Driver.EXTENSION, "ctz_npc_navigation_cancel", new BukkitCitizensEvents.BukkitMCCitizensNavigationCancelEvent(event));
 	}
 
-	@EventHandler(priority=EventPriority.LOWEST)
+	@EventHandler(priority = EventPriority.LOWEST)
 	public void onNPCDespawn(NPCDespawnEvent event) {
 		EventUtils.TriggerListener(Driver.EXTENSION, "ctz_npc_despawn", new BukkitCitizensEvents.BukkitMCCitizensNPCDespawnEvent(event));
 	}
 
-	@EventHandler(priority=EventPriority.LOWEST)
+	@EventHandler(priority = EventPriority.LOWEST)
 	public void onNPCSpawn(NPCSpawnEvent event) {
 		EventUtils.TriggerListener(Driver.EXTENSION, "ctz_npc_spawn", new BukkitCitizensEvents.BukkitMCCitizensNPCSpawnEvent(event));
+	}
+
+	@EventHandler(priority = EventPriority.LOWEST)
+	public void onNPCLeftClick(NPCLeftClickEvent e) {
+		EventUtils.TriggerListener(Driver.EXTENSION, "ctz_npc_click", new BukkitCitizensEvents.BukkitMCCitizensNPCClickEvent(e));
+	}
+
+	@EventHandler(priority = EventPriority.LOWEST)
+	public void onNPCRightClick(NPCRightClickEvent e) {
+		EventUtils.TriggerListener(Driver.EXTENSION, "ctz_npc_click", new BukkitCitizensEvents.BukkitMCCitizensNPCClickEvent(e));
 	}
 }

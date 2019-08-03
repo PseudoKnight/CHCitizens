@@ -1,9 +1,14 @@
 package com.hekta.chcitizens.core.events;
 
+import java.util.HashMap;
 import java.util.Map;
 
+import com.hekta.chcitizens.abstraction.bukkit.events.BukkitCitizensEvents;
+import com.hekta.chcitizens.abstraction.events.*;
 import com.laytonsmith.abstraction.MCEntity;
 import com.laytonsmith.abstraction.MCLocation;
+import com.laytonsmith.abstraction.MCPlayer;
+import com.laytonsmith.abstraction.bukkit.BukkitMCLocation;
 import com.laytonsmith.annotations.api;
 import com.laytonsmith.core.MSVersion;
 import com.laytonsmith.core.ObjectGenerator;
@@ -28,12 +33,11 @@ import com.hekta.chcitizens.abstraction.MCCitizensNPC;
 import com.hekta.chcitizens.abstraction.MCCitizensNavigator;
 import com.hekta.chcitizens.abstraction.enums.MCCitizensCancelReason;
 import com.hekta.chcitizens.abstraction.enums.MCCitizensDespawnReason;
-import com.hekta.chcitizens.abstraction.events.MCCitizensNPCDespawnEvent;
-import com.hekta.chcitizens.abstraction.events.MCCitizensNPCSpawnEvent;
-import com.hekta.chcitizens.abstraction.events.MCCitizensNavigationCancelEvent;
-import com.hekta.chcitizens.abstraction.events.MCCitizensNavigationCompleteEvent;
 import com.hekta.chcitizens.core.CHCitizensStatic;
 import com.laytonsmith.core.natives.interfaces.Mixed;
+import net.citizensnpcs.api.event.NPCRightClickEvent;
+import net.citizensnpcs.api.npc.NPC;
+import org.bukkit.entity.Entity;
 
 /**
  *
@@ -49,7 +53,7 @@ public final class CitizensEvents {
 	}
 
 	protected static abstract class CitizensEvent extends AbstractEvent {
-			
+
 		@Override
 		public String getName() {
 			return getClass().getSimpleName();
@@ -291,6 +295,61 @@ public final class CitizensEvents {
 			} else {
 				throw new EventException("Cannot convert event to NPCSpawnEvent.");
 			}
+		}
+	}
+
+	@api
+	public static final class ctz_npc_click extends CitizensEvent {
+		@Override
+		public String docs() {
+			return "{" +
+					"button: <macro> Clicked button left or right | " +
+					"player: <macro> | " +
+					"world: <macro> | " +
+					"type: <macro>} Fires when click an NPC.";
+		}
+
+		@Override
+		public boolean matches(Map<String, Mixed> prefilter, BindableEvent e) throws PrefilterNonMatchException {
+			if (e instanceof MCCitizensNPCClickEvent) {
+				MCCitizensNPCClickEvent event = ((MCCitizensNPCClickEvent) e);
+				boolean left = event.isLeft();
+				MCPlayer clicker = event.getClicker();
+				MCCitizensNPC npc = event.getNPC();
+				MCEntity entity = npc.getEntity();
+				Prefilters.match(prefilter, "button", left ? "left" : "right", Prefilters.PrefilterType.MACRO);
+				Prefilters.match(prefilter, "player", clicker.getName(), Prefilters.PrefilterType.MACRO);
+				Prefilters.match(prefilter, "world", entity.getWorld().getName(), Prefilters.PrefilterType.MACRO);
+				Prefilters.match(prefilter, "type", entity.getType().name(), Prefilters.PrefilterType.MACRO);
+				return true;
+			} else {
+				return false;
+			}
+		}
+
+		@Override
+		public BindableEvent convert(CArray manualObject, Target t) {
+			return null;
+		}
+
+		@Override
+		public Map<String, Mixed> evaluate(BindableEvent e) throws EventException {
+			if (e instanceof MCCitizensNPCClickEvent) {
+				Target t = Target.UNKNOWN;
+				MCCitizensNPCClickEvent event = ((MCCitizensNPCClickEvent) e);
+				Map<String, Mixed> ret = new HashMap<>();
+				boolean left = event.isLeft();
+				MCCitizensNPC npc = event.getNPC();
+				MCEntity entity = npc.getEntity();
+				ret.put("button", new CString(left ? "left" : "right", t));
+				ret.put("player", new CString(event.getClicker().getName(), t));
+				ret.put("id", new CInt(npc.getId(), t));
+				ret.put("entity", new CString(npc.getUniqueId().toString(), t));
+				ret.put("type", new CString(entity.getType().name(), t));
+				ret.put("location", ObjectGenerator.GetGenerator().location(new BukkitMCLocation(entity.getLocation())));
+				return ret;
+			}
+			throw new EventException("Cannot convert event to NPCRightClickEvent.");
 		}
 	}
 }

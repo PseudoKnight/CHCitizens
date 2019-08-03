@@ -2,6 +2,7 @@ package com.hekta.chcitizens.abstraction.bukkit;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 import org.bukkit.Location;
 
@@ -137,6 +138,11 @@ public class BukkitMCCitizensNPC implements MCCitizensNPC {
 	@Override
 	public int getId() {
 		return _npc.getId();
+	}
+
+	@Override
+	public UUID getUniqueId() {
+		return _npc.getUniqueId();
 	}
 
 	@Override
