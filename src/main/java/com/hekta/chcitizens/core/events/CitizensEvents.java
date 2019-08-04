@@ -343,7 +343,7 @@ public final class CitizensEvents {
 				MCEntity entity = npc.getEntity();
 				ret.put("button", new CString(left ? "left" : "right", t));
 				ret.put("player", new CString(event.getClicker().getName(), t));
-				ret.put("id", new CInt(npc.getId(), t));
+				ret.put("npc", new CInt(npc.getId(), t));
 				ret.put("entity", new CString(npc.getUniqueId().toString(), t));
 				ret.put("type", new CString(entity.getType().name(), t));
 				ret.put("location", ObjectGenerator.GetGenerator().location(new BukkitMCLocation(entity.getLocation())));
