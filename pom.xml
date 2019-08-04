@@ -17,11 +17,15 @@
 	<repositories>
 		<repository>
 			<id>sk89q-mvn2</id>
-			<url>http://mvn2.sk89q.com/repo</url>
+			<url>http://maven.sk89q.com/repo</url>
 		</repository>
 		<repository>
 			<id>citizensnpcs-repo</id>
 			<url>http://repo.citizensnpcs.co</url>
+		</repository>
+		<repository>
+			<id>spigotmc</id>
+			<url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
 		</repository>
 	</repositories>
 

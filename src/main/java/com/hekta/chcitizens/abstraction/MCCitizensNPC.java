@@ -1,6 +1,7 @@
 package com.hekta.chcitizens.abstraction;
 
 import java.util.Set;
+import java.util.UUID;
 
 import com.laytonsmith.abstraction.AbstractionObject;
 import com.laytonsmith.abstraction.MCEntity;
@@ -36,6 +37,7 @@ public interface MCCitizensNPC extends AbstractionObject {
 	public MCCitizensSpeechController getDefaultSpeechController();
 
 	public int getId();
+	public UUID getUniqueId();
 
 	public String getName();
 	public void setName(String name);

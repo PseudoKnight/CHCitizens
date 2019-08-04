@@ -1,11 +1,24 @@
 package com.hekta.chcitizens.abstraction.bukkit.events;
 
+import com.hekta.chcitizens.abstraction.events.MCCitizensEvent;
+import com.hekta.chcitizens.abstraction.events.MCCitizensNPCClickEvent;
+import com.hekta.chcitizens.abstraction.events.MCCitizensNPCDespawnEvent;
+import com.hekta.chcitizens.abstraction.events.MCCitizensNPCEvent;
+import com.hekta.chcitizens.abstraction.events.MCCitizensNPCSpawnEvent;
+import com.hekta.chcitizens.abstraction.events.MCCitizensNavigationCancelEvent;
+import com.hekta.chcitizens.abstraction.events.MCCitizensNavigationCompleteEvent;
+import com.hekta.chcitizens.abstraction.events.MCCitizensNavigationEvent;
+import com.laytonsmith.abstraction.MCPlayer;
+import com.laytonsmith.abstraction.bukkit.entities.BukkitMCPlayer;
 import net.citizensnpcs.api.ai.event.NavigationCancelEvent;
 import net.citizensnpcs.api.ai.event.NavigationCompleteEvent;
 import net.citizensnpcs.api.ai.event.NavigationEvent;
 import net.citizensnpcs.api.event.CitizensEvent;
+import net.citizensnpcs.api.event.NPCClickEvent;
 import net.citizensnpcs.api.event.NPCDespawnEvent;
 import net.citizensnpcs.api.event.NPCEvent;
+import net.citizensnpcs.api.event.NPCLeftClickEvent;
+import net.citizensnpcs.api.event.NPCRightClickEvent;
 import net.citizensnpcs.api.event.NPCSpawnEvent;
 
 import com.laytonsmith.abstraction.Implementation;
@@ -21,17 +34,9 @@ import com.hekta.chcitizens.abstraction.enums.MCCitizensCancelReason;
 import com.hekta.chcitizens.abstraction.enums.MCCitizensDespawnReason;
 import com.hekta.chcitizens.abstraction.enums.bukkit.BukkitMCCitizensCancelReason;
 import com.hekta.chcitizens.abstraction.enums.bukkit.BukkitMCCitizensDespawnReason;
-import com.hekta.chcitizens.abstraction.events.MCCitizensEvent;
-import com.hekta.chcitizens.abstraction.events.MCCitizensNPCDespawnEvent;
-import com.hekta.chcitizens.abstraction.events.MCCitizensNPCEvent;
-import com.hekta.chcitizens.abstraction.events.MCCitizensNPCSpawnEvent;
-import com.hekta.chcitizens.abstraction.events.MCCitizensNavigationCancelEvent;
-import com.hekta.chcitizens.abstraction.events.MCCitizensNavigationCompleteEvent;
-import com.hekta.chcitizens.abstraction.events.MCCitizensNavigationEvent;
 import net.citizensnpcs.api.event.SpawnReason;
 
 /**
- *
  * @author Hekta
  */
 public class BukkitCitizensEvents {
@@ -148,7 +153,7 @@ public class BukkitCitizensEvents {
 		public Object _GetObject() {
 			return m_event;
 		}
-	
+
 		public static BukkitMCCitizensNPCDespawnEvent _instantiate(MCCitizensNPC npc, MCCitizensDespawnReason reason) {
 			return new BukkitMCCitizensNPCDespawnEvent(new NPCDespawnEvent(((BukkitMCCitizensNPC) npc).getHandle(), BukkitMCCitizensDespawnReason.getConvertor().getConcreteEnum(reason)));
 		}
@@ -181,6 +186,36 @@ public class BukkitCitizensEvents {
 		@Override
 		public MCLocation getLocation() {
 			return new BukkitMCLocation(m_event.getLocation());
+		}
+	}
+
+	@abstraction(type = Implementation.Type.BUKKIT)
+	public static class BukkitMCCitizensNPCClickEvent extends BukkitMCCitizensNPCEvent implements MCCitizensNPCClickEvent {
+		private final NPCClickEvent event;
+		private final boolean left;
+
+		public BukkitMCCitizensNPCClickEvent(NPCClickEvent e, boolean left) {
+			super(e);
+			this.event = e;
+			this.left = left;
+		}
+
+		public BukkitMCCitizensNPCClickEvent(NPCLeftClickEvent e) {
+			this(e, true);
+		}
+
+		public BukkitMCCitizensNPCClickEvent(NPCRightClickEvent e) {
+			this(e, false);
+		}
+
+		@Override
+		public MCPlayer getClicker() {
+			return new BukkitMCPlayer(event.getClicker());
+		}
+
+		@Override
+		public boolean isLeft() {
+			return left;
 		}
 	}
 }
