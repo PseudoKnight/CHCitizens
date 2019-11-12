@@ -53,6 +53,9 @@ public class CHCitizens extends AbstractExtension {
 	}
 
 	public static MCCitizensNPCRegistry getNPCRegistry() {
+		if(_registry == null && _citizens != null) {
+			_registry = _citizens.getNPCRegistry();
+		}
 		return _registry;
 	}
 }

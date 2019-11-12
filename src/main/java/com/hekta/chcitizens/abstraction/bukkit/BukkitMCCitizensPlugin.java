@@ -1,6 +1,7 @@
 package com.hekta.chcitizens.abstraction.bukkit;
 
 import net.citizensnpcs.api.CitizensPlugin;
+import net.citizensnpcs.api.npc.NPCRegistry;
 
 import com.laytonsmith.abstraction.bukkit.BukkitMCPlugin;
 
@@ -29,7 +30,11 @@ public class BukkitMCCitizensPlugin extends BukkitMCPlugin implements MCCitizens
 
 	@Override
 	public MCCitizensNPCRegistry getNPCRegistry() {
-		return new BukkitMCCitizensNPCRegistry(_citizens.getNPCRegistry());
+		NPCRegistry registry = _citizens.getNPCRegistry();
+		if(registry == null) {
+			return null;
+		}
+		return new BukkitMCCitizensNPCRegistry(registry);
 	}
 
 	@Override
