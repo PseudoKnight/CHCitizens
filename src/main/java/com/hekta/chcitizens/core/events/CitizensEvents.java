@@ -302,11 +302,12 @@ public final class CitizensEvents {
 	public static final class ctz_npc_click extends CitizensEvent {
 		@Override
 		public String docs() {
-			return "{" +
-					"button: <macro> Clicked button left or right | " +
-					"player: <macro> | " +
-					"world: <macro> | " +
-					"type: <macro>} Fires when click an NPC.";
+			return "{button: <macro> Clicked button left or right | player: <macro> | world: <macro> | type: <macro>}"
+					+ " Fires when click an NPC."
+					+ "{button | player | npc: The NPC id | entity: The entityID of the NPC"
+					+ " | type: The entity type of the NPC | location: The location of the NPC}"
+					+ "{}"
+					+ "{}";
 		}
 
 		@Override
@@ -349,7 +350,7 @@ public final class CitizensEvents {
 				ret.put("location", ObjectGenerator.GetGenerator().location(new BukkitMCLocation(entity.getLocation())));
 				return ret;
 			}
-			throw new EventException("Cannot convert event to NPCRightClickEvent.");
+			throw new EventException("Cannot convert event to MCCitizensNPCClickEvent.");
 		}
 	}
 }
