@@ -11,6 +11,7 @@ import com.laytonsmith.PureUtilities.Common.StringUtils;
 import com.laytonsmith.annotations.api;
 import com.laytonsmith.abstraction.MCLocation;
 import com.laytonsmith.abstraction.MCPlayer;
+import com.laytonsmith.core.ArgumentValidation;
 import com.laytonsmith.core.Static;
 import com.laytonsmith.core.ObjectGenerator;
 import com.laytonsmith.core.constructs.CArray;
@@ -70,21 +71,21 @@ public abstract class CitizensAI extends CitizensFunctions {
 		@Override
 		public Mixed exec(Target t, Environment environment, Mixed... args) throws ConfigRuntimeException{
 			if ((args.length == 1) || args[1].val().equalsIgnoreCase("LOCATION")) {
-				MCLocation location = CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t).getNavigator().getTargetAsLocation();
+				MCLocation location = CHCitizensStatic.getNPC(ArgumentValidation.getInt32(args[0], t), t).getNavigator().getTargetAsLocation();
 				if (location != null) {
 					return ObjectGenerator.GetGenerator().location(location);
 				} else {
 					return CNull.NULL;
 				}
 			} else if (args[1].val().equalsIgnoreCase("ENTITY")) {
-				MCCitizensEntityTarget target = CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t).getNavigator().getEntityTarget();
+				MCCitizensEntityTarget target = CHCitizensStatic.getNPC(ArgumentValidation.getInt32(args[0], t), t).getNavigator().getEntityTarget();
 				if (target != null) {
 					return new CString(target.getTarget().getUniqueId().toString(), t);
 				} else {
 					return CNull.NULL;
 				}
 			} else if (args[1].val().equalsIgnoreCase("TYPE")) {
-				return new CString(CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t).getNavigator().getTargetType().toString(), t);
+				return new CString(CHCitizensStatic.getNPC(ArgumentValidation.getInt32(args[0], t), t).getNavigator().getTargetType().toString(), t);
 			} else {
 				throw new CREFormatException("Invalid field:'" + args[1].val() + "'.", t);
 			}
@@ -112,7 +113,7 @@ public abstract class CitizensAI extends CitizensFunctions {
 
 		@Override
 		public Mixed exec(Target t, Environment environment, Mixed... args) throws ConfigRuntimeException {
-			MCCitizensNPC npc = CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t);
+			MCCitizensNPC npc = CHCitizensStatic.getNPC(ArgumentValidation.getInt32(args[0], t), t);
 			if (!npc.isSpawned()) {
 				throw new CREPluginInternalException("The NPC is not spawned.", t);
 			}
@@ -123,11 +124,11 @@ public abstract class CitizensAI extends CitizensFunctions {
 				if (args.length == 2) {
 					isAggressive = false;
 				} else {
-					isAggressive = Static.getBoolean(args[2], t);
+					isAggressive = ArgumentValidation.getBooleanObject(args[2], t);
 				}
 				npc.getNavigator().setTarget(Static.getLivingEntity(args[1], t), isAggressive);
 			}
-			CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t).setProtected(Static.getBoolean(args[1], t));
+			CHCitizensStatic.getNPC(ArgumentValidation.getInt32(args[0], t), t).setProtected(ArgumentValidation.getBooleanObject(args[1], t));
 			return CVoid.VOID;
 		}
 	}
@@ -142,7 +143,7 @@ public abstract class CitizensAI extends CitizensFunctions {
 
 		@Override
 		public Mixed exec(Target t, Environment environment, Mixed... args) throws ConfigRuntimeException {
-			MCCitizensEntityTarget target = CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t).getNavigator().getEntityTarget();
+			MCCitizensEntityTarget target = CHCitizensStatic.getNPC(ArgumentValidation.getInt32(args[0], t), t).getNavigator().getEntityTarget();
 			if (target != null) {
 				return CBoolean.get(target.isAggressive());
 			} else {
@@ -161,7 +162,7 @@ public abstract class CitizensAI extends CitizensFunctions {
 
 		@Override
 		public Mixed exec(Target t, Environment environment, Mixed... args) throws ConfigRuntimeException {
-			return CBoolean.get(CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t).getNavigator().isNavigating());
+			return CBoolean.get(CHCitizensStatic.getNPC(ArgumentValidation.getInt32(args[0], t), t).getNavigator().isNavigating());
 		}
 	}
 
@@ -180,7 +181,7 @@ public abstract class CitizensAI extends CitizensFunctions {
 
 		@Override
 		public Mixed exec(Target t, Environment environment, Mixed... args) throws ConfigRuntimeException {
-			CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t).getNavigator().cancelNavigation();
+			CHCitizensStatic.getNPC(ArgumentValidation.getInt32(args[0], t), t).getNavigator().cancelNavigation();
 			return CVoid.VOID;
 		}
 	}
@@ -195,7 +196,7 @@ public abstract class CitizensAI extends CitizensFunctions {
 
 		@Override
 		public Mixed exec(Target t, Environment environment, Mixed... args) throws ConfigRuntimeException {
-			return CBoolean.get(CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t).getNavigator().getLocalParameters().getAvoidWater());
+			return CBoolean.get(CHCitizensStatic.getNPC(ArgumentValidation.getInt32(args[0], t), t).getNavigator().getLocalParameters().getAvoidWater());
 		}
 	}
 
@@ -209,8 +210,8 @@ public abstract class CitizensAI extends CitizensFunctions {
 
 		@Override
 		public Mixed exec(Target t, Environment environment, Mixed... args) throws ConfigRuntimeException {
-			MCCitizensNavigator navigator = CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t).getNavigator();
-			boolean avoidWater = Static.getBoolean(args[1], t);
+			MCCitizensNavigator navigator = CHCitizensStatic.getNPC(ArgumentValidation.getInt32(args[0], t), t).getNavigator();
+			boolean avoidWater = ArgumentValidation.getBooleanObject(args[1], t);
 			navigator.getDefaultParameters().setAvoidWater(avoidWater);
 			navigator.getLocalParameters().setAvoidWater(avoidWater);
 			return CVoid.VOID;
@@ -227,7 +228,7 @@ public abstract class CitizensAI extends CitizensFunctions {
 
 		@Override
 		public Mixed exec(Target t, Environment environment, Mixed... args) throws ConfigRuntimeException {
-			return new CDouble(CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t).getNavigator().getLocalParameters().getSpeed(), t);
+			return new CDouble(CHCitizensStatic.getNPC(ArgumentValidation.getInt32(args[0], t), t).getNavigator().getLocalParameters().getSpeed(), t);
 		}
 	}
 
@@ -241,7 +242,7 @@ public abstract class CitizensAI extends CitizensFunctions {
 
 		@Override
 		public Mixed exec(Target t, Environment environment, Mixed... args) throws ConfigRuntimeException {
-			return new CDouble(CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t).getNavigator().getLocalParameters().getBaseSpeed(), t);
+			return new CDouble(CHCitizensStatic.getNPC(ArgumentValidation.getInt32(args[0], t), t).getNavigator().getLocalParameters().getBaseSpeed(), t);
 		}
 	}
 
@@ -255,8 +256,8 @@ public abstract class CitizensAI extends CitizensFunctions {
 
 		@Override
 		public Mixed exec(Target t, Environment environment, Mixed... args) throws ConfigRuntimeException {
-			MCCitizensNavigator navigator = CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t).getNavigator();
-			float baseSpeed = Static.getDouble32(args[1], t);
+			MCCitizensNavigator navigator = CHCitizensStatic.getNPC(ArgumentValidation.getInt32(args[0], t), t).getNavigator();
+			float baseSpeed = (float) ArgumentValidation.getDouble(args[1], t);
 			navigator.getDefaultParameters().setBaseSpeed(baseSpeed);
 			navigator.getLocalParameters().setBaseSpeed(baseSpeed);
 			return CVoid.VOID;
@@ -273,7 +274,7 @@ public abstract class CitizensAI extends CitizensFunctions {
 
 		@Override
 		public Mixed exec(Target t, Environment environment, Mixed... args) throws ConfigRuntimeException {
-			return new CDouble(CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t).getNavigator().getLocalParameters().getSpeedModifier(), t);
+			return new CDouble(CHCitizensStatic.getNPC(ArgumentValidation.getInt32(args[0], t), t).getNavigator().getLocalParameters().getSpeedModifier(), t);
 		}
 	}
 
@@ -287,8 +288,8 @@ public abstract class CitizensAI extends CitizensFunctions {
 
 		@Override
 		public Mixed exec(Target t, Environment environment, Mixed... args) throws ConfigRuntimeException {
-			MCCitizensNavigator navigator = CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t).getNavigator();
-			float speedModifier = Static.getDouble32(args[1], t);
+			MCCitizensNavigator navigator = CHCitizensStatic.getNPC(ArgumentValidation.getInt32(args[0], t), t).getNavigator();
+			float speedModifier = (float) ArgumentValidation.getDouble(args[1], t);
 			navigator.getDefaultParameters().setSpeedModifier(speedModifier);
 			navigator.getLocalParameters().setSpeedModifier(speedModifier);
 			return CVoid.VOID;
@@ -305,7 +306,7 @@ public abstract class CitizensAI extends CitizensFunctions {
 
 		@Override
 		public Mixed exec(Target t, Environment environment, Mixed... args) throws ConfigRuntimeException {
-			return new CDouble(CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t).getNavigator().getLocalParameters().getDistanceMargin(), t);
+			return new CDouble(CHCitizensStatic.getNPC(ArgumentValidation.getInt32(args[0], t), t).getNavigator().getLocalParameters().getDistanceMargin(), t);
 		}
 	}
 
@@ -319,8 +320,8 @@ public abstract class CitizensAI extends CitizensFunctions {
 
 		@Override
 		public Mixed exec(Target t, Environment environment, Mixed... args) throws ConfigRuntimeException {
-			MCCitizensNavigator navigator = CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t).getNavigator();
-			double distanceMargin = Static.getDouble(args[1], t);
+			MCCitizensNavigator navigator = CHCitizensStatic.getNPC(ArgumentValidation.getInt32(args[0], t), t).getNavigator();
+			double distanceMargin = ArgumentValidation.getDouble(args[1], t);
 			navigator.getDefaultParameters().setDistanceMargin(distanceMargin);
 			navigator.getLocalParameters().setDistanceMargin(distanceMargin);
 			return CVoid.VOID;
@@ -337,7 +338,7 @@ public abstract class CitizensAI extends CitizensFunctions {
 
 		@Override
 		public Mixed exec(Target t, Environment environment, Mixed... args) throws ConfigRuntimeException {
-			return new CDouble(CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t).getNavigator().getLocalParameters().getRange(), t);
+			return new CDouble(CHCitizensStatic.getNPC(ArgumentValidation.getInt32(args[0], t), t).getNavigator().getLocalParameters().getRange(), t);
 		}
 	}
 
@@ -351,8 +352,8 @@ public abstract class CitizensAI extends CitizensFunctions {
 
 		@Override
 		public Mixed exec(Target t, Environment environment, Mixed... args) throws ConfigRuntimeException {
-			MCCitizensNavigator navigator = CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t).getNavigator();
-			float range = Static.getDouble32(args[1], t);
+			MCCitizensNavigator navigator = CHCitizensStatic.getNPC(ArgumentValidation.getInt32(args[0], t), t).getNavigator();
+			float range = (float) ArgumentValidation.getDouble(args[1], t);
 			navigator.getDefaultParameters().setRange(range);
 			navigator.getLocalParameters().setRange(range);
 			return CVoid.VOID;
@@ -369,7 +370,7 @@ public abstract class CitizensAI extends CitizensFunctions {
 
 		@Override
 		public Mixed exec(Target t, Environment environment, Mixed... args) throws ConfigRuntimeException {
-			return new CDouble(CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t).getNavigator().getLocalParameters().getStationaryTicks(), t);
+			return new CDouble(CHCitizensStatic.getNPC(ArgumentValidation.getInt32(args[0], t), t).getNavigator().getLocalParameters().getStationaryTicks(), t);
 		}
 	}
 
@@ -383,8 +384,8 @@ public abstract class CitizensAI extends CitizensFunctions {
 
 		@Override
 		public Mixed exec(Target t, Environment environment, Mixed... args) throws ConfigRuntimeException {
-			MCCitizensNavigator navigator = CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t).getNavigator();
-			int ticks = Static.getInt32(args[1], t);
+			MCCitizensNavigator navigator = CHCitizensStatic.getNPC(ArgumentValidation.getInt32(args[0], t), t).getNavigator();
+			int ticks = ArgumentValidation.getInt32(args[1], t);
 			navigator.getDefaultParameters().setStationaryTicks(ticks);
 			navigator.getLocalParameters().setStationaryTicks(ticks);
 			return CVoid.VOID;
@@ -412,7 +413,7 @@ public abstract class CitizensAI extends CitizensFunctions {
 
 		@Override
 		public Mixed exec(Target t, Environment environment, Mixed... args) throws ConfigRuntimeException {
-			MCCitizensNPC npc = CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t);
+			MCCitizensNPC npc = CHCitizensStatic.getNPC(ArgumentValidation.getInt32(args[0], t), t);
 			MCCitizensSpeechFactory speechFactory = CHCitizensStatic.getCitizensPlugin(t).getSpeechFactory();
 			if (args.length == 2) {
 				Collection<MCPlayer> p = Static.getServer().getOnlinePlayers();
@@ -424,7 +425,7 @@ public abstract class CitizensAI extends CitizensFunctions {
 				}
 				npc.getDefaultSpeechController().speak(speechFactory.newSpeechContext(npc, args[1].val(), recipients));
 			} else if (args[2] instanceof CArray) {
-				CArray array = Static.getArray(args[2], t);
+				CArray array = ArgumentValidation.getArray(args[2], t);
 				if (array.inAssociativeMode()) {
 					throw new CRECastException("The array of recipients must not be associative.", t);
 				}

@@ -8,6 +8,7 @@ import com.laytonsmith.annotations.api;
 import com.laytonsmith.abstraction.MCEntity;
 import com.laytonsmith.abstraction.MCLocation;
 import com.laytonsmith.abstraction.enums.MCEntityType;
+import com.laytonsmith.core.ArgumentValidation;
 import com.laytonsmith.core.Static;
 import com.laytonsmith.core.ObjectGenerator;
 import com.laytonsmith.core.constructs.CArray;
@@ -109,7 +110,7 @@ public abstract class CitizensManagement extends CitizensFunctions {
 					throw new CREBadEntityTypeException("The given entity type (" + args[0].val() + ") is not a living entity type.", t);
 				}
 			} else {
-				int id = Static.getInt32(args[1], t);
+				int id = ArgumentValidation.getInt32(args[1], t);
 				if (CHCitizensStatic.getNPCRegistry(t).getNPC(id) == null) {
 					throw new CRERangeException("A NPC with this id (" + id + ") already exists.", t);
 				}
@@ -143,7 +144,7 @@ public abstract class CitizensManagement extends CitizensFunctions {
 
 		@Override
 		public Mixed exec(Target t, Environment environment, Mixed... args) throws ConfigRuntimeException {
-			CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t).destroy();
+			CHCitizensStatic.getNPC(ArgumentValidation.getInt32(args[0], t), t).destroy();
 			return CVoid.VOID;
 		}
 	}
@@ -192,7 +193,7 @@ public abstract class CitizensManagement extends CitizensFunctions {
 
 		@Override
 		public Mixed exec(Target t, Environment environment, Mixed... args) throws ConfigRuntimeException {
-			MCLocation location = CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t).getStoredLocation();
+			MCLocation location = CHCitizensStatic.getNPC(ArgumentValidation.getInt32(args[0], t), t).getStoredLocation();
 			if (location != null) {
 				return ObjectGenerator.GetGenerator().location(location);
 			} else {
@@ -216,7 +217,7 @@ public abstract class CitizensManagement extends CitizensFunctions {
 
 		@Override
 		public Mixed exec(Target t, Environment environment, Mixed... args) throws ConfigRuntimeException {
-			CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t).faceLocation(ObjectGenerator.GetGenerator().location(args[1], null, t));
+			CHCitizensStatic.getNPC(ArgumentValidation.getInt32(args[0], t), t).faceLocation(ObjectGenerator.GetGenerator().location(args[1], null, t));
 			return CVoid.VOID;
 		}
 	}
@@ -231,7 +232,7 @@ public abstract class CitizensManagement extends CitizensFunctions {
 
 		@Override
 		public Mixed exec(Target t, Environment environment, Mixed... args) throws ConfigRuntimeException {
-			return CBoolean.get(CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t).isSpawned());
+			return CBoolean.get(CHCitizensStatic.getNPC(ArgumentValidation.getInt32(args[0], t), t).isSpawned());
 		}
 	}
 
@@ -246,7 +247,7 @@ public abstract class CitizensManagement extends CitizensFunctions {
 		@Override
 		public Mixed exec(Target t, Environment environment, Mixed... args) throws ConfigRuntimeException {
 			MCLocation location = (args.length == 1) ? Static.getPlayer(environment, t).getLocation() : ObjectGenerator.GetGenerator().location(args[1], null, t);
-			CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t).spawn(location);
+			CHCitizensStatic.getNPC(ArgumentValidation.getInt32(args[0], t), t).spawn(location);
 			return CVoid.VOID;
 		}
 	}
@@ -282,7 +283,7 @@ public abstract class CitizensManagement extends CitizensFunctions {
 					throw new CREFormatException(args[1].val() + " is not a valid despawn reason.", t);
 				}
 			}
-			CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t).despawn(reason);
+			CHCitizensStatic.getNPC(ArgumentValidation.getInt32(args[0], t), t).despawn(reason);
 			return CVoid.VOID;
 		}
 	}
@@ -297,7 +298,7 @@ public abstract class CitizensManagement extends CitizensFunctions {
 
 		@Override
 		public Mixed exec(Target t, Environment environment, Mixed... args) throws ConfigRuntimeException {
-			MCEntity entity = CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t).getEntity();
+			MCEntity entity = CHCitizensStatic.getNPC(ArgumentValidation.getInt32(args[0], t), t).getEntity();
 			if (entity != null) {
 				return new CString(entity.getUniqueId().toString(), t);
 			} else {
@@ -328,7 +329,7 @@ public abstract class CitizensManagement extends CitizensFunctions {
 				throw new CREFormatException("Bad entity type :" + args[1].val() + ".", t);
 			}
 			try {
-				CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t).setEntityType(type);
+				CHCitizensStatic.getNPC(ArgumentValidation.getInt32(args[0], t), t).setEntityType(type);
 			} catch (IllegalArgumentException exception) {
 				throw new CREBadEntityTypeException("The given entity type (" + args[1].val() + ") is not a living entity type.", t);
 			}
@@ -346,7 +347,7 @@ public abstract class CitizensManagement extends CitizensFunctions {
 
 		@Override
 		public Mixed exec(Target t, Environment environment, Mixed... args) throws ConfigRuntimeException {
-			return new CString(CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t).getName(), t);
+			return new CString(CHCitizensStatic.getNPC(ArgumentValidation.getInt32(args[0], t), t).getName(), t);
 		}
 	}
 
@@ -360,7 +361,7 @@ public abstract class CitizensManagement extends CitizensFunctions {
 
 		@Override
 		public Mixed exec(Target t, Environment environment, Mixed... args) throws ConfigRuntimeException {
-			CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t).setName(args[1].val());
+			CHCitizensStatic.getNPC(ArgumentValidation.getInt32(args[0], t), t).setName(args[1].val());
 			return CVoid.VOID;
 		}
 	}
@@ -375,7 +376,7 @@ public abstract class CitizensManagement extends CitizensFunctions {
 
 		@Override
 		public Mixed exec(Target t, Environment environment, Mixed... args) throws ConfigRuntimeException {
-			return new CString(CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t).getFullName(), t);
+			return new CString(CHCitizensStatic.getNPC(ArgumentValidation.getInt32(args[0], t), t).getFullName(), t);
 		}
 	}
 
@@ -389,7 +390,7 @@ public abstract class CitizensManagement extends CitizensFunctions {
 
 		@Override
 		public Mixed exec(Target t, Environment environment, Mixed... args) throws ConfigRuntimeException {
-			return CBoolean.get(CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t).isProtected());
+			return CBoolean.get(CHCitizensStatic.getNPC(ArgumentValidation.getInt32(args[0], t), t).isProtected());
 		}
 	}
 
@@ -403,7 +404,7 @@ public abstract class CitizensManagement extends CitizensFunctions {
 
 		@Override
 		public Mixed exec(Target t, Environment environment, Mixed... args) throws ConfigRuntimeException {
-			CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t).setProtected(Static.getBoolean(args[1], t));
+			CHCitizensStatic.getNPC(ArgumentValidation.getInt32(args[0], t), t).setProtected(ArgumentValidation.getBooleanObject(args[1], t));
 			return CVoid.VOID;
 		}
 	}

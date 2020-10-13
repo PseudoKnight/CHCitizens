@@ -4,6 +4,7 @@ import com.hekta.chcitizens.abstraction.MCCitizensNPC;
 import com.hekta.chcitizens.abstraction.traits.MCCitizensOwner;
 import com.hekta.chcitizens.core.CHCitizensStatic;
 import com.laytonsmith.annotations.api;
+import com.laytonsmith.core.ArgumentValidation;
 import com.laytonsmith.core.Static;
 import com.laytonsmith.core.constructs.CArray;
 import com.laytonsmith.core.constructs.CBoolean;
@@ -52,7 +53,7 @@ public abstract class CitizensTraits extends CitizensFunctions {
 
 		@Override
 		public Mixed exec(Target t, Environment environment, Mixed... args) throws ConfigRuntimeException{
-			MCCitizensNPC npc = CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t);
+			MCCitizensNPC npc = CHCitizensStatic.getNPC(ArgumentValidation.getInt32(args[0], t), t);
 			String trait;
 			if (args.length == 1) {
 				trait = null;
@@ -102,9 +103,9 @@ public abstract class CitizensTraits extends CitizensFunctions {
 
 		@Override
 		public Mixed exec(Target t, Environment environment, Mixed... args) throws ConfigRuntimeException {
-			MCCitizensNPC npc = CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t);
+			MCCitizensNPC npc = CHCitizensStatic.getNPC(ArgumentValidation.getInt32(args[0], t), t);
 			String trait = args[1].val();
-			CArray array = Static.getArray(args[2], t);
+			CArray array = ArgumentValidation.getArray(args[2], t);
 			if (trait.equalsIgnoreCase("owner")) {
 				if (npc.hasTrait("owner")) {
 					for (String key : array.stringKeySet()) {
@@ -144,7 +145,7 @@ public abstract class CitizensTraits extends CitizensFunctions {
 
 		@Override
 		public Mixed exec(Target t, Environment environment, Mixed... args) throws ConfigRuntimeException {
-			MCCitizensNPC npc = CHCitizensStatic.getNPC(Static.getInt32(args[0], t), t);
+			MCCitizensNPC npc = CHCitizensStatic.getNPC(ArgumentValidation.getInt32(args[0], t), t);
 			String trait = args[1].val();
 			if (trait.equalsIgnoreCase("owner")) {
 				return CBoolean.get(npc.hasTrait("owner"));

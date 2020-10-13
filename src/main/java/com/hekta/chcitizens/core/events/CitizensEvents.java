@@ -3,16 +3,15 @@ package com.hekta.chcitizens.core.events;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.hekta.chcitizens.abstraction.bukkit.events.BukkitCitizensEvents;
 import com.hekta.chcitizens.abstraction.events.*;
 import com.laytonsmith.abstraction.MCEntity;
 import com.laytonsmith.abstraction.MCLocation;
 import com.laytonsmith.abstraction.MCPlayer;
 import com.laytonsmith.abstraction.bukkit.BukkitMCLocation;
 import com.laytonsmith.annotations.api;
+import com.laytonsmith.core.ArgumentValidation;
 import com.laytonsmith.core.MSVersion;
 import com.laytonsmith.core.ObjectGenerator;
-import com.laytonsmith.core.Static;
 import com.laytonsmith.core.constructs.CArray;
 import com.laytonsmith.core.constructs.CInt;
 import com.laytonsmith.core.constructs.CNull;
@@ -35,9 +34,6 @@ import com.hekta.chcitizens.abstraction.enums.MCCitizensCancelReason;
 import com.hekta.chcitizens.abstraction.enums.MCCitizensDespawnReason;
 import com.hekta.chcitizens.core.CHCitizensStatic;
 import com.laytonsmith.core.natives.interfaces.Mixed;
-import net.citizensnpcs.api.event.NPCRightClickEvent;
-import net.citizensnpcs.api.npc.NPC;
-import org.bukkit.entity.Entity;
 
 /**
  *
@@ -90,7 +86,7 @@ public final class CitizensEvents {
 
 		@Override
 		public BindableEvent convert(CArray manualObject, Target t) {
-			MCCitizensNPC npc = CHCitizensStatic.getNPC(Static.getInt32(manualObject.get("npc", t), t), t);
+			MCCitizensNPC npc = CHCitizensStatic.getNPC(ArgumentValidation.getInt32(manualObject.get("npc", t), t), t);
 			MCCitizensDespawnReason reason;
 			try {
 				reason = MCCitizensDespawnReason.valueOf(manualObject.get("reason", t).val().toUpperCase());
@@ -158,7 +154,7 @@ public final class CitizensEvents {
 			} catch (IllegalArgumentException exception) {
 				throw new CREFormatException(manualObject.get("reason", t).val() + " is not a valid cancel reason.", t);
 			}
-			MCCitizensNavigator navigator = CHCitizensStatic.getNPC(Static.getInt32(manualObject.get("npc", t), t), t).getNavigator();
+			MCCitizensNavigator navigator = CHCitizensStatic.getNPC(ArgumentValidation.getInt32(manualObject.get("npc", t), t), t).getNavigator();
 			return EventBuilder.instantiate(MCCitizensNavigationCancelEvent.class, navigator, reason);
 		}
 
@@ -213,7 +209,7 @@ public final class CitizensEvents {
 
 		@Override
 		public BindableEvent convert(CArray manualObject, Target t) {
-			MCCitizensNavigator navigator = CHCitizensStatic.getNPC(Static.getInt32(manualObject.get("npc", t), t), t).getNavigator();
+			MCCitizensNavigator navigator = CHCitizensStatic.getNPC(ArgumentValidation.getInt32(manualObject.get("npc", t), t), t).getNavigator();
 			return EventBuilder.instantiate(MCCitizensNavigationCompleteEvent.class, navigator);
 		}
 
@@ -262,7 +258,7 @@ public final class CitizensEvents {
 
 		@Override
 		public BindableEvent convert(CArray manualObject, Target t) {
-			MCCitizensNPC npc = CHCitizensStatic.getNPC(Static.getInt32(manualObject.get("npc", t), t), t);
+			MCCitizensNPC npc = CHCitizensStatic.getNPC(ArgumentValidation.getInt32(manualObject.get("npc", t), t), t);
 			MCLocation location = ObjectGenerator.GetGenerator().location(manualObject.get("location", t), npc.isSpawned() ? npc.getEntity().getWorld() : null, t);
 			return EventBuilder.instantiate(MCCitizensNPCSpawnEvent.class, npc, location);
 		}

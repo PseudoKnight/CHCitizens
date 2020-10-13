@@ -5,10 +5,8 @@
 	<groupId>com.hekta</groupId>
 	<artifactId>CHCitizens</artifactId>
 	<version>1.1.8</version>
-	<packaging>jar</packaging>
 
 	<name>CHCitizens</name>
-	<url>http://maven.apache.org</url>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -16,12 +14,12 @@
 
 	<repositories>
 		<repository>
-			<id>sk89q-mvn2</id>
-			<url>http://maven.sk89q.com/repo</url>
+			<id>enginehub-repo</id>
+			<url>https://maven.enginehub.org/repo</url>
 		</repository>
 		<repository>
 			<id>citizensnpcs-repo</id>
-			<url>http://repo.citizensnpcs.co</url>
+			<url>https://repo.citizensnpcs.co</url>
 		</repository>
 		<repository>
 			<id>spigotmc</id>
@@ -38,7 +36,7 @@
 		<dependency>
 			<groupId>net.citizensnpcs</groupId>
 			<artifactId>citizensapi</artifactId>
-			<version>2.0.25-SNAPSHOT</version>
+			<version>2.0.27-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 
@@ -48,7 +46,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.1</version>
+				<version>3.8.1</version>
 				<configuration>
 					<showDeprecation>true</showDeprecation>
 					<source>1.8</source>
@@ -65,7 +63,7 @@
 					<execution>
 						<id>process</id>
 						<phase>process-classes</phase>
-							<goals>
+						<goals>
 							<goal>process</goal>
 						</goals>
 					</execution>
@@ -82,7 +80,7 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>exec-maven-plugin</artifactId>
-				<version>1.3</version>
+				<version>1.6.0</version>
 				<executions>
 					<execution>
 						<id>cache-annotations</id>
