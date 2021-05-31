@@ -6,7 +6,7 @@ import com.laytonsmith.annotations.MEnum;
  *
  * @author Hekta
  */
-@MEnum("CancelReason")
+@MEnum("com.hekta.chcitizens.CancelReason")
 public enum MCCitizensCancelReason {
 	NPC_DESPAWNED,
 	PLUGIN,

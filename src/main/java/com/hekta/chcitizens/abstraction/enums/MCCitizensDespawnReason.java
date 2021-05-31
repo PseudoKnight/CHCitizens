@@ -6,7 +6,7 @@ import com.laytonsmith.annotations.MEnum;
  *
  * @author Hekta
  */
-@MEnum("DespawnReason")
+@MEnum("com.hekta.chcitizens.DespawnReason")
 public enum MCCitizensDespawnReason {
 	CHUNK_UNLOAD,
 	DEATH,

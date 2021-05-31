@@ -6,7 +6,7 @@ import com.laytonsmith.annotations.MEnum;
  *
  * @author Hekta
  */
-@MEnum("TargetType")
+@MEnum("com.hekta.chcitizens.TargetType")
 public enum MCCitizensTargetType {
 	ENTITY,
 	LOCATION,
