@@ -118,7 +118,7 @@ public abstract class CitizensAI extends CitizensFunctions {
 				throw new CREPluginInternalException("The NPC is not spawned.", t);
 			}
 			if (args[1] instanceof CArray) {
-				npc.getNavigator().setTarget(ObjectGenerator.GetGenerator().location(args[1], npc.getEntity().getWorld(), t));
+				npc.getNavigator().setTarget(ObjectGenerator.GetGenerator().location(args[1], npc.getStoredLocation().getWorld(), t));
 			} else {
 				boolean isAggressive;
 				if (args.length == 2) {

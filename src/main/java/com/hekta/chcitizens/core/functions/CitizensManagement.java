@@ -298,12 +298,11 @@ public abstract class CitizensManagement extends CitizensFunctions {
 
 		@Override
 		public Mixed exec(Target t, Environment environment, Mixed... args) throws ConfigRuntimeException {
-			MCEntity entity = CHCitizensStatic.getNPC(ArgumentValidation.getInt32(args[0], t), t).getEntity();
-			if (entity != null) {
-				return new CString(entity.getUniqueId().toString(), t);
-			} else {
-				return CNull.NULL;
+			MCCitizensNPC npc = CHCitizensStatic.getNPC(ArgumentValidation.getInt32(args[0], t), t);
+			if(npc.isSpawned()) {
+				return new CString(npc.getEntity().getUniqueId().toString(), t);
 			}
+			return CNull.NULL;
 		}
 	}
 

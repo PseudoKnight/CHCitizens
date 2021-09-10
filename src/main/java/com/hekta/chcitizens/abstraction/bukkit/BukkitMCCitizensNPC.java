@@ -24,6 +24,7 @@ import com.hekta.chcitizens.abstraction.MCCitizensSpeechController;
 import com.hekta.chcitizens.abstraction.MCCitizensTrait;
 import com.hekta.chcitizens.abstraction.enums.MCCitizensDespawnReason;
 import com.hekta.chcitizens.abstraction.enums.bukkit.BukkitMCCitizensDespawnReason;
+import org.bukkit.entity.Entity;
 
 /**
  *
@@ -108,11 +109,11 @@ public class BukkitMCCitizensNPC implements MCCitizensNPC {
 
 	@Override
 	public MCEntity getEntity() {
-		if (_npc.isSpawned()) {
-			return BukkitConvertor.BukkitGetCorrectEntity(_npc.getEntity());
-		} else {
+		Entity entity = _npc.getEntity();
+		if (entity == null) {
 			return null;
 		}
+		return BukkitConvertor.BukkitGetCorrectEntity(entity);
 	}
 
 	@Override

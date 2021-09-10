@@ -12,13 +12,16 @@ import com.laytonsmith.annotations.api;
 import com.laytonsmith.core.ArgumentValidation;
 import com.laytonsmith.core.MSVersion;
 import com.laytonsmith.core.ObjectGenerator;
+import com.laytonsmith.core.Static;
 import com.laytonsmith.core.constructs.CArray;
 import com.laytonsmith.core.constructs.CInt;
 import com.laytonsmith.core.constructs.CNull;
 import com.laytonsmith.core.constructs.CString;
 import com.laytonsmith.core.constructs.Target;
+import com.laytonsmith.core.environments.Environment;
 import com.laytonsmith.core.events.AbstractEvent;
 import com.laytonsmith.core.events.BindableEvent;
+import com.laytonsmith.core.events.BoundEvent;
 import com.laytonsmith.core.events.Driver;
 import com.laytonsmith.core.events.EventBuilder;
 import com.laytonsmith.core.events.Prefilters;
@@ -290,6 +293,25 @@ public final class CitizensEvents {
 				return mapEvent;
 			} else {
 				throw new EventException("Cannot convert event to NPCSpawnEvent.");
+			}
+		}
+
+		@Override
+		public void preExecution(Environment env, BoundEvent.ActiveEvent activeEvent) {
+			if(activeEvent.getUnderlyingEvent() instanceof MCCitizensNPCSpawnEvent) {
+				// Entity may not exist in world yet during this event under exceptional circumstances.
+				// This usually means the npc will despawn. But to ensure symmetrical spawn and despawn events,
+				// this event will still fire. To reduce issues we can inject the entity to allow scripts to operate on it.
+				MCEntity entity = ((MCCitizensNPCSpawnEvent) activeEvent.getUnderlyingEvent()).getNPC().getEntity();
+				Static.InjectEntity(entity);
+			}
+		}
+
+		@Override
+		public void postExecution(Environment env, BoundEvent.ActiveEvent activeEvent) {
+			if(activeEvent.getUnderlyingEvent() instanceof MCCitizensNPCSpawnEvent) {
+				MCEntity entity = ((MCCitizensNPCSpawnEvent) activeEvent.getUnderlyingEvent()).getNPC().getEntity();
+				Static.UninjectEntity(entity);
 			}
 		}
 	}
