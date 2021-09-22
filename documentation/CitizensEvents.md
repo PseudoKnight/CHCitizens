@@ -2,7 +2,7 @@
 Contains events related to the Citizens plugin.
 
 ### ctz\_npc\_despawn
-Fires when a NPC despawn.
+Fires when an NPC despawns.
 #### Prefilters
 **reason**: <Macro> The reason the NPC is despawning  
 **type**: <Macro> The entity type of the NPC  
@@ -16,7 +16,7 @@ Fires when a NPC despawn.
 #### Mutable Fields
 
 ### ctz\_npc\_navigation\_cancel
-Fires when a NPC navigation is cancelled.
+Fires when an NPC's navigation is cancelled.
 #### Prefilters
 **cause**: <Macro> The cause of the cancellation  
 **type**: <Macro> The entity type of the NPC  
@@ -30,7 +30,7 @@ Fires when a NPC navigation is cancelled.
 #### Mutable Fields
 
 ### ctz\_npc\_navigation\_complete
-Fires when a NPC reaches its destination.
+Fires when an NPC reaches its destination.
 #### Prefilters
 **type**: <Macro> The entity type of the NPC  
 **world**: <Macro>
@@ -42,7 +42,7 @@ Fires when a NPC reaches its destination.
 #### Mutable Fields
 
 ### ctz\_npc\_spawn
-Fires when a NPC spawn.
+Fires when an NPC spawns.
 #### Prefilters
 **type**: <Macro> The entity type of the NPC  
 **world**: <Macro>
@@ -51,4 +51,20 @@ Fires when a NPC spawn.
 **entity**: The entityID of the NPC  
 **type**: The entity type of the NPC  
 **location**: The location where the NPC will spawn
+#### Mutable Fields
+
+### ctz\_npc\_click
+Fires when an NPC is clicked.
+#### Prefilters
+**button**: <Macro> Clicked button left or right  
+**player**: <Macro>  
+**world**: <Macro>  
+**type**: <Macro>  
+#### Event Data
+**button**:  
+**player**:  
+**npc**: The NPC id  
+**entity**: The entityID of the NPC  
+**type**: The entity type of the NPC  
+**location**: The location of the NPC
 #### Mutable Fields

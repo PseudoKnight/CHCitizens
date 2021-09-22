@@ -80,7 +80,7 @@ public final class CitizensEvents {
 		@Override
 		public String docs() {
 			return "{reason: <macro> The reason the NPC is despawning | type: <macro> The entity type of the NPC | world: <macro>}"
-					+ " Fires when a NPC despawn."
+					+ " Fires when an NPC despawns."
 					+ " {reason: The reason the NPC is despawning (one of " + StringUtils.Join(MCCitizensDespawnReason.values(), ", ", ", or ", " or ") + ") |"
 					+ " npc: The NPC id | entity: The entityID of the NPC | type: The entity type of the NPC | location: The location where the NPC is}"
 					+ " {}"
@@ -141,7 +141,7 @@ public final class CitizensEvents {
 		@Override
 		public String docs() {
 			return "{cause: <macro> The cause of the cancellation | type: <macro> The entity type of the NPC | world: <macro>}"
-					+ " Fires when a NPC navigation is cancelled."
+					+ " Fires when an NPC's navigation is cancelled."
 					+ " {npc: The NPC id | entity: the entityID of the NPC | type: The entity type of the NPC |"
 					+ " location: The location where the NPC is (null if not spawned) |"
 					+ " cause: The cause of the cancellation (one of " + StringUtils.Join(MCCitizensCancelReason.values(), ", ", ", or ", " or ") + ")}"
@@ -204,7 +204,7 @@ public final class CitizensEvents {
 		@Override
 		public String docs() {
 			return "{type: <macro> The entity type of the NPC | world: <macro>}"
-					+ " Fires when a NPC reaches its destination."
+					+ " Fires when an NPC reaches its destination."
 					+ " {npc: The NPC id | entity: The entityID of the NPC | type: The entity type of the NPC | location: The location where the NPC is}"
 					+ " {}"
 					+ " {}";
@@ -253,7 +253,7 @@ public final class CitizensEvents {
 		@Override
 		public String docs() {
 			return "{type: <macro> The entity type of the NPC | world: <macro>}"
-					+ " Fires when a NPC spawn."
+					+ " Fires when an NPC is clicked."
 					+ " {npc: The NPC id | entity: The entityID of the NPC | type: The entity type of the NPC | location: The location where the NPC will spawn}"
 					+ " {}"
 					+ " {}";
