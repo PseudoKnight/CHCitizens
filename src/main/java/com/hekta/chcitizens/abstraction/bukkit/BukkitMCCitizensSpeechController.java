@@ -26,9 +26,4 @@ public class BukkitMCCitizensSpeechController implements MCCitizensSpeechControl
 	public void speak(MCCitizensSpeechContext message) {
 		_controller.speak(((BukkitMCCitizensSpeechContext) message).getHandle());
 	}
-
-	@Override
-	public void speak(MCCitizensSpeechContext message, String vocalChordName) {
-		_controller.speak(((BukkitMCCitizensSpeechContext) message).getHandle(), vocalChordName);
-	}
 }

@@ -28,11 +28,11 @@ public class BukkitMCCitizensOwner extends BukkitMCCitizensTrait implements MCCi
 
 	@Override
 	public MCOfflinePlayer getOwner() {
-		return StaticLayer.GetServer().getOfflinePlayer(m_owner.getOwner());
+		return StaticLayer.GetServer().getOfflinePlayer(m_owner.getOwnerId());
 	}
 
 	@Override
 	public void setOwner(MCOfflinePlayer owner) {
-		m_owner.setOwner(owner.getName());
+		m_owner.setOwner(owner.getUniqueID());
 	}
 }

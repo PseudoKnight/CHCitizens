@@ -1,14 +1,17 @@
 package com.hekta.chcitizens.abstraction.bukkit;
 
-import com.hekta.chcitizens.abstraction.CHCitizensConvertor;
-import com.hekta.chcitizens.abstraction.MCCitizensPlugin;
-import com.hekta.chcitizens.abstraction.MCCitizensTrait;
+import com.hekta.chcitizens.abstraction.*;
 import com.hekta.chcitizens.abstraction.bukkit.events.BukkitCitizensListener;
 import com.hekta.chcitizens.abstraction.bukkit.traits.BukkitMCCitizensOwner;
 import com.laytonsmith.abstraction.Implementation.Type;
+import com.laytonsmith.abstraction.MCEntity;
+import com.laytonsmith.abstraction.bukkit.entities.BukkitMCEntity;
+import com.laytonsmith.abstraction.bukkit.entities.BukkitMCLivingEntity;
 import com.laytonsmith.annotations.abstraction;
 import com.laytonsmith.commandhelper.CommandHelperPlugin;
 import net.citizensnpcs.api.CitizensPlugin;
+import net.citizensnpcs.api.ai.speech.SpeechContext;
+import net.citizensnpcs.api.ai.speech.TalkableEntity;
 import net.citizensnpcs.api.trait.trait.Owner;
 import org.bukkit.plugin.Plugin;
 
@@ -47,5 +50,29 @@ public class CHCitizensBukkitConvertor implements CHCitizensConvertor {
 		} else {
 			return trait;
 		}
+	}
+
+	@Override
+	public MCCitizensTalkable newTalkableEntity(MCEntity entity) {
+		return new BukkitMCCitizensTalkable(new TalkableEntity(((BukkitMCEntity) entity).getHandle()));
+	}
+
+	@Override
+	public MCCitizensSpeechContext newSpeechContext(MCCitizensNPC talker, String message, MCCitizensTalkable recipient) {
+		return new BukkitMCCitizensSpeechContext(new SpeechContext(((BukkitMCCitizensNPC) talker).getHandle(), message, ((BukkitMCLivingEntity) recipient.getEntity()).asLivingEntity()));
+	}
+
+	@Override
+	public MCCitizensSpeechContext newSpeechContext(MCCitizensNPC talker, String message, MCCitizensTalkable[] recipients) {
+		MCCitizensSpeechContext speechContext = new BukkitMCCitizensSpeechContext(new SpeechContext(((BukkitMCCitizensNPC) talker).getHandle(), message));
+		speechContext.addRecipients(recipients);
+		return speechContext;
+	}
+
+	@Override
+	public MCCitizensSpeechContext newSpeechContext(MCCitizensNPC talker, String message, Iterable<MCCitizensTalkable> recipients) {
+		MCCitizensSpeechContext speechContext = new BukkitMCCitizensSpeechContext(new SpeechContext(((BukkitMCCitizensNPC) talker).getHandle(), message));
+		speechContext.addRecipients(recipients);
+		return speechContext;
 	}
 }

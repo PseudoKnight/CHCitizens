@@ -1,10 +1,6 @@
 package com.hekta.chcitizens.core.functions;
 
-import com.hekta.chcitizens.abstraction.MCCitizensEntityTarget;
-import com.hekta.chcitizens.abstraction.MCCitizensNPC;
-import com.hekta.chcitizens.abstraction.MCCitizensNavigator;
-import com.hekta.chcitizens.abstraction.MCCitizensSpeechFactory;
-import com.hekta.chcitizens.abstraction.MCCitizensTalkable;
+import com.hekta.chcitizens.abstraction.*;
 import com.hekta.chcitizens.abstraction.enums.MCCitizensTargetType;
 import com.hekta.chcitizens.core.CHCitizensStatic;
 import com.laytonsmith.PureUtilities.Common.StringUtils;
@@ -414,16 +410,15 @@ public abstract class CitizensAI extends CitizensFunctions {
 		@Override
 		public Mixed exec(Target t, Environment environment, Mixed... args) throws ConfigRuntimeException {
 			MCCitizensNPC npc = CHCitizensStatic.getNPC(ArgumentValidation.getInt32(args[0], t), t);
-			MCCitizensSpeechFactory speechFactory = CHCitizensStatic.getCitizensPlugin(t).getSpeechFactory();
 			if (args.length == 2) {
 				Collection<MCPlayer> p = Static.getServer().getOnlinePlayers();
 				MCCitizensTalkable[] recipients = new MCCitizensTalkable[p.size()];
 				int i = 0;
 				for (MCPlayer player : p) {
-					recipients[i] = speechFactory.newTalkableEntity(player);
+					recipients[i] = CHCitizensStaticLayer.newTalkableEntity(player);
 					i++;
 				}
-				npc.getDefaultSpeechController().speak(speechFactory.newSpeechContext(npc, args[1].val(), recipients));
+				npc.getDefaultSpeechController().speak(CHCitizensStaticLayer.newSpeechContext(npc, args[1].val(), recipients));
 			} else if (args[2] instanceof CArray) {
 				CArray array = ArgumentValidation.getArray(args[2], t);
 				if (array.inAssociativeMode()) {
@@ -431,11 +426,12 @@ public abstract class CitizensAI extends CitizensFunctions {
 				}
 				Set<MCCitizensTalkable> recipients = new HashSet<>();
 				for (Mixed recipient : array.asList()) {
-					recipients.add(speechFactory.newTalkableEntity(Static.GetPlayer(recipient, t)));
+					recipients.add(CHCitizensStaticLayer.newTalkableEntity(Static.GetPlayer(recipient, t)));
 				}
-				npc.getDefaultSpeechController().speak(speechFactory.newSpeechContext(npc, args[1].val(), recipients));
+				npc.getDefaultSpeechController().speak(CHCitizensStaticLayer.newSpeechContext(npc, args[1].val(), recipients));
 			} else {
-				npc.getDefaultSpeechController().speak(speechFactory.newSpeechContext(npc, args[1].val(), speechFactory.newTalkableEntity(Static.GetPlayer(args[2], t))));
+				npc.getDefaultSpeechController().speak(CHCitizensStaticLayer.newSpeechContext(npc, args[1].val(),
+						CHCitizensStaticLayer.newTalkableEntity(Static.GetPlayer(args[2], t))));
 			}
 			return CVoid.VOID;
 		}

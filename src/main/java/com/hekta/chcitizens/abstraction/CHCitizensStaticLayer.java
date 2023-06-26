@@ -3,6 +3,7 @@ package com.hekta.chcitizens.abstraction;
 import com.laytonsmith.abstraction.Implementation;
 import com.laytonsmith.PureUtilities.ClassLoading.ClassDiscovery;
 
+import com.laytonsmith.abstraction.MCEntity;
 import com.laytonsmith.annotations.abstraction;
 import com.laytonsmith.core.InternalException;
 
@@ -57,5 +58,21 @@ public final class CHCitizensStaticLayer {
 
 	public static MCCitizensTrait getCorrectTrait(MCCitizensTrait trait) {
 		return _convertor.getCorrectTrait(trait);
+	}
+
+	public static MCCitizensTalkable newTalkableEntity(MCEntity entity) {
+		return _convertor.newTalkableEntity(entity);
+	}
+
+	public static MCCitizensSpeechContext newSpeechContext(MCCitizensNPC talker, String message, MCCitizensTalkable recipient) {
+		return _convertor.newSpeechContext(talker, message, recipient);
+	}
+
+	public static MCCitizensSpeechContext newSpeechContext(MCCitizensNPC talker, String message, MCCitizensTalkable[] recipients) {
+		return _convertor.newSpeechContext(talker, message, recipients);
+	}
+
+	public static MCCitizensSpeechContext newSpeechContext(MCCitizensNPC talker, String message, Iterable<MCCitizensTalkable> recipients) {
+		return _convertor.newSpeechContext(talker, message, recipients);
 	}
 }

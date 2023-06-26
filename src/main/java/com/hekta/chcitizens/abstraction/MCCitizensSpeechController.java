@@ -9,5 +9,4 @@ import com.laytonsmith.abstraction.AbstractionObject;
 public interface MCCitizensSpeechController extends AbstractionObject {
 
 	public void speak(MCCitizensSpeechContext message);
-	public void speak(MCCitizensSpeechContext message, String vocalChordName);
 }

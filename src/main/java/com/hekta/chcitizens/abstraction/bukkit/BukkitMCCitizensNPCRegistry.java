@@ -10,7 +10,6 @@ import net.citizensnpcs.api.npc.NPCRegistry;
 import com.laytonsmith.abstraction.MCEntity;
 import com.laytonsmith.abstraction.bukkit.entities.BukkitMCEntity;
 import com.laytonsmith.abstraction.enums.MCEntityType;
-import com.laytonsmith.abstraction.enums.bukkit.BukkitMCEntityType;
 
 import com.hekta.chcitizens.abstraction.MCCitizensNPC;
 import com.hekta.chcitizens.abstraction.MCCitizensNPCRegistry;

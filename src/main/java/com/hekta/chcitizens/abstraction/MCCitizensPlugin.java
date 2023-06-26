@@ -8,9 +8,7 @@ import com.laytonsmith.abstraction.MCPlugin;
  */
 public interface MCCitizensPlugin extends MCPlugin {
 
-	public MCCitizensNPCRegistry getNPCRegistry();
+	MCCitizensNPCRegistry getNPCRegistry();
 
-	public MCCitizensSpeechFactory getSpeechFactory();
-
-	public MCCitizensTraitFactory getTraitFactory();
+	MCCitizensTraitFactory getTraitFactory();
 }

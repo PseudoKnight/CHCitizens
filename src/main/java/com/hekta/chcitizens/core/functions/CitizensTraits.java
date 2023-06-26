@@ -110,7 +110,7 @@ public abstract class CitizensTraits extends CitizensFunctions {
 				if (npc.hasTrait("owner")) {
 					for (String key : array.stringKeySet()) {
 						if (key.equals("owner")) {
-							((MCCitizensOwner) npc.getTrait("owner")).setOwner(Static.getServer().getOfflinePlayer(array.get(key, t).val()));
+							((MCCitizensOwner) npc.getTrait("owner")).setOwner(Static.GetUser(array.get(key, t), t));
 						} else {
 							throw new CREIndexOverflowException("Invalid key:" + key + ".", t);
 						}

@@ -7,7 +7,6 @@ import com.laytonsmith.abstraction.bukkit.BukkitMCPlugin;
 
 import com.hekta.chcitizens.abstraction.MCCitizensPlugin;
 import com.hekta.chcitizens.abstraction.MCCitizensNPCRegistry;
-import com.hekta.chcitizens.abstraction.MCCitizensSpeechFactory;
 import com.hekta.chcitizens.abstraction.MCCitizensTraitFactory;
 
 /**
@@ -35,11 +34,6 @@ public class BukkitMCCitizensPlugin extends BukkitMCPlugin implements MCCitizens
 			return null;
 		}
 		return new BukkitMCCitizensNPCRegistry(registry);
-	}
-
-	@Override
-	public MCCitizensSpeechFactory getSpeechFactory() {
-		return new BukkitMCCitizensSpeechFactory(_citizens.getSpeechFactory());
 	}
 
 	@Override

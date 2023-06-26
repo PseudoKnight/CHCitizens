@@ -1,16 +1,27 @@
 package com.hekta.chcitizens.abstraction;
 
+import com.laytonsmith.abstraction.MCEntity;
+
 /**
  *
  * @author Hekta
  */
 public interface CHCitizensConvertor {
 
-	public void startup();
+	void startup();
 
-	public void shutdown();
+	void shutdown();
 
-	public MCCitizensPlugin getCitizens();
+	MCCitizensPlugin getCitizens();
 
-	public MCCitizensTrait getCorrectTrait(MCCitizensTrait trait);
+	MCCitizensTrait getCorrectTrait(MCCitizensTrait trait);
+
+	MCCitizensTalkable newTalkableEntity(MCEntity entity);
+
+	MCCitizensSpeechContext newSpeechContext(MCCitizensNPC talker, String message, MCCitizensTalkable recipient);
+
+	MCCitizensSpeechContext newSpeechContext(MCCitizensNPC talker, String message, MCCitizensTalkable[] recipients);
+
+	MCCitizensSpeechContext newSpeechContext(MCCitizensNPC talker, String message, Iterable<MCCitizensTalkable> recipients);
+
 }
